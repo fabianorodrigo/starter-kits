@@ -47,8 +47,10 @@ npx tsc --version
 npx tsc --init
 npm install -save-dev @types/node
 npm install @tsconfig/node16 --save-dev
+npm install ts-node --save-dev
 npm install eslint --save-dev
 npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
 ```
 
 - criação pasta `src`
@@ -59,3 +61,4 @@ npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-de
 # Fontes
 
 https://blog.appsignal.com/2022/01/19/how-to-set-up-a-nodejs-project-with-typescript.html
+https://dev.to/promyze/setup-mocha-in-watch-mode-for-tdd-in-node-js-1mah

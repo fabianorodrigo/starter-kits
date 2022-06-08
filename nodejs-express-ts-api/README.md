@@ -25,3 +25,4 @@ Para testar, acesse via navegador a URL: [http://localhost:3000/?username=fabian
 # Fontes
 
 https://blog.appsignal.com/2022/01/19/how-to-set-up-a-nodejs-project-with-typescript.html
+https://dev.to/promyze/setup-mocha-in-watch-mode-for-tdd-in-node-js-1mah

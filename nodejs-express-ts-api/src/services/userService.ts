@@ -1,8 +1,8 @@
-import {APIResponse, Repository} from "./model";
-import {User, UserDTO} from "./model/user.interface";
-import getData from "./service";
+import {APIResponse, Repository} from "../model";
+import {User, UserDTO} from "../model/user.interface";
+import getData from "./baseService";
 
-export default async function getUserData(name: string): Promise<UserDTO> {
+export async function getUserData(name: string): Promise<UserDTO> {
   // search for user
   const userResponse: APIResponse<User> = await getData<User>(
     `https://api.github.com/users/${name}`

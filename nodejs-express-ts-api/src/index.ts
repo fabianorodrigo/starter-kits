@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 import {UserDTO} from "./model/user.interface";
-import getUserData from "./userService";
+import {getUserData} from "./services/userService";
 
 const app = express();
 app.use(cors());

@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosRequestConfig} from "axios";
-import {APIResponse, ServerError} from "./model";
+import {APIResponse, ServerError} from "../model";
 
 export default async function getData<T>(
   url: string,
@@ -14,7 +14,7 @@ export default async function getData<T>(
       if (serverError && serverError.response) {
         return {
           success: false,
-          message: serverError.response.data.error,
+          message: serverError.response.data.message,
         } as APIResponse<T>;
       }
     }
