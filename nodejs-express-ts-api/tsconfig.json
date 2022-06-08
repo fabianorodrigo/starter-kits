@@ -1,11 +1,16 @@
 {
+  "include": ["src"],
+  "exclude": ["node_modules"],
     "compilerOptions": {
       "module": "commonjs",
-      "esModuleInterop": true,
-      "target": "es6",
+      "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+      "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+      /* Language and Environment */
+      "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
       "moduleResolution": "node",
       "sourceMap": true,
-      "outDir": "dist"
+      "outDir": "./dist",
+      "strict": true,                                      /* Enable all strict type-checking options. */
     },
     "lib": ["es2015"]
   }

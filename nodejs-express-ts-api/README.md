@@ -21,3 +21,7 @@ npx tsc && node dist/index.js
 ```
 
 Para testar, acesse via navegador a URL: [http://localhost:3000/?username=fabianorodrigo](http://localhost:3000/?username=fabianorodrigo)
+
+# Fontes
+
+https://blog.appsignal.com/2022/01/19/how-to-set-up-a-nodejs-project-with-typescript.html
