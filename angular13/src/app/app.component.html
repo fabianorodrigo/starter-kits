@@ -1,0 +1,22 @@
+<dapp-layout>
+  <dapp-header
+    [title]="title"
+    [icon]="icon"
+    [userAccountAddress]="userAccountAddress"
+    (sidenavToggle)="sidenav.toggle()"
+  ></dapp-header>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav role="navigation">
+      <dapp-menu
+        [userAccountAddress]="userAccountAddress"
+        [owner]="owner"
+        (sidenavClose)="sidenav.close()"
+      ></dapp-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <main>
+        <router-outlet></router-outlet>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</dapp-layout>
