@@ -1,11 +1,12 @@
 {
   "name": "nodejs-ts",
-  "description": "Consome API Github para obter dados de um usuário específico e mantém um cache em memória para não precisar buscar novamente os dados no Github caso uma consulta seja repetida.",
+  "description": "Node.js TypeScript",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "npx ts-node src/index.ts",
+    "start": "node dist/main.js",
+    "build": "npx tsc",
+    "dev": "npx ts-node src/main.ts",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
