@@ -5,6 +5,7 @@ const This = require("./services/this/this");
 const globalThisStricMode = require("./services/this/globalThisStrictMode");
 const globalThisNoStricMode = require("./services/this/globalThisNoStrictMode");
 const Person = require("./model/person");
+const Closure = require("./services/closures");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -21,7 +22,7 @@ const application = {
       ui.printBar(colors.green);
       console.log(`
               1. 'this' demo
-              2. closure demo
+              2. Closures demo
               0. Exit
               `);
       menu = readlineSync.question("Enter your choice: ".yellow);
@@ -102,6 +103,15 @@ const application = {
           ui.labelResult(`globalThisNoStricMode:`, globalThisNoStricMode());
           break;
         case "2":
+          ui.labelResult(
+            Closure.contadorPrivado.name,
+            Closure.contadorPrivado()
+          );
+          // não funcionou como no artigo: https://medium.com/@stephanowallace/javascript-mas-afinal-o-que-s%C3%A3o-closures-4d67863ca9fc
+          ui.labelResult(Closure.outroContador.name, "");
+          Closure.outroContador(console.log);
+
+          break;
       }
       if (menu != "0") {
         //just a pause to see results
