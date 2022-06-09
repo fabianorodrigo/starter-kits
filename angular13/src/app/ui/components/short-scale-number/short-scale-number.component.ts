@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import BN from 'bn.js';
+import * as BN from 'bn.js';
 import { NumbersService } from 'src/app/services';
 
 @Component({

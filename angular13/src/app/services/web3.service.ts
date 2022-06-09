@@ -6,8 +6,13 @@ import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { WEB3 } from '../core/web3';
-import { CallbackFunction, ProviderErrors, ProviderMessage, TransactionResult } from '../model';
+import { WEB3 } from '../core/web3/web3';
+import {
+  CallbackFunction,
+  ProviderErrors,
+  ProviderMessage,
+  TransactionResult,
+} from '../model';
 
 declare let window: any;
 
@@ -86,10 +91,10 @@ export class Web3Service {
     return new Observable<string>((_subscriber) => {
       this._web3.eth
         .getBalance(_accountAddress)
-        .then((_balance) => {
+        .then((_balance: string | undefined) => {
           _subscriber.next(_balance);
         })
-        .catch((e) => {
+        .catch((e: Error) => {
           console.warn(`web3Service`, e);
         });
     });
@@ -116,7 +121,11 @@ export class Web3Service {
       if (window.ethereum) {
         const weiAmmountHEX = this._web3.utils.toHex(_valueInWei);
         this._web3.eth
-          .sendTransaction({ from: _addressFrom, to: _addressTo, value: weiAmmountHEX })
+          .sendTransaction({
+            from: _addressFrom,
+            to: _addressTo,
+            value: weiAmmountHEX,
+          })
           .on(`transactionHash`, (hash: string) => {
             _subscriber.next({ success: true, result: _successMessage });
           })
@@ -150,11 +159,11 @@ export class Web3Service {
     });
   }
 
-  async addTokenToWallet(): Promise<boolean> {
-    const tokenAddress = environment.betTokenAddress;
+  async addTokenToWallet(tokenAddress: string): Promise<boolean> {
     const tokenSymbol = 'BET';
     const tokenDecimals = 18;
-    const tokenImage = 'https://cdn.iconscout.com/icon/premium/png-256-thumb/football-betting-2018363-1716872.png';
+    const tokenImage =
+      'https://cdn.iconscout.com/icon/premium/png-256-thumb/football-betting-2018363-1716872.png';
 
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
@@ -183,9 +192,14 @@ export class Web3Service {
    * @param _abis Abis of contract
    * @param _address Address of contract
    */
-  async getContract(_abis: AbiItem[], _address: string): Promise<Contract | null> {
+  async getContract(
+    _abis: AbiItem[],
+    _address: string
+  ): Promise<Contract | null> {
     if ((await this._web3.eth.getCode(_address)) === '0x') {
-      console.error(`Address ${_address} is not a contract at the connected chain`);
+      console.error(
+        `Address ${_address} is not a contract at the connected chain`
+      );
       return null;
     }
     return new this._web3.eth.Contract(_abis, _address);
@@ -216,10 +230,15 @@ export class Web3Service {
       } else {
         window.ethereum.on('connect', this.handleOnConnect.bind(this));
         window.ethereum.on('disconnect', this.handleOnDisconnect.bind(this));
-        window.ethereum.on('accountsChanged', this.handleOnAccountsChanged.bind(this));
+        window.ethereum.on(
+          'accountsChanged',
+          this.handleOnAccountsChanged.bind(this)
+        );
         window.ethereum.on('message', this.handleOnMessage);
         //Metamask Docs strongly recommend reloading the page on chain changes, unless you have good reason not to.
-        window.ethereum.on('chainChanged', (_chainId: string) => window.location.reload());
+        window.ethereum.on('chainChanged', (_chainId: string) =>
+          window.location.reload()
+        );
         return true;
       }
     }
@@ -255,7 +274,8 @@ export class Web3Service {
    * @param connectInfo ProviderRpcError
    */
   private handleOnAccountsChanged(_accounts: string[]) {
-    this._userAccountAddress = _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : null;
+    this._userAccountAddress =
+      _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : null;
     this._userAccountAddressSubject.next(this._userAccountAddress);
   }
 

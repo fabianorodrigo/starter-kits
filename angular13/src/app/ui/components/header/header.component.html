@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" class="flexDirectionRow">
   <div>
     <button mat-icon-button (click)="onToggleSidenav()">
       <mat-icon>menu</mat-icon>
@@ -7,12 +7,12 @@
   <div>
     <a routerLink="/home">{{ title }}</a>
   </div>
-  <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-    <ul fxLayout fxLayoutGap="15px" class="navigation-items">
+  <div class="flexAlignItemsStrech">
+    <ul class="navigation-items">
       <li>
         <dapp-wallet
           [userAccountAddress]="userAccountAddress"
-          fxFlexAlign="center"
+          class="flexAlignItemsCenter"
         ></dapp-wallet>
       </li>
     </ul>

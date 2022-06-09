@@ -13,3 +13,22 @@ a:active {
   padding: 0;
   margin: 0;
 }
+
+.flexDirectionRow {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+}
+
+.flexAlignItemsStrech{
+    flex: 1 1 0%;
+    box-sizing: border-box;
+    flex-direction: row;
+    display: flex;
+    place-content: stretch flex-end;
+    align-items: stretch;
+}
+
+.flexAlignItemsCenter{
+  align-items: center;
+}

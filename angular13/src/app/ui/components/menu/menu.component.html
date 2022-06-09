@@ -2,11 +2,19 @@
   <a mat-list-item routerLink="/home" (click)="onSidenavClose()">
     <mat-icon>home</mat-icon> <span class="nav-caption">Home</span>
   </a>
-  <a mat-list-item routerLink="/token" (click)="onSidenavClose()">
-    <mat-icon>sell</mat-icon><span class="nav-caption">Bet Token</span>
+  <a mat-list-item routerLink="/queryAPI" (click)="onSidenavClose()">
+    <mat-icon>search</mat-icon><span class="nav-caption">Query API</span>
   </a>
-  <a mat-list-item routerLink="/games" (click)="onSidenavClose()">
-    <mat-icon>sports_soccer</mat-icon> <span class="nav-caption">Games</span>
+  <a mat-list-item routerLink="/postAPI" (click)="onSidenavClose()">
+    <mat-icon>backup_table</mat-icon> <span class="nav-caption">Post API</span>
+  </a>
+  <a mat-list-item routerLink="/dappWeb3js" (click)="onSidenavClose()">
+    <mat-icon>monetization_on</mat-icon>
+    <span class="nav-caption">Ðapp Web3.js</span>
+  </a>
+  <a mat-list-item routerLink="/dappWeb3js" (click)="onSidenavClose()">
+    <mat-icon>monetization_on</mat-icon>
+    <span class="nav-caption">Ðapp Ethers.js</span>
   </a>
   <mat-list-item
     [matMenuTriggerFor]="menu"

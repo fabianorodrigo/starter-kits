@@ -1,6 +1,6 @@
-import { environment } from 'src/environments/environment';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { catchError, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { MessageService, Web3Service } from './services';
 
 @Component({
@@ -9,8 +9,8 @@ import { MessageService, Web3Service } from './services';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  title = 'Soccer Bet Ðapp';
-  icon = 'sports_soccer';
+  title = '<app title>';
+  icon = 'fa-duotone'; //https://fontawesome.com/search
   userAccountAddress: string | null = null;
   owner: string | null = null;
 

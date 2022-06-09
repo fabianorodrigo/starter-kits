@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import BigNumber from 'bignumber.js';
-import BN from 'bn.js';
+import * as BN from 'bn.js';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,8 @@ export class NumbersService {
     let result = '';
     const bnString = bn.toString();
     for (let i = bnString.length; i > 0; i = i - 3) {
-      result = bnString.substring(i - 3, i) + (result.length > 0 ? ',' : '') + result;
+      result =
+        bnString.substring(i - 3, i) + (result.length > 0 ? ',' : '') + result;
     }
     return result;
   }
@@ -60,7 +61,9 @@ export class NumbersService {
     if (bnFormatted.indexOf(',') == -1) return bnFormatted;
     const parts = bnFormatted.split(',');
     if (parts.length <= 2) return bnFormatted;
-    return parts[0].concat(`.${parts[1].substring(0, 1)}`).concat(` ${this.SHORT_SCALE_TABLE[parts.length]}`);
+    return parts[0]
+      .concat(`.${parts[1].substring(0, 1)}`)
+      .concat(` ${this.SHORT_SCALE_TABLE[parts.length]}`);
   }
 
   /**
