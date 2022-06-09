@@ -1,9 +1,10 @@
 module.exports = {
   sort: function (array, dec = false) {
+    array.sort();
     if (dec) {
       return array.reverse();
     }
-    return array.sort();
+    return array;
   },
   sortByProperty: function (array, property) {
     return array.sort((a, b) => (a[property] > b[property] ? 1 : -1));
