@@ -15,4 +15,8 @@ module.exports = {
     console.log(colors.grey(label), result);
     console.log("---");
   },
+  labelResult2(label, result, sideEffect) {
+    console.log(colors.grey(label), result, "=>", sideEffect);
+    console.log("---");
+  },
 };
