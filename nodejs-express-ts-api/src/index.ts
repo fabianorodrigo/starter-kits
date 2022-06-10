@@ -1,23 +1,30 @@
 import cors from "cors";
 import express from "express";
-import {UserDTO} from "./model/user.interface";
-import {getUserData} from "./services/userService";
+import {getUser, PersonController} from "./controllers";
 
-const app = express();
-app.use(cors());
 const port = 3000;
+const app = express();
 
-const cache: {[key: string]: UserDTO} = {};
+// Enable CORS
+app.use(cors());
+// Parse JSON bodies for this app. Make sure you put
+// `app.use(express.json())` **before** your route handlers!
+app.use(express.json());
 
-app.get("/", async (req, res) => {
-  const name = req.query["username"] as string;
-  console.log("name", name);
-  if (!cache.hasOwnProperty(name)) {
-    console.log(`WE HAD TO FETCH`);
-    cache[name] = await getUserData(name);
-  }
-  res.json(cache[name]);
-});
+// Users
+app.get("/user/", getUser);
+
+//****************************************** TO DOS *************************************** */
+// 1. Fazer testes automatizados (ver como sobe o express)
+// 2. Reavalizar os AWAITs e PROMISES
+
+// People
+const personCtl = new PersonController();
+app.get("/person/:id", personCtl.getById.bind(personCtl));
+app.post("/person/search", personCtl.get.bind(personCtl));
+app.post("/person/", personCtl.post.bind(personCtl));
+app.put("/person/", personCtl.put.bind(personCtl));
+app.delete("/person/:id", personCtl.delete.bind(personCtl));
 
 app.listen(port, () => {
   return console.log(`Express is listening at http://localhost:${port}`);
