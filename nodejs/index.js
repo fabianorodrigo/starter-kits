@@ -5,6 +5,7 @@ const ui = require("./ui/main");
 const thisUI = require("./ui/this");
 const closureUI = require("./ui/closure");
 const arraysUI = require("./ui/arrays");
+const regexUI = require("./ui/regex");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -41,6 +42,9 @@ const application = {
           break;
         case "3":
           arraysUI.show();
+          break;
+        case "4":
+          regexUI.show();
           break;
       }
 

@@ -19,4 +19,9 @@ module.exports = {
     console.log(colors.grey(label), result, "=>", sideEffect);
     console.log("---");
   },
+  functionResult(func, ...args) {
+    console.log(colors.grey(func.name), func(...args));
+    console.log(`Arguments: ${args}`);
+    console.log("");
+  },
 };
