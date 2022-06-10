@@ -16,7 +16,7 @@ import {
 chai.use(chaiAsPromised);
 
 export default function () {
-  describe(`${sort.name}`, function () {
+  describe(`Sorting`, function () {
     let arrayNumbers: number[];
     let arrayStrings: string[];
     let arrayObjects: {name: string; date: Date}[];
@@ -65,6 +65,25 @@ export default function () {
     it(`# should be unsorted`, async function () {
       expect(arrayNumbers[0]).to.eql(1991);
     });
+  });
+
+  describe(`Updating`, function () {
+    let arrayNumbers: number[];
+    let arrayStrings: string[];
+    let arrayObjects: {name: string; date: Date}[];
+    let ARRAY_NUMBERS_LENGTH: number;
+
+    this.beforeEach(function () {
+      arrayNumbers = [1991, 1977, 2008, 1986, 2007, 2006];
+      arrayStrings = ["Flamengo", "Catete", "Botafogo", "Curicica"];
+      arrayObjects = [
+        {name: "Brasileiro", date: new Date(1978, 3, 5)},
+        {name: "Mundial", date: new Date(1992, 12, 13)},
+        {name: "Paulista", date: new Date(1943, 1, 1)},
+      ];
+      ARRAY_NUMBERS_LENGTH = arrayNumbers.length;
+    });
+
     it(`# should remove last item and return removed item`, async function () {
       const r = removeLastItem(arrayNumbers);
       expect(r).to.eql(2006); //returns removed
