@@ -35,7 +35,6 @@ export default class BaseFileSystemRepository<T extends IBase>
     });
   }
   getAll(): Promise<T[]> {
-    console.log(this._db);
     return new Promise((resolve) => {
       resolve(Object.values(this._db));
     });

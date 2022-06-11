@@ -1,3 +1,10 @@
 
 POST http://localhost:3000/person/search
 Content-Type: application/json
+
+{"filter":
+    {
+    "attribute": "name",
+    "value": "pepino"
+    }
+}
