@@ -41,7 +41,7 @@ export class PersonController extends BaseController<IPerson> {
         type IPersonKey = keyof typeof rows[0];
         resolve(
           rows.filter((row) => {
-            row[k as IPersonKey] == v;
+            return (row[k as IPersonKey] as string).toString().indexOf(v) > -1;
           })
         );
       });
