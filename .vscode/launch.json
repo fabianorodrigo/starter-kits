@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug nodejs-express-ts-api",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-express-ts-api",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-express-ts-api/src/index.ts"]
+      }
+    ]
+  }

@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosRequestConfig} from "axios";
 import {APIResponse, ServerError} from "../model";
 
-export default async function getData<T>(
+export async function getData<T>(
   url: string,
   config?: AxiosRequestConfig
 ): Promise<APIResponse<T>> {

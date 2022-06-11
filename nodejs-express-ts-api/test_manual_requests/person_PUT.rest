@@ -1,0 +1,10 @@
+
+PUT http://localhost:3000/person/
+Content-Type: application/json
+
+{
+    "id": 2,
+    "name": "Paula Nascimento",
+    "age": 69,
+    "url": "https://gitlab.com/meuripa"
+}
