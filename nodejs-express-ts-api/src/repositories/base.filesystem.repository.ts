@@ -1,4 +1,5 @@
 import fs, {WriteFileOptions} from "fs";
+import path from "path";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IBase} from "../model";
 import {IRepository as IRepository} from "./repository.interface";
@@ -17,11 +18,14 @@ export default class BaseFileSystemRepository<T extends IBase>
    * @returns {Promise<boolean>} TRUE if connection successful, FALSE otherwise.
    */
   async connect(): Promise<boolean> {
+    console.log(`Connecting to ${path.resolve(this.databaseFile)}`);
     this.testDB();
     //TODO: remove Sync
-    this._db = JSON.parse(
-      fs.readFileSync(this.databaseFile, this.DATABASE_ENCODING)
+    const dbContent = fs.readFileSync(
+      this.databaseFile,
+      this.DATABASE_ENCODING
     );
+    this._db = JSON.parse(dbContent);
     return true;
   }
 
@@ -31,6 +35,7 @@ export default class BaseFileSystemRepository<T extends IBase>
     });
   }
   getAll(): Promise<T[]> {
+    console.log(this._db);
     return new Promise((resolve) => {
       resolve(Object.values(this._db));
     });
