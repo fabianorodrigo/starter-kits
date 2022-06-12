@@ -1,5 +1,5 @@
+import {expect} from "chai";
 import request from "supertest";
-import chai, {expect} from "chai";
 
 import app from "../../../app";
 import {generateRandomString} from "../../utils";

@@ -2,7 +2,7 @@ import fs, {promises as fsPromises, WriteFileOptions} from "fs";
 import path from "path";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IBase} from "../model";
-import {IRepository as IRepository} from "./repository.interface";
+import {IRepository} from "./repository.interface";
 
 export default class BaseFileSystemRepository<T extends IBase>
   implements IRepository<T>
@@ -114,7 +114,8 @@ export default class BaseFileSystemRepository<T extends IBase>
    */
   private async overWriteDB(db: any): Promise<boolean> {
     /**
-     * Poderia se utilizar fsPromises.writeFile, mas optou-se pela escrita síncrona devido ao citado abaixo na documentação
+     * Poderia ser utilizado do fsPromises.writeFile para escrever o arquivo, mas dado o trecho abaixo tirado da documentação
+     * optou-se por uma escrita síncrona
      * It is unsafe to use fsPromises.writeFile() multiple times on the same file without waiting for the promise to be settled.
      */
     fs.writeFileSync(

@@ -1,11 +1,8 @@
+import {expect} from "chai";
 import request from "supertest";
-import chai, {expect} from "chai";
 
 import app from "../../../app";
 import {generateRandomString} from "../../utils";
-
-const INEXISTENT_ID =
-  "99999999999999999999999999999999999999999999999999999999";
 
 export default function () {
   it("should respond with a 200 status code and the person data updated", async () => {
