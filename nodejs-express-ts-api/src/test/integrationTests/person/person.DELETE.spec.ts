@@ -1,8 +1,7 @@
+import {expect} from "chai";
 import request from "supertest";
-import chai, {expect} from "chai";
 
 import app from "../../../app";
-import {generateRandomString} from "../../utils";
 
 const INEXISTENT_ID =
   "99999999999999999999999999999999999999999999999999999999";
