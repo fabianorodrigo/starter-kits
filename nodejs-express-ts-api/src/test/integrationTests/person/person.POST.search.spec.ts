@@ -4,9 +4,6 @@ import chai, {expect} from "chai";
 import app from "../../../app";
 import {generateRandomString} from "../../utils";
 
-const INEXISTENT_ID =
-  "99999999999999999999999999999999999999999999999999999999";
-
 export default function () {
   it("# should respond with a 200 status code and all data when asking with no filter", async () => {
     const response = await request(app).post("/person/search");

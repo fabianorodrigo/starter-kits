@@ -1,4 +1,4 @@
-import fs, {WriteFileOptions} from "fs";
+import fs, {promises as fsPromises, WriteFileOptions} from "fs";
 import path from "path";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IBase} from "../model";
@@ -20,8 +20,7 @@ export default class BaseFileSystemRepository<T extends IBase>
   async connect(): Promise<boolean> {
     console.log(`Connecting to ${path.resolve(this.databaseFile)}`);
     this.testDB();
-    //TODO: remove Sync
-    const dbContent = fs.readFileSync(
+    const dbContent = await fsPromises.readFile(
       this.databaseFile,
       this.DATABASE_ENCODING
     );
@@ -64,7 +63,6 @@ export default class BaseFileSystemRepository<T extends IBase>
     if (result.id == entity.id) {
       this._db[entity.id as number] = entity;
       await this.overWriteDB(this._db);
-      console.log(`pos overWrite`);
     } else {
       throw new ApplicationError("The ID attribute can't be modified");
     }
@@ -88,6 +86,7 @@ export default class BaseFileSystemRepository<T extends IBase>
    * Test if the database exists. If not, create it.
    */
   private testDB() {
+    fs;
     if (!fs.existsSync(this.databaseFile)) {
       this.overWriteDB({});
     }
@@ -114,6 +113,10 @@ export default class BaseFileSystemRepository<T extends IBase>
    * Overwrites the entire database with the given data.
    */
   private async overWriteDB(db: any): Promise<boolean> {
+    /**
+     * Poderia se utilizar fsPromises.writeFile, mas optou-se pela escrita síncrona devido ao citado abaixo na documentação
+     * It is unsafe to use fsPromises.writeFile() multiple times on the same file without waiting for the promise to be settled.
+     */
     fs.writeFileSync(
       this.databaseFile,
       JSON.stringify(db),
