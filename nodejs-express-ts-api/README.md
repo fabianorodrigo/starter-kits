@@ -8,6 +8,9 @@ Consome API Github para obter dados de um usuário específico e mantém um cach
 - Express
 - Typescript
 - cors
+- mocha
+- chai
+- supertest
 
 ## Uso
 
@@ -40,7 +43,8 @@ npm install @tsconfig/node16 --save-dev
 npm install ts-node --save-dev
 npm install eslint --save-dev
 npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
-npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
+npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
+npm i --save-dev @types/supertest
 ```
 
 - criação pasta `src`

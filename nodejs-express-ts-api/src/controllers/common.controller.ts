@@ -1,6 +1,8 @@
 import {IBase} from "../model/base.interface";
 
-export function getNextId(rows: IBase[] | {[key: string]: IBase}): number {
+export function getNextId(
+  rows: ReadonlyArray<IBase> | {[key: string]: IBase}
+): number {
   const unsorted: IBase[] = Array.isArray(rows) ? rows : Object.values(rows);
   //If there is no elements, the first ID is 1
   if (unsorted.length == 0) {

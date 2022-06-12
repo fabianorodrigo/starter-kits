@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
 import fs from "fs";
+import {Url} from "url";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IPerson, ServerError as IServerError} from "../model";
 import BaseFileSystemRepository from "../repositories/base.filesystem.repository";
@@ -15,21 +16,33 @@ export class PersonController extends BaseController<IPerson> {
   }
 
   /**
-   * Implements logic to get one person from repository
-   * @param req Expected to contain a path parameter "id".
-   * @param res
-   * @returns
+   * If during POST or PUT, the entity has others attributes than these, it will throw an error.
    */
-  protected async readOneEntity(req: Request): Promise<IPerson> {
-    const ID = this.parseID(req.params["id"] as string);
-    return this.repository.getById(ID);
+  protected allowedAttributes: ReadonlyArray<string> = [
+    "id",
+    "url",
+    "name",
+    "age",
+  ];
+  /**
+   * If during POST or PUT, the entity miss these attributes, it will throw an error.
+   */
+  protected requiredAttributes: ReadonlyArray<string> = ["name", "age"];
+
+  /**
+   * Implements logic to get one person from repository
+   * @param {number} id identifier of the person to get
+   * @returns The Person with the given id
+   */
+  protected async readOneEntity(id: number): Promise<IPerson> {
+    return this.repository.getById(id);
   }
 
   /**
    * Must implement the logic to read entities from the repository  accordingly with the filter.
    * @param req Request from client
    */
-  protected readEntities(req: Request): Promise<IPerson[]> {
+  protected readEntities(req: Request): Promise<ReadonlyArray<IPerson>> {
     if (req.body.filter && req.body.filter.attribute) {
       const k = req.body.filter.attribute;
       const v = req.body.filter.value;
@@ -45,7 +58,7 @@ export class PersonController extends BaseController<IPerson> {
               (row[k as IPersonKey] as string)
                 .toString()
                 .toLocaleLowerCase()
-                .indexOf(v.toLocaleLowerCase()) > -1
+                .indexOf(v.toString().toLocaleLowerCase()) > -1
             );
           })
         );

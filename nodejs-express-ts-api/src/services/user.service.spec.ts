@@ -14,7 +14,7 @@ export default function () {
     });
     it(`# should throw error when the user does NOT exists`, async function () {
       await expect(getGithubUserData("54d54d5d45d")).to.be.rejectedWith(
-        `User not found`
+        `Not Found`
       );
     });
   });

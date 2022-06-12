@@ -12,11 +12,13 @@ export async function getGithubUserData(name: string): Promise<UserDTO> {
   }
 
   // search for stared repos
-  const reposStaredResponse: APIResponse<Repository[]> = await getData<
-    Repository[]
-  >(`https://api.github.com/users/${name}/starred`, {
-    headers: {Accept: "application/vnd.github.v3+json"},
-  });
+  const reposStaredResponse: APIResponse<ReadonlyArray<Repository>> =
+    await getData<ReadonlyArray<Repository>>(
+      `https://api.github.com/users/${name}/starred`,
+      {
+        headers: {Accept: "application/vnd.github.v3+json"},
+      }
+    );
   if (!reposStaredResponse.success) {
     throw new Error(reposStaredResponse.message);
   }

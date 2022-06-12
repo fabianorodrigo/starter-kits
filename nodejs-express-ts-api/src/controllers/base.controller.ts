@@ -5,9 +5,23 @@ import {IRepository} from "../repositories";
 
 export abstract class BaseController<T> {
   constructor(
-    protected entityName: string,
-    protected repository: IRepository<T>
+    //com o public readonly, o typescript cria um getter automaticamente (somente getter)
+    public readonly entityName: string,
+    protected readonly repository: IRepository<T>
   ) {}
+
+  private readonly NOT_FOUND_ERROR: IServerError = {
+    message: `${this.entityName} not found`,
+  };
+
+  /**
+   * If during POST or PUT, the entity has others attributes than these, it will throw an error.
+   */
+  protected allowedAttributes: ReadonlyArray<string> = [];
+  /**
+   * If during POST or PUT, the entity miss these attributes, it will throw an error.
+   */
+  protected requiredAttributes: ReadonlyArray<string> = [];
 
   /**
    * Reads one entity from the database.
@@ -16,19 +30,21 @@ export abstract class BaseController<T> {
    * @param {T|IServerError} res The entity when found
    */
   async getById(req: Request, res: Response<T | IServerError>): Promise<void> {
-    let result = await this.readOneEntity(req);
+    let result = await this.readOneEntity(
+      this.parseID(req.params["id"] as string)
+    );
     if (result) {
       res.status(200).json(result);
     } else {
-      res.status(404).json({message: `${this.entityName} not found`});
+      res.status(404).json(this.NOT_FOUND_ERROR);
     }
   }
 
   /**
    * Must implement the logic to read one entity from the repository
-   * @param req Request from client
+   * @param {number} id id of the entity to read
    */
-  protected abstract readOneEntity(req: Request): Promise<T>;
+  protected abstract readOneEntity(id: number): Promise<T>;
 
   /**
    * Reads entities from the database accordingly with the filter.
@@ -36,7 +52,10 @@ export abstract class BaseController<T> {
    * @param {Request} req Request
    * @param {T|IServerError} res The entity when found
    */
-  async get(req: Request, res: Response<T[] | IServerError>): Promise<void> {
+  async get(
+    req: Request,
+    res: Response<ReadonlyArray<T> | IServerError>
+  ): Promise<void> {
     let result = await this.readEntities(req);
     if (result) {
       res.status(200).json(result);
@@ -49,7 +68,7 @@ export abstract class BaseController<T> {
    * Must implement the logic to read entities from the repository  accordingly with the filter.
    * @param req Request from client
    */
-  protected abstract readEntities(req: Request): Promise<T[]>;
+  protected abstract readEntities(req: Request): Promise<ReadonlyArray<T>>;
 
   /**
    * Writes a new entity to the database.
@@ -59,6 +78,7 @@ export abstract class BaseController<T> {
    */
   async post(req: Request<T>, res: Response<T | IServerError>): Promise<void> {
     try {
+      this.validateAttributes(req.body);
       let result = await this.createEntity(req);
       res.status(201).json(result);
     } catch (e: any) {
@@ -84,6 +104,10 @@ export abstract class BaseController<T> {
    */
   async put(req: Request<T>, res: Response<T | IServerError>): Promise<void> {
     try {
+      this.validateAttributes(req.body);
+      if (!(await this.readOneEntity(req.body.id))) {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+      }
       let result = await this.updateEntity(req);
       res.status(200).json(result);
     } catch (e: any) {
@@ -109,7 +133,13 @@ export abstract class BaseController<T> {
    */
   async delete(req: Request, res: Response<T | IServerError>): Promise<void> {
     try {
-      let result = await this.deleteEntity(req);
+      if (
+        !(await this.readOneEntity(this.parseID(req.params["id"] as string)))
+      ) {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+        return;
+      }
+      await this.deleteEntity(req);
       res.status(200).send();
     } catch (e: any) {
       if (e.domain) {
@@ -134,5 +164,26 @@ export abstract class BaseController<T> {
     if (!ID || ID.length === 0)
       throw new ApplicationError(`${this.entityName} ID is required`);
     return parseInt(ID);
+  }
+
+  /**
+   * Validates if there is no unallowed attributes in the entity and if the required attributes are present.
+   * @param entity Entity being sent
+   */
+  protected validateAttributes(entity: T): void {
+    type TKey = keyof typeof entity;
+    this.requiredAttributes.forEach((attribute) => {
+      if (!entity[attribute as TKey])
+        throw new ApplicationError(
+          `${this.entityName} ${attribute} is required`
+        );
+    });
+    Object.keys(entity).forEach((key) => {
+      if (!this.allowedAttributes.includes(key)) {
+        throw new ApplicationError(
+          `'${key}' is not a recognized attribute for ${this.entityName}`
+        );
+      }
+    });
   }
 }
