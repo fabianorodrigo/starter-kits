@@ -6,9 +6,11 @@ const asaw = require("./services/asyncAwait");
 // retorna imediatamente sem esperar pelo fim da promise
 console.log(asaw.funcaoSincronaChamandoPromises());
 console.log(asaw.funcaoSincronaChamandoAsync());
-console.log(
-  asaw
-    .funcaoAssincronaChamandoPromises()
-    .then((x) => console.log("funcaoAssincronaChamandoPromises.then", x))
-);
-console.log(asaw.funcaoAssincronaChamandoAsync());
+asaw.funcaoAssincronaChamandoPromisesComAwait().then((x) => console.log(x));
+asaw.funcaoAssincronaChamandoPromisesSemAwait().then((x) => console.log(x));
+asaw.funcaoAssincronaChamandoAsyncSemAwait().then((x) => {
+  console.log(x);
+});
+asaw.funcaoAssincronaChamandoAsyncComAwait().then((x) => {
+  console.log(x);
+});

@@ -1,29 +1,55 @@
 module.exports = {
+  /**
+   * @returns retorna o Objeto tendo r como -1 sem esperar pelo fim da promise
+   */
   funcaoSincronaChamandoPromises: function () {
     let r = -1;
     funcaoPromises("0").then((x) => {
-      console.log(`funcaoSincronaChamandoPromises.THEN`);
       r = x;
     });
     return {resultado: "funcaoSincronaChamandoPromises", r};
   },
+  /**
+   * @returns retorna o Objeto tendo r como -1 sem dar tempo de executar
+   * o then da Promise retornada pela função async
+   */
   funcaoSincronaChamandoAsync: function () {
     let r = -1;
     funcaoAssincrona(1).then((x) => {
-      console.log(`funcaoSincronaChamandoAsync.THEN`);
       r = x;
     });
     return {resultado: "funcaoSincronaChamandoAsync", r};
   },
 
-  funcaoAssincronaChamandoPromises: async function () {
+  /**
+   * @returns retorna o Objeto tendo r como "ok.2", o await fez esperar pelo fim da
+   * Promise retornada pela função async
+   */
+  funcaoAssincronaChamandoPromisesComAwait: async function () {
     const r = await funcaoPromises(2);
-    return {resultado: "funcaoAssincronaChamandoPromises", r};
+    return {resultado: "funcaoAssincronaChamandoPromisesComAwait", r};
+  },
+  /**
+   * @returns retorna o Objeto tendo r como a Promise retornada pela função async
+   */
+  funcaoAssincronaChamandoPromisesSemAwait: async function () {
+    const r = funcaoPromises(3);
+    return {resultado: "funcaoAssincronaChamandoPromisesSemAwait", r};
+  },
+  /**
+   * @returns retorna o Objeto tendo r como uma Promise retornada pela função async
+   */
+  funcaoAssincronaChamandoAsyncComAwait: async function () {
+    const r = await funcaoAssincrona(4);
+    return {resultado: "funcaoAssincronaChamandoAsyncComAwait", r};
   },
 
-  funcaoAssincronaChamandoAsync: async function () {
-    const r = funcaoAssincrona(3);
-    return {resultado: "funcaoAssincronaChamandoAsync", r};
+  /**
+   * @returns retorna o Objeto tendo r como uma Promise retornada pela função async
+   */
+  funcaoAssincronaChamandoAsyncSemAwait: async function () {
+    const r = funcaoAssincrona(5);
+    return {resultado: "funcaoAssincronaChamandoAsyncSemAwait", r};
   },
 };
 
