@@ -52,16 +52,6 @@ module.exports = {
     return regex.test(text);
   },
   /**
-   * Match numeric characters in {text} (uses String.match)
-   * @param {string} text
-   * @returns List of each numeric character found
-   */
-  matchNumericCharacters: function (text) {
-    const regex = /[0-9]/g;
-    //PS: O matchAll retorna os grupos (quando há)
-    return text.match(regex);
-  },
-  /**
    * Find numeric characters in {text} and their position
    * @param {string} text
    * @returns List of each numeric character found and it's position
@@ -93,6 +83,17 @@ module.exports = {
     }
     return result;
   },
+  /**
+   * Match numbers in {text} (uses String.match)
+   * @param {string} text
+   * @returns List of each numeric character found
+   */
+  matchNumbers: function (text) {
+    const regex = /([0-9])+/g;
+    //PS: O matchAll retorna os grupos (quando há)
+    return text.match(regex);
+  },
+
   /**
    * Search for {replaced} occurrences in {text} and replaces for {replacement}
    * For "dynamic" we mean that the construction of regular expression is made programmatically

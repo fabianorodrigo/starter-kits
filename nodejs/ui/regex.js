@@ -16,12 +16,12 @@ module.exports = {
     //test: /[0-9]/
     ui.functionResult(RegExpression.containNumbers, TEXT);
     ui.functionResult(RegExpression.containNumbers, "Javascript");
-    //match: /[0-9]/g
-    ui.functionResult(RegExpression.matchNumericCharacters, TEXT);
     //exec: /[0-9]/g
     ui.functionResult(RegExpression.findNumericCharacters, TEXT);
     //exec: /[0-9]+/g
     ui.functionResult(RegExpression.findNumbers, TEXT);
+    //match: /([0-9])+/g
+    ui.functionResult(RegExpression.matchNumbers, TEXT);
     //RegEx
     ui.functionResult(
       RegExpression.replaceDynamically,
