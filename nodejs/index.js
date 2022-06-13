@@ -6,6 +6,7 @@ const thisUI = require("./ui/this");
 const closureUI = require("./ui/closure");
 const arraysUI = require("./ui/arrays");
 const regexUI = require("./ui/regex");
+const fileSystem = require("./ui/fileSystem");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -25,6 +26,8 @@ const application = {
               2. Closures demo
               3. Arrays demo  
               4. Regex demo    
+              5. File System demo (Syncronous API)   
+              6. File System demo (Promises API)   
               0. Exit
               `);
       menu = readlineSync.question("Enter your choice: ".yellow);
@@ -45,6 +48,9 @@ const application = {
           break;
         case "4":
           regexUI.show();
+          break;
+        case "5":
+          fileSystem.showSync();
           break;
       }
 

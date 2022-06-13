@@ -20,7 +20,13 @@ module.exports = {
     console.log("---");
   },
   functionResult(func, ...args) {
-    console.log(colors.grey(func.name), func(...args));
+    let result;
+    try {
+      result = func(...args);
+    } catch (e) {
+      result = colors.red(e.message);
+    }
+    console.log(colors.grey(func.name), result);
     console.log(`Arguments: ${args}`);
     console.log("");
   },
