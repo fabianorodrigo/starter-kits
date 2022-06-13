@@ -7,6 +7,7 @@ const closureUI = require("./ui/closure");
 const arraysUI = require("./ui/arrays");
 const regexUI = require("./ui/regex");
 const fileSystem = require("./ui/fileSystem");
+const asyncAwait = require("./ui/asyncAwait");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -28,6 +29,7 @@ const application = {
               4. Regex demo    
               5. File System demo (Syncronous API)   
               6. File System demo (Promises API)   
+              7. async/await demo  
               0. Exit
               `);
       menu = readlineSync.question("Enter your choice: ".yellow);
@@ -51,6 +53,12 @@ const application = {
           break;
         case "5":
           fileSystem.showSync();
+          break;
+        case "6":
+          fileSystem.showAsync();
+          break;
+        case "7":
+          asyncAwait.show();
           break;
       }
 

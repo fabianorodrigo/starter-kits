@@ -30,4 +30,15 @@ module.exports = {
     console.log(`Arguments: ${args}`);
     console.log("");
   },
+  async functionAsyncResult(func, ...args) {
+    let result;
+    try {
+      result = await func(...args);
+    } catch (e) {
+      result = colors.red(e.message);
+    }
+    console.log(colors.grey(func.name), result);
+    console.log(`Arguments: ${args}`);
+    console.log("");
+  },
 };
