@@ -3,8 +3,10 @@
 import {Suite} from "mocha";
 import arraysSpec from "../services/arrays/arrays.spec";
 import regexpSpec from "../services/regexp/regexp.spec";
+import filesSpec from "../services/files/files.spec";
 
 describe("Server unit testing", function (this: Suite) {
   describe("arrays", arraysSpec);
   describe("regexp", regexpSpec);
+  describe("files", filesSpec);
 });
