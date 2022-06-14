@@ -5,10 +5,12 @@ import arraysSpec from "../services/arrays/arrays.spec";
 import regexpSpec from "../services/regexp/regexp.spec";
 import filesSpec from "../services/files/files.spec";
 import buffersSpec from "../services/buffers/buffers.spec";
+import streamsSpec from "../services/streams/streams.spec";
 
 describe("Server unit testing", function (this: Suite) {
   describe("arrays", arraysSpec);
   describe("regexp", regexpSpec);
   describe("files", filesSpec);
   describe("buffers", buffersSpec);
+  describe("streams", streamsSpec);
 });
