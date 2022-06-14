@@ -3,7 +3,7 @@ const ui = require("./main");
 const FS = require("../services/files");
 const Streams = require("../services/streams");
 
-const MyWriteableStream = require("../services/streams/CustomWriteableStream");
+const createNewWriteableStream = require("../services/streams/CustomWriteableStream");
 const MyCustomReadableStream = require("../services/streams/CustomReadable.Stream");
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
     ui.functionResult(
       Streams.readFileToWriteableStream,
       FILE,
-      MyWriteableStream
+      createNewWriteableStream()
     );
     // consome via método "on('readable', ...)" do próprio ReadableStream
     ui.functionResult(Streams.consumeFileReadeableStream, FILE);
@@ -37,7 +37,7 @@ module.exports = {
       Streams.testCustomReadableAndWritableStreams,
       ["Wow", "testing", "Streams", "API"],
       MyCustomReadableStream,
-      MyWriteableStream
+      createNewWriteableStream()
     );
   },
 };

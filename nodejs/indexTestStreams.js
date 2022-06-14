@@ -5,20 +5,27 @@
 const Stream = require("stream");
 const streams = require("./services/streams");
 
-const MyCustomWriteableStream = require("./services/streams/CustomWriteableStream");
+const createNewWriteableStream = require("./services/streams/CustomWriteableStream");
 const MyCustomReadableStream = require("./services/streams/CustomReadable.Stream");
+const SongReadableStream = require("./services/streams/SongReadableStream");
 
 const FILE = `${process.env.HOME}/.profile`;
 
 //// consome através de um WriteableStream
-// streams.readFileToWriteableStream(FILE, MyCustomWriteableStream);
+streams.readFileToWriteableStream(FILE, createNewWriteableStream());
 
 // // consome via método "on('readable', ...)" do próprio ReadableStream
-// streams.consumeFileReadeableStream(FILE);
+streams.consumeFileReadeableStream(FILE);
 
 // consome um arquivo via ReadableStream conectado a um WriteableStream
 streams.testCustomReadableAndWritableStreams(
   ["Opa,", "testando", "os", "Streams"],
   MyCustomReadableStream,
-  MyCustomWriteableStream
+  createNewWriteableStream()
+);
+
+// Converter para uppercase os que sai do Readable e jogar no Writeable
+streams.transformUpperCaseStream(
+  SongReadableStream,
+  createNewWriteableStream()
 );

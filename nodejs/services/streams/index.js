@@ -1,4 +1,5 @@
 const fs = require("fs");
+const {Transform} = require("stream");
 
 module.exports = {
   consumeFileReadeableStream: function (path) {
@@ -13,6 +14,15 @@ module.exports = {
   readFileToWriteableStream: function (path, writeableStream) {
     const stream = fs.createReadStream(path);
     stream.pipe(writeableStream);
+  },
+  transformUpperCaseStream: function (readableStream, writableStream) {
+    const transformStream = new Transform();
+    transformStream._transform = (chunk, encoding, callback) => {
+      transformStream.push(chunk.toString().toUpperCase());
+      console.log("transformUpperCaseStream", chunk.toString());
+      callback();
+    };
+    readableStream.pipe(transformStream).pipe(writableStream);
   },
   testCustomReadableAndWritableStreams: function (
     data,
