@@ -1,4 +1,4 @@
-import Stream from "stream";
+import Stream, {Transform} from "stream";
 import fs from "fs";
 
 export function consumeFileReadeableStream(path: string) {
@@ -16,6 +16,23 @@ export function readFileToWriteableStream(
 ) {
   const stream = fs.createReadStream(path);
   stream.pipe(writeableStream);
+}
+
+export function transformUpperCaseStream(
+  readableStream: Stream.Readable,
+  writableStream: Stream.Writable
+) {
+  const transformStream = new Transform();
+  transformStream._transform = (
+    chunk: Buffer,
+    encoding: BufferEncoding,
+    callback: () => void
+  ) => {
+    transformStream.push(chunk.toString().toUpperCase());
+    console.log("transformUpperCaseStream", chunk.toString());
+    callback();
+  };
+  readableStream.pipe(transformStream).pipe(writableStream);
 }
 export function testCustomReadableAndWritableStreams(
   data: string[],

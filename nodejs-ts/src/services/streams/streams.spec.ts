@@ -4,6 +4,7 @@ import fs from "fs";
 import {
   readFileToWriteableStream,
   testCustomReadableAndWritableStreams,
+  transformUpperCaseStream,
 } from "./index";
 import sinon from "sinon";
 import sinonChai from "sinon-chai";
@@ -15,6 +16,7 @@ chai.use(sinonChai);
 
 import {createFile} from "../files";
 import {Stream} from "stream";
+import SongReadableStream from "./SongReadableStream";
 
 const TEST_DIR = "./streamsTestDir/";
 const FILE = TEST_DIR + "file.txt";
@@ -46,6 +48,13 @@ export default function () {
     const spy = sinon.spy(writeableStream, "_write");
     await readFileToWriteableStream(FILE, writeableStream);
     expect(spy).to.have.been.called;
+  });
+
+  it(`# should test transformUpperCaseStream piped with Custom Readable and Writeable Streams`, async function () {
+    const readableStream = SongReadableStream;
+    const writeableStream = MyWriteableStream;
+    transformUpperCaseStream(readableStream, writeableStream);
+    //expect(spy).to.have.been.called;
   });
 
   it(`# should test piped Custom Readable and Writeable Streams`, async function () {
