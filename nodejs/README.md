@@ -31,6 +31,7 @@ node -v > .nvmrc
 npm init -y
 npm install readline-sync
 npm install colors
+npm install --save-dev nodemon
 ```
 
 # Fontes
