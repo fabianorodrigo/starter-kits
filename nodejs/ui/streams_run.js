@@ -3,11 +3,11 @@
  * que dificulta a visualização correta do comportamento
  */
 const Stream = require("stream");
-const streams = require("./services/streams");
+const streams = require("../services/streams");
 
-const createNewWriteableStream = require("./services/streams/CustomWriteableStream");
-const MyCustomReadableStream = require("./services/streams/CustomReadable.Stream");
-const SongReadableStream = require("./services/streams/SongReadableStream");
+const createNewWriteableStream = require("../services/streams/CustomWriteableStream");
+const MyCustomReadableStream = require("../services/streams/CustomReadable.Stream");
+const SongReadableStream = require("../services/streams/SongReadableStream");
 
 const FILE = `${process.env.HOME}/.profile`;
 

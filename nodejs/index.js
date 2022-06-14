@@ -1,5 +1,7 @@
 const colors = require("colors");
 const readlineSync = require("readline-sync");
+const {spawn, spawnSync} = require("node:child_process");
+
 const ui = require("./ui/main");
 
 const thisUI = require("./ui/this");
@@ -7,9 +9,7 @@ const closureUI = require("./ui/closure");
 const arraysUI = require("./ui/arrays");
 const regexUI = require("./ui/regex");
 const fileSystem = require("./ui/fileSystem");
-const asyncAwait = require("./ui/asyncAwait");
 const buffers = require("./ui/buffers");
-const streams = require("./ui/streams");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -34,6 +34,7 @@ const application = {
               7. async/await demo  
               8. Buffers
               9. Streams
+              10. Events
               0. Exit
               `);
       menu = readlineSync.question("Enter your choice: ".yellow);
@@ -62,13 +63,28 @@ const application = {
           fileSystem.showAsync();
           break;
         case "7":
-          asyncAwait.show();
+          console.log(
+            "Execute o comando: ",
+            "'node ui/asyncAwait_run.js'".green,
+            " para testar o serviço de Async/Await"
+          );
           break;
         case "8":
           buffers.show();
           break;
         case "9":
-          streams.show();
+          console.log(
+            "Execute o comando: ",
+            "'node ui/streams_run.js'".green,
+            " para testar o serviço de Streams"
+          );
+          break;
+        case "10":
+          console.log(
+            "Execute o comando: ",
+            "'node ui/events_run.js'".green,
+            " para testar o serviço de Eventos"
+          );
           break;
       }
 
