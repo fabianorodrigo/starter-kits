@@ -45,7 +45,7 @@ npm install typescript --save-dev
 npx tsc --version
 
 npx tsc --init
-npm install -save-dev @types/node
+npm install --save-dev @types/node
 npm install @tsconfig/node16 --save-dev
 npm install ts-node --save-dev
 npm install eslint --save-dev
