@@ -9,6 +9,7 @@ const regexUI = require("./ui/regex");
 const fileSystem = require("./ui/fileSystem");
 const asyncAwait = require("./ui/asyncAwait");
 const buffers = require("./ui/buffers");
+const streams = require("./ui/streams");
 
 let menu;
 globalThis.name = "I'm globalThis";
@@ -32,6 +33,7 @@ const application = {
               6. File System demo (Promises API)   
               7. async/await demo  
               8. Buffers
+              9. Streams
               0. Exit
               `);
       menu = readlineSync.question("Enter your choice: ".yellow);
@@ -64,6 +66,9 @@ const application = {
           break;
         case "8":
           buffers.show();
+          break;
+        case "9":
+          streams.show();
           break;
       }
 
