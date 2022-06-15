@@ -6,6 +6,7 @@ import regexpSpec from "../services/regexp/regexp.spec";
 import filesSpec from "../services/files/files.spec";
 import buffersSpec from "../services/buffers/buffers.spec";
 import streamsSpec from "../services/streams/streams.spec";
+import eventSpec from "../services/events/events.spec";
 
 describe("Server unit testing", function (this: Suite) {
   describe("arrays", arraysSpec);
@@ -13,4 +14,5 @@ describe("Server unit testing", function (this: Suite) {
   describe("files", filesSpec);
   describe("buffers", buffersSpec);
   describe("streams", streamsSpec);
+  describe("events", eventSpec);
 });

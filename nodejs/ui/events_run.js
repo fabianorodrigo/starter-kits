@@ -15,7 +15,7 @@ setInterval(() => {
   Events.triggerEvent(emitter, `outro`, count);
 }, 1000);
 
-console.log(Events.getEventNames(emitter));
+console.log("EVENT NAMES:", Events.getEventNames(emitter));
 
 function logAll(c) {
   console.log(`outro! ${new Date()}: ${c}`.yellow);
