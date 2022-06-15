@@ -16,7 +16,7 @@ chai.use(sinonChai);
 
 import {createFile} from "../files";
 import {Stream} from "stream";
-import SongReadableStream from "./SongReadableStream";
+import createSongReadableStream from "./SongReadableStream";
 
 const TEST_DIR = "./streamsTestDir/";
 const FILE = TEST_DIR + "file.txt";
@@ -51,7 +51,7 @@ export default function () {
   });
 
   it(`# should test transformUpperCaseStream piped with Custom Readable and Writeable Streams`, async function () {
-    const readableStream = SongReadableStream;
+    const readableStream = createSongReadableStream();
     const writeableStream = MyWriteableStream;
     transformUpperCaseStream(readableStream, writeableStream);
     //expect(spy).to.have.been.called;

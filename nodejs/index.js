@@ -10,6 +10,7 @@ const arraysUI = require("./ui/arrays");
 const regexUI = require("./ui/regex");
 const fileSystem = require("./ui/fileSystem");
 const buffers = require("./ui/buffers");
+const streams = require("./ui/streams");
 
 let menu;
 globalThis.name = "I'm globalThis";
