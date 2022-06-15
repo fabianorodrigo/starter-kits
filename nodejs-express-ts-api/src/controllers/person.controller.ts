@@ -11,7 +11,10 @@ const DATABASE_PATH = `./data/person.json`;
 
 export class PersonController extends BaseController<IPerson> {
   constructor() {
-    super(`Person`, new BaseFileSystemRepository("Person", DATABASE_PATH));
+    super(
+      `Person`,
+      BaseFileSystemRepository.getInstance("Person", DATABASE_PATH)
+    );
     this.repository.connect();
   }
 

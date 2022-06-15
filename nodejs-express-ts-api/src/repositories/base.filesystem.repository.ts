@@ -12,7 +12,28 @@ export default class BaseFileSystemRepository<T extends IBase>
 
   private _db: {[id: number]: T} = {};
 
-  constructor(private entityName: string, private databaseFile: string) {}
+  //não é um singleton, mas é uma única intância por database file
+  private static _instances: {
+    [databaseFile: string]: BaseFileSystemRepository<any>;
+  } = {};
+
+  private constructor(
+    private entityName: string,
+    private databaseFile: string
+  ) {}
+
+  public static getInstance<T>(
+    entityName: string,
+    databaseFile: string
+  ): BaseFileSystemRepository<T> {
+    if (!this._instances[databaseFile]) {
+      this._instances[databaseFile] = new BaseFileSystemRepository<T>(
+        entityName,
+        databaseFile
+      );
+    }
+    return this._instances[databaseFile];
+  }
 
   /**
    * @returns {Promise<boolean>} TRUE if connection successful, FALSE otherwise.
@@ -29,8 +50,21 @@ export default class BaseFileSystemRepository<T extends IBase>
   }
 
   getById(id: number): Promise<T> {
+    return new Promise((resolve, reject) => {
+      if (this._db[id]) {
+        resolve(this._db[id]);
+      } else {
+        reject(
+          new ApplicationError(
+            `${this.entityName} with ID: ${id} does not exist`
+          )
+        );
+      }
+    });
+  }
+  getByAttribute(attribute: string, value: unknown): Promise<ReadonlyArray<T>> {
     return new Promise((resolve) => {
-      resolve(this._db[id]);
+      resolve(Object.values(this._db).filter((row) => row[attribute] == value));
     });
   }
   getAll(): Promise<ReadonlyArray<T>> {
@@ -58,7 +92,7 @@ export default class BaseFileSystemRepository<T extends IBase>
       );
     }
 
-    let result = this._db[entity.id as number];
+    const result = this._db[entity.id as number];
     // update person
     if (result.id == entity.id) {
       this._db[entity.id as number] = entity;
@@ -70,7 +104,7 @@ export default class BaseFileSystemRepository<T extends IBase>
   }
 
   async delete(id: number): Promise<boolean> {
-    let result = this._db[id];
+    const result = this._db[id];
     //new
     if (result == null) {
       throw new ApplicationError(
@@ -112,7 +146,7 @@ export default class BaseFileSystemRepository<T extends IBase>
   /**
    * Overwrites the entire database with the given data.
    */
-  private async overWriteDB(db: any): Promise<boolean> {
+  private async overWriteDB(db: unknown): Promise<boolean> {
     /**
      * Poderia ser utilizado do fsPromises.writeFile para escrever o arquivo, mas dado o trecho abaixo tirado da documentação
      * optou-se por uma escrita síncrona
