@@ -1,6 +1,29 @@
-# Node.js API
+# Node.js API com Express
 
-Consome API Github para obter dados de um usuário específico e mantém um cache em memória para não precisar buscar novamente os dados no Github caso uma consulta seja repetida.
+Express é um framework Web de roteamento e middleware que possui funcionalidade mínima própria: Um aplicativo Express é essencialmente uma série de chamadas de função de middleware.
+
+As funções de middleware são funções que têm acesso ao objeto de solicitação (req), ao objeto de resposta (res) e à próxima função de middleware no ciclo de solicitação-resposta do aplicativo. A próxima função de middleware é comumente denotada por uma variável chamada `next`.
+
+As funções de middleware podem executar as seguintes tarefas:
+
+- Executar qualquer código.
+- Fazer alterações nos objetos Request e Response.
+- Encerrar o ciclo de solicitação-resposta.
+- Chamar a próxima função de middleware na pilha.
+
+Uma aplicação Express pode usar os seguintes tipos de middleware:
+
+- [Application-level middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.application): via `app.use` ou `app.<HTTP method>`.
+- [Router-level middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.router): via `express.Router()`;
+- [Error-handling middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.error-handling): sempre recebe 4 parâmetros `(err, req, res, next) => {...}`
+- [Built-in middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.built-in): exemplos são `express.static`, `express.json` e `express.urlencoded`.
+- [Third-party middleware](https://expressjs.com/en/guide/using-middleware.html#middleware.third-party): por exemplo, `cookie-parser`.
+
+## Funcionalidades
+
+- Exposição de uma API CRUD de pessoas em `/person` lendo de arquivos do File System
+- Exposição de um endopoint para consulta compilada de dados de usuário do Github em `/user?username=<user>`. Esse endpoint consome a API do Github para obter dados de um usuário específico e mantém um cache em memória para não precisar buscar novamente os dados no Github caso uma consulta seja repetida.
+
 
 ## Stack
 
@@ -38,11 +61,10 @@ npm install typescript --save-dev
 npx tsc --version
 
 npx tsc --init
-npm install -save-dev @types/node
-npm install @tsconfig/node16 --save-dev
-npm install ts-node --save-dev
-npm install eslint --save-dev
-npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+npm install -save-dev @types/node @tsconfig/node16
+npm install --save-dev ts-node ts-node-dev
+npm install --save-dev eslint 
+npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
 npm i --save-dev @types/supertest
 ```
