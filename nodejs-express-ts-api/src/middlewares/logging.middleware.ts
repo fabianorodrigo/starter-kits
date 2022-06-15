@@ -36,6 +36,8 @@ export function logging(req: Request, res: Response, next: NextFunction) {
   console.log(`${dateTime}: Request HEADERS ${headersRequest}`);
   console.log(`${dateTime}: Request COOKIES ${cookiesRequest}`);
   next();
+  res.cookie("nodejs-express-ts-api", "apenas testando");
+  res.header("MEU_HEADER_nodejs-express-ts-api", "apenas testando");
   console.log(
     `${new Date().toISOString()}: Response HEADERS ${JSON.stringify(
       res.getHeaders()
