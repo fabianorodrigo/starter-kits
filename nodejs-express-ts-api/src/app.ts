@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
-import {getUser} from "./controllers";
-import PersonRouter from "./routes/person.route";
+import {logging} from "./middlewares";
+import {PersonRouter, UserGitHubRouter} from "./routes/";
 
 const app = express();
 
@@ -11,12 +11,16 @@ app.use(cors());
 // `app.use(express.json())` **before** your route handlers!
 app.use(express.json());
 
-// Users
-app.get("/user/", getUser);
+/********************** CUSTOM MIDDLEWARES **********************************/
+// middleware usado sem especificar rota, ou seja, roda em todas. Por outro lado,
+// também receberá o req.params vazio. Para pegar os path params, é necessário
+// especificar rota aqui ou lá nos routes
+app.use(logging);
 
-//****************************************** TO DOS *************************************** */
-// 1. Fazer testes automatizados (ver como sobe o express)
-// 2. Reavalizar os AWAITs e PROMISES
+/*************************** ROUTES  ****************************************/
+// Users GitHub
+app.get("/user/", UserGitHubRouter);
+// Person
 app.use(`/person`, PersonRouter);
 
 export default app;
