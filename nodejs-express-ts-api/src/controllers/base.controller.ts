@@ -30,7 +30,7 @@ export abstract class BaseController<T> {
    * @param {T|IServerError} res The entity when found
    */
   async getById(req: Request, res: Response<T | IServerError>): Promise<void> {
-    let result = await this.readOneEntity(
+    const result = await this.readOneEntity(
       this.parseID(req.params["id"] as string)
     );
     if (result) {
@@ -56,7 +56,7 @@ export abstract class BaseController<T> {
     req: Request,
     res: Response<ReadonlyArray<T> | IServerError>
   ): Promise<void> {
-    let result = await this.readEntities(req);
+    const result = await this.readEntities(req);
     if (result) {
       res.status(200).json(result);
     } else {
@@ -79,7 +79,7 @@ export abstract class BaseController<T> {
   async post(req: Request<T>, res: Response<T | IServerError>): Promise<void> {
     try {
       this.validateAttributes(req.body);
-      let result = await this.createEntity(req);
+      const result = await this.createEntity(req);
       res.status(201).json(result);
     } catch (e: any) {
       if (e.domain) {
@@ -108,7 +108,7 @@ export abstract class BaseController<T> {
       if (!(await this.readOneEntity(req.body.id))) {
         res.status(404).json(this.NOT_FOUND_ERROR);
       }
-      let result = await this.updateEntity(req);
+      const result = await this.updateEntity(req);
       res.status(200).json(result);
     } catch (e: any) {
       if (e.domain) {

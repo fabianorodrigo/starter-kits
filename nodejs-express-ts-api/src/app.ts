@@ -1,9 +1,13 @@
 import cors from "cors";
 import express from "express";
-import {logging} from "./middlewares";
-import {PersonRouter, UserGitHubRouter} from "./routes/";
+import {PersonRouter, UserGitHubRouter, UserRouter} from "./routes/";
+import {initAuthLocalStrategy, initAuthBearerStrategy} from "./auth";
 
+// init express
 const app = express();
+// init local and bearer strategies authentication via passport
+initAuthLocalStrategy();
+initAuthBearerStrategy();
 
 // Enable CORS
 app.use(cors());
@@ -15,12 +19,14 @@ app.use(express.json());
 // middleware usado sem especificar rota, ou seja, roda em todas. Por outro lado,
 // também receberá o req.params vazio. Para pegar os path params, é necessário
 // especificar rota aqui ou lá nos routes
-app.use(logging);
+//app.use(logging);
 
 /*************************** ROUTES  ****************************************/
-// Users GitHub
-app.get("/user/", UserGitHubRouter);
+// User
+app.use(`/user`, UserRouter);
 // Person
 app.use(`/person`, PersonRouter);
+// Users GitHub
+app.get("/usergithub/", UserGitHubRouter);
 
 export default app;

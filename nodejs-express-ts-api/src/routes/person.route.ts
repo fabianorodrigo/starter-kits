@@ -1,3 +1,4 @@
+import passport from "passport";
 import express from "express";
 import {PersonController} from "../controllers";
 import {logging} from "../middlewares";
@@ -13,6 +14,11 @@ PersonRouter.post("/search", personCtl.get.bind(personCtl));
 // PersonRouter.post("/", personCtl.post.bind(personCtl)).put("/", personCtl.put.bind(personCtl));
 PersonRouter.post("/", personCtl.post.bind(personCtl));
 PersonRouter.put("/", personCtl.put.bind(personCtl));
-PersonRouter.delete("/:id", personCtl.delete.bind(personCtl));
+//DELETE está protegido pela autenticação (estratégia Bearer)
+PersonRouter.delete(
+  "/:id",
+  passport.authenticate("bearer", {session: false}),
+  personCtl.delete.bind(personCtl)
+);
 
 export {PersonRouter};

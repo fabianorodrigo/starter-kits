@@ -1,9 +1,9 @@
 import express from "express";
-import {getUser} from "../controllers";
+import {getUserGithub} from "../controllers";
 
 const UserGitHubRouter = express.Router();
 
 // User GitHub
-UserGitHubRouter.get("/", getUser);
+UserGitHubRouter.get("/", getUserGithub);
 
 export {UserGitHubRouter};

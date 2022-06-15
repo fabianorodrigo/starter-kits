@@ -1,20 +1,143 @@
 import {Request, Response} from "express";
-import {UserDTO} from "../model";
-import {getGithubUserData} from "../services/user.service";
+import {createJWT} from "../auth";
+import {ApplicationError} from "../customErrors/ApplicationError";
+import {IUser} from "../model";
+import BaseFileSystemRepository from "../repositories/base.filesystem.repository";
+import {BaseController} from "./base.controller";
 
-const cache: {[key: string]: UserDTO} = {};
+const DATABASE_PATH = `./data/user.json`;
 
-export async function getUser(req: Request, res: Response) {
-  let name = req.query["username"] as string;
-  if (!name) {
-    name = "nodejs";
+export class UserController extends BaseController<IUser> {
+  constructor() {
+    super(`User`, BaseFileSystemRepository.getInstance("User", DATABASE_PATH));
+    this.repository.connect();
   }
-  console.log("name", name);
-  if (!cache.hasOwnProperty(name)) {
-    console.log(`fetching: ${name}`);
-    cache[name] = await getGithubUserData(name);
-  } else {
-    console.log(`use of cached data: ${name}`);
+
+  /**
+   * If during POST or PUT, the entity has others attributes than these, it will throw an error.
+   */
+  protected allowedAttributes: ReadonlyArray<string> = ["username", "password"];
+  /**
+   * If during POST or PUT, the entity miss these attributes, it will throw an error.
+   */
+  protected requiredAttributes: ReadonlyArray<string> = [
+    "username",
+    "password",
+  ];
+
+  async login(req: Request, res: Response): Promise<void> {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    try {
+      const user = await this.authUser(username, password);
+      if (user) {
+        const token = createJWT(user);
+        res.set("Authorization", `Bearer ${token}`);
+        res.status(204).send();
+      } else {
+        res.status(401).send();
+      }
+    } catch (e) {
+      res.status(401).send();
+    }
   }
-  res.json(cache[name]);
+
+  /**
+   * Authenticates the user with password
+   * @param username username of the user to get
+   * @param password password of the user to get
+   * @returns The object user if is found one with the username and password informed
+   */
+  authUser(username: string, password: string): Promise<IUser | null> {
+    return new Promise<IUser | null>(async (resolve) => {
+      const users = await this.repository.getByAttribute("username", username);
+      if (users.length == 0 || users[0].password != password) {
+        resolve(null);
+      } else {
+        resolve(users[0]);
+      }
+    });
+  }
+
+  /**
+   * Get a user by id
+   * @param id identifier of the user to get
+   * @returns
+   */
+  getUserById(id: number): Promise<IUser> {
+    return this.readOneEntity(id);
+  }
+
+  /**
+   * Implements logic to get one person from repository
+   * @param {number} id identifier of the person to get
+   * @returns The Person with the given id
+   */
+  protected async readOneEntity(id: number): Promise<IUser> {
+    return this.repository.getById(id);
+  }
+
+  /**
+   * Must implement the logic to read entities from the repository  accordingly with the filter.
+   * @param req Request from client
+   */
+  protected readEntities(req: Request): Promise<ReadonlyArray<IUser>> {
+    if (req.body.filter && req.body.filter.attribute) {
+      const k = req.body.filter.attribute;
+      const v = req.body.filter.value;
+      return new Promise(async (resolve) => {
+        const rows = await this.repository.getAll();
+        if (rows.length == 0) {
+          resolve([]);
+        }
+        type IUserKey = keyof typeof rows[0];
+        resolve(
+          rows.filter((row) => {
+            return (
+              (row[k as IUserKey] as string)
+                .toString()
+                .toLocaleLowerCase()
+                .indexOf(v.toString().toLocaleLowerCase()) > -1
+            );
+          })
+        );
+      });
+    } else {
+      return this.repository.getAll();
+    }
+  }
+
+  /**
+   * Write a new person registry to the database.
+   * @param {Request<IUser>} req Expected to have a IUser in the body
+   */
+  protected async createEntity(req: Request<IUser>): Promise<IUser> {
+    if (req.body.id) {
+      throw new ApplicationError("Person's already has an id, use PUT instead");
+    }
+    return this.repository.create(req.body);
+  }
+
+  /**
+   * Updates a person's registry in the database.
+   * @param {Request<IUser>} req Expected to have a IUser in the body
+   */
+  protected async updateEntity(req: Request<IUser>): Promise<IUser> {
+    if (!req.body.id) {
+      throw new ApplicationError(
+        "Person's has no ID. If want to register a new person, use POST instead"
+      );
+    }
+    return this.repository.update(req.body);
+  }
+
+  /**
+   * Must implement the logic to update a entity in the repository
+   * @param req Request from client
+   */
+  protected deleteEntity(req: Request): Promise<boolean> {
+    const ID = this.parseID(req.params["id"] as string);
+    return this.repository.delete(ID);
+  }
 }
