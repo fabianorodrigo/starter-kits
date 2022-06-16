@@ -9,7 +9,8 @@
     "dev": "ts-node-dev --respawn src/index.ts",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix",
-    "test": "mocha -r ts-node/register ./src/test/mocha.spec.ts"
+    "test": "mocha -r ts-node/register ./src/test/mocha.spec.ts",
+    "runRedis": "docker run -p 6379:6379 --name starter-kit-redis redis"
   },
   "keywords": [],
   "author": "",
