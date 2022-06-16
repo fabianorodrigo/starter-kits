@@ -7,6 +7,7 @@ import filesSpec from "../services/files/files.spec";
 import buffersSpec from "../services/buffers/buffers.spec";
 import streamsSpec from "../services/streams/streams.spec";
 import eventSpec from "../services/events/events.spec";
+import redisSpec from "../services/redis/redis.spec";
 
 describe("Server unit testing", function (this: Suite) {
   describe("arrays", arraysSpec);
@@ -15,4 +16,5 @@ describe("Server unit testing", function (this: Suite) {
   describe("buffers", buffersSpec);
   describe("streams", streamsSpec);
   describe("events", eventSpec);
+  describe("redis", redisSpec);
 });

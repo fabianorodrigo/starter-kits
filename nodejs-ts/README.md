@@ -52,6 +52,7 @@ npm install eslint --save-dev
 npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
 npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai  
+npm install redis
 ```
 
 - criação pasta `src`
