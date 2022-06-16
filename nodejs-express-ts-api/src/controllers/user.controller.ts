@@ -52,7 +52,7 @@ export class UserController extends BaseController<IUser> {
 
   async logout(req: Request, res: Response): Promise<void> {
     //TODO: implementar o logout jogando o token para uma blacklist
-    console.log((req.user as IBearerStrategyResult).token);
+    console.log((req.user as IBearerStrategyResult).accessToken);
     res.status(204).send();
   }
 

@@ -4,7 +4,7 @@ import {verifyJWT} from "./token";
 
 export interface IBearerStrategyResult {
   username: string;
-  token: string;
+  accessToken: string;
 }
 
 export function initAuthBearerStrategy() {
@@ -17,7 +17,7 @@ export function initAuthBearerStrategy() {
         let user;
         try {
           user = await verifyJWT(jwt);
-          return done(null, {username: user.username, token: jwt});
+          return done(null, {username: user.username, accessToken: jwt});
         } catch (e) {
           done(e as Error);
         }
