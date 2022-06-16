@@ -12,7 +12,7 @@ export function createJWT(user: IUser): string {
     id: user.id,
   };
   return jwt.sign(payload, process.env.JWT_SECRET as Secret, {
-    expiresIn: "1h",
+    expiresIn: process.env.JWT_EXPIRATION_TIME || "1m",
   });
 }
 
