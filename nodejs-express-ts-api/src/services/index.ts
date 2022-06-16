@@ -1,2 +1,2 @@
-export * from "./user.service";
+export * from "./gitHub.service";
 export * from "./redis.service";

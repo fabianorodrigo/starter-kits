@@ -1,7 +1,7 @@
 // This is the root test file that will import all my test suites
 
 import {Suite} from "mocha";
-import getUserDataSpec from "../services/user.service.spec";
+import getUserDataSpec from "../services/github.service.spec";
 import personDELETESpec from "./integrationTests/person/person.DELETE.spec";
 import personGETSpec from "./integrationTests/person/person.GET.spec";
 import personPOSTSearchSpec from "./integrationTests/person/person.POST.search.spec";
