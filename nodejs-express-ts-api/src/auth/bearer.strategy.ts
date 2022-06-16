@@ -1,6 +1,18 @@
+import {ApplicationError} from "./../customErrors/ApplicationError";
 import passport from "passport";
 import PassportBearer from "passport-http-bearer";
+import {RedisService} from "../services";
 import {verifyJWT} from "./token";
+import {AuthorizationError} from "../customErrors";
+
+/**
+ * Singleton instance of RedisService
+ */
+const redisService = RedisService.getInstance(
+  process.env.REDIS_BLOCKED_TOKENS_PREFIX as string,
+  process.env.REDIS_URL as string
+);
+redisService.connect();
 
 export interface IBearerStrategyResult {
   username: string;
@@ -16,6 +28,9 @@ export function initAuthBearerStrategy() {
       ) => {
         let user;
         try {
+          if ((await redisService.keyExists(jwt)) > 0) {
+            throw new AuthorizationError(`JWT blocked by logout`);
+          }
           user = await verifyJWT(jwt);
           return done(null, {username: user.username, accessToken: jwt});
         } catch (e) {

@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {JsonWebTokenError, TokenExpiredError} from "jsonwebtoken";
 import passport from "passport";
 import {IBearerStrategyResult} from "../auth";
+import {AuthorizationError} from "../customErrors";
 
 /**
  * Middleware para fazer o tratamento adequado de autenticação
@@ -24,7 +25,10 @@ export function authBearerlStrategyMiddleware(
         return res
           .status(401)
           .json({message: err.message, expiration: err.expiredAt});
-      } else if (err instanceof JsonWebTokenError) {
+      } else if (
+        err instanceof JsonWebTokenError ||
+        err instanceof AuthorizationError
+      ) {
         return res.status(401).json({message: err.message});
       } else if (err) {
         return res.status(500).json({message: err.message});

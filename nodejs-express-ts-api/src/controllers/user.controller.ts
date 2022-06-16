@@ -1,24 +1,33 @@
 import {Request, Response} from "express";
-import {createJWT, IBearerStrategyResult} from "../auth";
+import {
+  createJWT,
+  createOpaqueToken,
+  IBearerStrategyResult,
+  ILocalStrategyResult,
+} from "../auth";
 import {ApplicationError} from "../customErrors/ApplicationError";
-import {IToken, IUser} from "../model";
-import {FileSystemRepository, RedisRepository} from "../repositories";
+import {IUser} from "../model";
+import {FileSystemRepository} from "../repositories";
+import {RedisService} from "../services";
 import {BaseController} from "./base.controller";
 
 const DATABASE_PATH = `./data/user.json`;
 
 export class UserController extends BaseController<IUser> {
-  private _blackListRepository: RedisRepository<IToken>;
-
   constructor() {
     super(`User`, FileSystemRepository.getInstance("User", DATABASE_PATH));
     this.repository.connect();
-    this._blackListRepository = RedisRepository.getInstance(
-      "blackListToken",
+    this._redisServiceBlockedJWT = RedisService.getInstance(
+      process.env.REDIS_BLOCKED_TOKENS_PREFIX as string,
       process.env.REDIS_URL as string
     );
-    //TODO: this._blackListRepository.connect();
+    this._redisServiceBlockedJWT.connect();
   }
+
+  /**
+   * Reference to Singleton instance of RedisService
+   */
+  private _redisServiceBlockedJWT: RedisService;
 
   /**
    * If during POST or PUT, the entity has others attributes than these, it will throw an error.
@@ -33,27 +42,31 @@ export class UserController extends BaseController<IUser> {
   ];
 
   async login(req: Request, res: Response): Promise<void> {
-    const username = req.body.username;
-    const password = req.body.password;
-
+    const user: ILocalStrategyResult = req.user as ILocalStrategyResult;
     try {
-      const user = await this.authUser(username, password);
-      if (user) {
-        const token = createJWT(user);
-        res.set("Authorization", `Bearer ${token}`);
-        res.status(204).send();
+      if (req.user) {
+        const accessToken = createJWT(user);
+        const refreshToken = await createOpaqueToken(user);
+        res.set("Authorization", `Bearer ${accessToken}`);
+        res.status(200).send({refreshToken});
       } else {
         res.status(401).send();
       }
-    } catch (e) {
-      res.status(401).send();
+    } catch (e: any) {
+      res.status(401).send({message: e.message});
     }
   }
 
   async logout(req: Request, res: Response): Promise<void> {
-    //TODO: implementar o logout jogando o token para uma blacklist
-    console.log((req.user as IBearerStrategyResult).accessToken);
-    res.status(204).send();
+    try {
+      //TODO: implementar o logout jogando o token para uma blacklist
+      const jwtToken = (req.user as IBearerStrategyResult).accessToken;
+      await this._redisServiceBlockedJWT.setSingleValue(jwtToken, "");
+      console.log(jwtToken);
+      res.status(204).send();
+    } catch (e: any) {
+      res.status(500).json({error: e.message});
+    }
   }
 
   /**

@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from "express";
+import express, {Request, Response} from "express";
 import {PersonRouter, UserGitHubRouter, UserRouter} from "./routes/";
 import {initAuthLocalStrategy, initAuthBearerStrategy} from "./auth";
 
@@ -22,6 +22,12 @@ app.use(express.json());
 //app.use(logging);
 
 /*************************** ROUTES  ****************************************/
+//Shutdown
+app.get("/stop", (req: Request, res: Response) => {
+  process.kill(process.pid, "SIGTERM");
+  res.status(200).send();
+});
+
 // User
 app.use(`/user`, UserRouter);
 // Person

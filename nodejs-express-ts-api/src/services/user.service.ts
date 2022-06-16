@@ -1,6 +1,6 @@
 import {APIResponse, Repository} from "../model";
 import {User, UserDTO} from "../model/userGithub.interface";
-import {getData} from "./baseService";
+import {getData} from "./baseHttpService";
 
 export async function getGithubUserData(name: string): Promise<UserDTO> {
   // search for user
