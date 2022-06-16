@@ -2,7 +2,7 @@ import {APIResponse, Repository} from "../model";
 import {User, UserDTO} from "../model/userGithub.interface";
 import {BaseHttpService} from "./baseHttpService";
 
-export class GithubService extends BaseHttpService<UserDTO> {
+export class GithubService extends BaseHttpService {
   constructor() {
     super("https://api.github.com");
   }

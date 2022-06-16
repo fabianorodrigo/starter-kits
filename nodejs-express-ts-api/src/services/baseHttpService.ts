@@ -1,7 +1,7 @@
 import axios, {AxiosError, AxiosRequestConfig} from "axios";
 import {APIResponse, ServerError} from "../model";
 
-export class BaseHttpService<T> {
+export class BaseHttpService {
   constructor(private baseUrl: string) {}
 
   async getData<T>(

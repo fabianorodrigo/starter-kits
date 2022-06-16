@@ -1,9 +1,8 @@
-import {ApplicationError} from "./../customErrors/ApplicationError";
 import passport from "passport";
 import PassportBearer from "passport-http-bearer";
+import {AuthorizationError} from "../customErrors";
 import {RedisService} from "../services";
 import {verifyJWT} from "./token";
-import {AuthorizationError} from "../customErrors";
 
 /**
  * Singleton instance of RedisService

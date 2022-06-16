@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {UserDTO} from "../model";
 import {GithubService} from "../services";
-import {BaseController} from "./base.controller";
 
 const cache: {[key: string]: UserDTO} = {};
 
