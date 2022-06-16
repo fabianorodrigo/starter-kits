@@ -1,7 +1,6 @@
-import {Request, Response, NextFunction} from "express";
+import {NextFunction, Request, Response} from "express";
 import {JsonWebTokenError, TokenExpiredError} from "jsonwebtoken";
 import passport from "passport";
-import {ApplicationError} from "../customErrors/ApplicationError";
 
 /**
  * Middleware para fazer o tratamento adequado de autenticação
