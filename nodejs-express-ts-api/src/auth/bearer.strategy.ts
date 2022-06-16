@@ -1,6 +1,5 @@
 import passport from "passport";
 import PassportBearer from "passport-http-bearer";
-import {ApplicationError} from "../customErrors/ApplicationError";
 import {verifyJWT} from "./token";
 
 export function initAuthBearerStrategy() {
