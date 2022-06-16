@@ -1,5 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import passport from "passport";
+import {ILocalStrategyResult} from "../auth";
 import {ApplicationError} from "../customErrors/ApplicationError";
 
 /**
@@ -15,16 +16,20 @@ export function authLocalStrategyMiddleware(
   res: Response,
   next: NextFunction
 ) {
-  passport.authenticate("local", {session: false}, (err, user) => {
-    if (err instanceof ApplicationError) {
-      return res.status(401).json({message: err.message});
-    } else if (err) {
-      return res.status(500).json({message: err.message});
+  passport.authenticate(
+    "local",
+    {session: false},
+    (err, user: ILocalStrategyResult) => {
+      if (err instanceof ApplicationError) {
+        return res.status(401).json({message: err.message});
+      } else if (err) {
+        return res.status(500).json({message: err.message});
+      }
+      if (!user) {
+        return res.status(401).json();
+      }
+      req.user = user;
+      return next();
     }
-    if (!user) {
-      return res.status(401).json();
-    }
-    req.user = user;
-    return next();
-  })(req, res, next);
+  )(req, res, next);
 }

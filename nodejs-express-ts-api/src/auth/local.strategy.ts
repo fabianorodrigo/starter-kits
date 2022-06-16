@@ -3,6 +3,10 @@ import PassportLocal from "passport-local";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {UserController} from "./../controllers/";
 
+export interface ILocalStrategyResult {
+  username: string;
+}
+
 export function initAuthLocalStrategy() {
   const userController = new UserController();
 
@@ -16,13 +20,13 @@ export function initAuthLocalStrategy() {
       async (
         username: string,
         password: string,
-        done: (err: Error | null, result?: {username: string}) => void
+        done: (err: Error | null, result?: ILocalStrategyResult) => void
       ) => {
         const user = await userController.authUser(username, password);
         if (user == null) {
           return done(new ApplicationError(`User and password not found`));
         } else {
-          return done(null, user);
+          return done(null, {username: user.username});
         }
       }
     )

@@ -75,6 +75,8 @@ npm install --save-dev @types/passport
 npm install jsonwebtoken
 npm install --save-dev @types/jsonwebtoken
 npm install dotenv
+npm install redis
+npm install --save-dev @types/redis
 ```
 
 - criação pasta `src`

@@ -6,3 +6,4 @@ export * from "./userGithub.interface";
 export * from "./person.interface";
 export * from "./base.interface";
 export * from "./user.interface";
+export * from "./token.interface";

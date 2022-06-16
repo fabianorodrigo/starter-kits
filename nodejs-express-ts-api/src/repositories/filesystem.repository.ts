@@ -4,9 +4,7 @@ import {ApplicationError} from "../customErrors/ApplicationError";
 import {IBase} from "../model";
 import {IRepository} from "./repository.interface";
 
-export default class BaseFileSystemRepository<T extends IBase>
-  implements IRepository<T>
-{
+export class FileSystemRepository<T extends IBase> implements IRepository<T> {
   private DATABASE_ENCODING: BufferEncoding = "utf8";
   private DATABASE_WRITE_OPTIONS: WriteFileOptions = this.DATABASE_ENCODING;
 
@@ -14,7 +12,7 @@ export default class BaseFileSystemRepository<T extends IBase>
 
   //não é um singleton, mas é uma única intância por database file
   private static _instances: {
-    [databaseFile: string]: BaseFileSystemRepository<any>;
+    [databaseFile: string]: FileSystemRepository<any>;
   } = {};
 
   private constructor(
@@ -25,9 +23,9 @@ export default class BaseFileSystemRepository<T extends IBase>
   public static getInstance<T>(
     entityName: string,
     databaseFile: string
-  ): BaseFileSystemRepository<T> {
+  ): FileSystemRepository<T> {
     if (!this._instances[databaseFile]) {
-      this._instances[databaseFile] = new BaseFileSystemRepository<T>(
+      this._instances[databaseFile] = new FileSystemRepository<T>(
         entityName,
         databaseFile
       );

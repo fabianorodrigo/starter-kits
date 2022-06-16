@@ -1,16 +1,23 @@
 import {Request, Response} from "express";
-import {createJWT} from "../auth";
+import {createJWT, IBearerStrategyResult} from "../auth";
 import {ApplicationError} from "../customErrors/ApplicationError";
-import {IUser} from "../model";
-import BaseFileSystemRepository from "../repositories/base.filesystem.repository";
+import {IToken, IUser} from "../model";
+import {FileSystemRepository, RedisRepository} from "../repositories";
 import {BaseController} from "./base.controller";
 
 const DATABASE_PATH = `./data/user.json`;
 
 export class UserController extends BaseController<IUser> {
+  private _blackListRepository: RedisRepository<IToken>;
+
   constructor() {
-    super(`User`, BaseFileSystemRepository.getInstance("User", DATABASE_PATH));
+    super(`User`, FileSystemRepository.getInstance("User", DATABASE_PATH));
     this.repository.connect();
+    this._blackListRepository = RedisRepository.getInstance(
+      "blackListToken",
+      process.env.REDIS_URL as string
+    );
+    //TODO: this._blackListRepository.connect();
   }
 
   /**
@@ -41,6 +48,12 @@ export class UserController extends BaseController<IUser> {
     } catch (e) {
       res.status(401).send();
     }
+  }
+
+  async logout(req: Request, res: Response): Promise<void> {
+    //TODO: implementar o logout jogando o token para uma blacklist
+    console.log((req.user as IBearerStrategyResult).token);
+    res.status(204).send();
   }
 
   /**
