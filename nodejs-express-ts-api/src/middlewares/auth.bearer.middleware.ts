@@ -1,22 +1,27 @@
 import {Request, Response, NextFunction} from "express";
+import {JsonWebTokenError, TokenExpiredError} from "jsonwebtoken";
 import passport from "passport";
 import {ApplicationError} from "../customErrors/ApplicationError";
 
 /**
  * Middleware para fazer o tratamento adequado de autenticação
- * via estratégia Local (usuário e senha)
+ * via estratégia Bearer (token)
  *
  * @param req Request
  * @param res Response
  * @param next next
  */
-export function authLocalStrategyMiddleware(
+export function authBearerlStrategyMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
-  passport.authenticate("local", {session: false}, (err, user) => {
-    if (err instanceof ApplicationError) {
+  passport.authenticate("bearer", {session: false}, (err, user) => {
+    if (err instanceof TokenExpiredError) {
+      return res
+        .status(401)
+        .json({message: err.message, expiration: err.expiredAt});
+    } else if (err instanceof JsonWebTokenError) {
       return res.status(401).json({message: err.message});
     } else if (err) {
       return res.status(500).json({message: err.message});

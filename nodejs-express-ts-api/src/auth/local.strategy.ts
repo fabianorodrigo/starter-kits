@@ -22,7 +22,7 @@ export function initAuthLocalStrategy() {
         if (user == null) {
           return done(new ApplicationError(`User and password not found`));
         } else {
-          return done(null, {username: "admin"});
+          return done(null, user);
         }
       }
     )

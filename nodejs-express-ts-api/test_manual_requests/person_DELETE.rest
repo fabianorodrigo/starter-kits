@@ -1,4 +1,4 @@
 
-DELETE http://localhost:3000/person/3
+DELETE http://localhost:3000/person/5
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU1MzE5OTMwLCJleHAiOjE2NTUzMjM1MzB9.YYVGgbeYpJnzLAZw8Q6R-jLrzIrR7vqdACJx_a8gG3k
+Authorization: Bearer SeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU1MzgzMTQxLCJleHAiOjE2NTUzODY3NDF9.jQNbdgkadmITa7lpsGLIF4_lrhY6oQIzNYgzn0n1EkI

@@ -13,13 +13,9 @@ export function initAuthBearerStrategy() {
         let user;
         try {
           user = await verifyJWT(jwt);
+          return done(null, user);
         } catch (e) {
           done(e as Error);
-        }
-        if (user == null) {
-          return done(new ApplicationError(`JWT not valid`));
-        } else {
-          return done(null, user);
         }
       }
     )
