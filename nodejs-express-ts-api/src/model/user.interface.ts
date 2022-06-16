@@ -1,11 +1,6 @@
-export interface User {
-  login: string;
-  id: number;
-  avatar_url: string;
-  url: string;
-}
+import {IBase} from "./base.interface";
 
-export interface UserDTO {
-  avatar: string;
-  stars: number;
+export interface IUser extends IBase {
+  username: string;
+  password: string;
 }

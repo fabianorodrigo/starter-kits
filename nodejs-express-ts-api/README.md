@@ -22,7 +22,7 @@ Uma aplicação Express pode usar os seguintes tipos de middleware:
 ## Funcionalidades
 
 - Exposição de uma API CRUD de pessoas em `/person` lendo de arquivos do File System
-- Exposição de um endopoint para consulta compilada de dados de usuário do Github em `/user?username=<user>`. Esse endpoint consome a API do Github para obter dados de um usuário específico e mantém um cache em memória para não precisar buscar novamente os dados no Github caso uma consulta seja repetida.
+- Exposição de um endopoint para consulta compilada de dados de usuário do Github em `/usergithub?username=<user>`. Esse endpoint consome a API do Github para obter dados de um usuário específico e mantém um cache em memória para não precisar buscar novamente os dados no Github caso uma consulta seja repetida.
 
 
 ## Stack
@@ -61,12 +61,22 @@ npm install typescript --save-dev
 npx tsc --version
 
 npx tsc --init
-npm install -save-dev @types/node @tsconfig/node16
+npm install --save-dev @types/node @tsconfig/node16
 npm install --save-dev ts-node ts-node-dev
 npm install --save-dev eslint 
 npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
-npm i --save-dev @types/supertest
+npm install --save-dev @types/supertest
+
+npm install express cors axios
+npm install passport passport-local 
+npm install passport-http-bearer
+npm install --save-dev @types/passport
+npm install jsonwebtoken
+npm install --save-dev @types/jsonwebtoken
+npm install dotenv
+npm install redis
+npm install --save-dev @types/redis
 ```
 
 - criação pasta `src`

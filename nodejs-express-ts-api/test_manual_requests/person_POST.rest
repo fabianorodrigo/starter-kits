@@ -3,7 +3,7 @@ POST http://localhost:3000/person/
 Content-Type: application/json
 
 {
-    "name": "Maria Pepino",
-    "age": 42,
-    "url": "https://github.com/mp"
+    "name": "Maria João",
+    "age": 4,
+    "url": "https://github.com/mj"
 }

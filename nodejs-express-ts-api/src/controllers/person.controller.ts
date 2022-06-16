@@ -1,17 +1,14 @@
-import {Request, Response} from "express";
-import fs from "fs";
-import {Url} from "url";
+import {Request} from "express";
 import {ApplicationError} from "../customErrors/ApplicationError";
-import {IPerson, ServerError as IServerError} from "../model";
-import BaseFileSystemRepository from "../repositories/base.filesystem.repository";
+import {IPerson} from "../model";
+import {FileSystemRepository} from "../repositories";
 import {BaseController} from "./base.controller";
-import {getNextId} from "./common.controller";
 
 const DATABASE_PATH = `./data/person.json`;
 
 export class PersonController extends BaseController<IPerson> {
   constructor() {
-    super(`Person`, new BaseFileSystemRepository("Person", DATABASE_PATH));
+    super(`Person`, FileSystemRepository.getInstance("Person", DATABASE_PATH));
     this.repository.connect();
   }
 
