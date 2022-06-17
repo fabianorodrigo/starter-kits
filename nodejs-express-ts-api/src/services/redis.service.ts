@@ -44,7 +44,7 @@ export class RedisService {
    * @returns TRUE if the instance is already connected with Redis Server
    */
   isConnected(): boolean {
-    return this._db.isOpen;
+    return this._db && this._db.isOpen;
   }
 
   /**
@@ -78,6 +78,7 @@ export class RedisService {
    * Disconnnects from the Redis server
    */
   async disconnect(): Promise<void> {
+    if (!this._db || !this.isConnected()) return;
     return this._db.disconnect();
   }
 
@@ -88,6 +89,9 @@ export class RedisService {
    * @returns ?
    */
   async keyExists(key: string): Promise<number> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
     return this._db.exists(key);
   }
 
@@ -97,7 +101,10 @@ export class RedisService {
    * @param key key which value wants to get
    * @returns value associated with the {key}
    */
-  getSingleValue(key: string): Promise<string | null> {
+  async getSingleValue(key: string): Promise<string | null> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
     return this._db.get(key);
   }
 
@@ -112,6 +119,9 @@ export class RedisService {
     value: string,
     expiresAt?: number
   ): Promise<boolean> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
     await this._db.set(key, value);
     if (expiresAt) {
       await this._db.expireAt(key, expiresAt);
@@ -119,8 +129,11 @@ export class RedisService {
     return true;
   }
 
-  getObjectValue(key: string): Promise<{[key: string]: string}> {
-    return this._db.hGetAll(key);
+  async getObjectValue(key: string): Promise<{[key: string]: string}> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
+    return await this._db.hGetAll(key);
   }
 
   /**
@@ -134,6 +147,9 @@ export class RedisService {
     key: string,
     value: {[key: string]: string}
   ): Promise<boolean> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
     const attributes = Object.keys(value);
     for (const attribute of attributes) {
       await this._db.hSet(key, attribute, value[attribute]);
@@ -148,6 +164,9 @@ export class RedisService {
    * @returns ?
    */
   async delete(key: string): Promise<number> {
+    if (!this.isConnected()) {
+      await this.connect();
+    }
     return this._db.del(key);
   }
 }

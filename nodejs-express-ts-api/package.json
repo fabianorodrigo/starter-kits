@@ -10,7 +10,7 @@
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix",
     "test": "mocha -r ts-node/register ./src/test/mocha.spec.ts",
-    "runRedis": "docker run -p 6379:6379 --name starter-kit-redis redis"
+    "runRedis": "docker run -p 6379:6379 --rm --name starter-kit-redis redis"
   },
   "keywords": [],
   "author": "",

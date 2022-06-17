@@ -1,17 +1,11 @@
 import chai, {expect} from "chai";
 import {GithubService} from "./gitHub.service";
 import chaiAsPromised from "chai-as-promised";
-import sinon from "sinon";
-
-import {RedisService} from "./../services/redis.service";
 
 chai.use(chaiAsPromised);
 
 export default function () {
   describe(`${GithubService.name}`, function () {
-    sinon.stub(RedisService, "getInstance").callsFake(() => {
-      return {} as RedisService;
-    });
     let githubService: GithubService;
     beforeEach(function () {
       githubService = new GithubService();

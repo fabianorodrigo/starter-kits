@@ -1,7 +1,6 @@
-import passport from "passport";
 import express from "express";
 import {PersonController} from "../controllers";
-import {authBearerlStrategyMiddleware, logging} from "../middlewares";
+import {authBearerlStrategyMiddleware} from "../middlewares";
 
 const PersonRouter = express.Router();
 

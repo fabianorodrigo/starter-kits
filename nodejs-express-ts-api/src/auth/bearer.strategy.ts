@@ -2,7 +2,6 @@ import passport from "passport";
 import PassportBearer from "passport-http-bearer";
 import {UserController} from "../controllers";
 import {AuthorizationError} from "../customErrors";
-import {RedisService} from "../services";
 import {TokenFactory} from "./token";
 
 export interface IBearerStrategyResult {
@@ -18,6 +17,9 @@ export async function initAuthBearerStrategy() {
         jwt: string,
         done: (err: Error | null, result?: IBearerStrategyResult) => void
       ) => {
+        // console.log(
+        //   ` =================== PASSEI AQUI NO VERIFICATION CALLBACK ==================================== `
+        // );
         let user;
         try {
           if (

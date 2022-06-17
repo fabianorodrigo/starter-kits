@@ -4,6 +4,7 @@ import {
   ILocalStrategyResult,
   TokenFactory,
 } from "../auth";
+import {handleRequestErrors} from "../customErrors";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IUser} from "../model";
 import {FileSystemRepository} from "../repositories";
@@ -43,8 +44,8 @@ export class UserController extends BaseController<IUser> {
       } else {
         res.status(401).send();
       }
-    } catch (e: any) {
-      res.status(401).send({message: e.message});
+    } catch (err: any) {
+      handleRequestErrors(err, req, res);
     }
   }
 
@@ -58,8 +59,8 @@ export class UserController extends BaseController<IUser> {
       );
       console.log(jwtToken);
       res.status(204).send();
-    } catch (e: any) {
-      res.status(500).json({error: e.message});
+    } catch (err: any) {
+      handleRequestErrors(err, req, res);
     }
   }
 
