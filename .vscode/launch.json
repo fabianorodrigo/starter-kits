@@ -8,6 +8,15 @@
         "cwd": "${workspaceRoot}/nodejs-express-ts-api",
         "runtimeArgs": ["-r", "ts-node/register"],
         "args": ["${workspaceRoot}/nodejs-express-ts-api/src/index.ts"]
+      },
+      {
+        "name": "Debug Tests nodejs-express-ts-api",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-express-ts-api",
+        "program": "${workspaceFolder}/nodejs-express-ts-api/node_modules/mocha/bin/_mocha",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-express-ts-api/src/test/mocha.spec.ts"]
       }
     ]
   }
