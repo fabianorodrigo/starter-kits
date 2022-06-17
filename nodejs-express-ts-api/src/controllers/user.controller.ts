@@ -1,33 +1,24 @@
 import {Request, Response} from "express";
 import {
-  createJWT,
-  createOpaqueToken,
   IBearerStrategyResult,
   ILocalStrategyResult,
+  TokenFactory,
 } from "../auth";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IUser} from "../model";
 import {FileSystemRepository} from "../repositories";
-import {RedisService} from "../services";
 import {BaseController} from "./base.controller";
 
 const DATABASE_PATH = `./data/user.json`;
 
 export class UserController extends BaseController<IUser> {
+  private _tokenFactory: TokenFactory;
+
   constructor() {
     super(`User`, FileSystemRepository.getInstance("User", DATABASE_PATH));
     this.repository.connect();
-    this._redisServiceBlockedJWT = RedisService.getInstance(
-      process.env.REDIS_BLOCKED_TOKENS_PREFIX as string,
-      process.env.REDIS_URL as string
-    );
-    this._redisServiceBlockedJWT.connect();
+    this._tokenFactory = new TokenFactory(this);
   }
-
-  /**
-   * Reference to Singleton instance of RedisService
-   */
-  private _redisServiceBlockedJWT: RedisService;
 
   /**
    * If during POST or PUT, the entity has others attributes than these, it will throw an error.
@@ -45,8 +36,8 @@ export class UserController extends BaseController<IUser> {
     const user: ILocalStrategyResult = req.user as ILocalStrategyResult;
     try {
       if (req.user) {
-        const accessToken = createJWT(user);
-        const refreshToken = await createOpaqueToken(user);
+        const accessToken = this._tokenFactory.createJWT(user);
+        const refreshToken = await this._tokenFactory.createOpaqueToken(user);
         res.set("Authorization", `Bearer ${accessToken}`);
         res.status(200).send({refreshToken});
       } else {
@@ -61,7 +52,10 @@ export class UserController extends BaseController<IUser> {
     try {
       //TODO: implementar o logout jogando o token para uma blacklist
       const jwtToken = (req.user as IBearerStrategyResult).accessToken;
-      await this._redisServiceBlockedJWT.setSingleValue(jwtToken, "");
+      await TokenFactory.getRedisBlockedJWTTokens().setSingleValue(
+        jwtToken,
+        ""
+      );
       console.log(jwtToken);
       res.status(204).send();
     } catch (e: any) {
@@ -84,6 +78,52 @@ export class UserController extends BaseController<IUser> {
         resolve(users[0]);
       }
     });
+  }
+
+  /**
+   * Create a valid JWT token for the user
+   * @param user user to be created
+   * @returns
+   */
+  createJWT(user: ILocalStrategyResult): string {
+    return this._tokenFactory.createJWT(user);
+  }
+
+  /**
+   * Create a opaque token (random string)
+   * @returns 24 bytes randomic string
+   */
+  async createOpaqueToken(user: ILocalStrategyResult) {
+    return this._tokenFactory.createOpaqueToken(user);
+  }
+
+  /**
+   * Check if the token is valid and returns a instance of the user related to it
+   * @param token JWT token
+   * @returns
+   */
+  verifyJWT(token: string): Promise<IUser> {
+    return this._tokenFactory.verifyJWT(token);
+  }
+
+  /**
+   * Verify if the token is valid and returns the userId related to it
+   *
+   * @param token refresh token to be checked
+   * @returns User ID
+   */
+  async verifyRefreshToken(token: string): Promise<string> {
+    return this._tokenFactory.verifyRefreshToken(token);
+  }
+
+  /**
+   * Invalidates the refresh token deleting it from Redis
+   *
+   * @param token refresh token to be invalidated
+   * @returns
+   */
+  async invalidateRefreshToken(token: string): Promise<boolean> {
+    return this._tokenFactory.invalidateRefreshToken(token);
   }
 
   /**

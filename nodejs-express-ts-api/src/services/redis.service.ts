@@ -24,13 +24,11 @@ export class RedisService {
     prefix: string,
     connectionString: string
   ): RedisService {
-    if (!this._instances[connectionString.concat("|", prefix)]) {
-      this._instances[connectionString.concat("|", prefix)] = new RedisService(
-        prefix,
-        connectionString
-      );
+    const key = `${connectionString}|${prefix}`;
+    if (!this._instances[key]) {
+      this._instances[key] = new RedisService(prefix, connectionString);
     }
-    return this._instances[connectionString.concat("|", prefix)];
+    return this._instances[key];
   }
 
   /**
@@ -40,6 +38,13 @@ export class RedisService {
     for (const instance of Object.values(this._instances)) {
       await instance.disconnect();
     }
+  }
+
+  /**
+   * @returns TRUE if the instance is already connected with Redis Server
+   */
+  isConnected(): boolean {
+    return this._db.isOpen;
   }
 
   /**
@@ -57,8 +62,9 @@ export class RedisService {
             url: this.connectionString,
             name: this.prefix,
           });
-          this._db.on("error", (err: Error) => {
+          this._db.on("error", async (err: Error) => {
             console.log(`Redis Client error`, err);
+            await this._db.disconnect();
             reject(err);
           });
         }

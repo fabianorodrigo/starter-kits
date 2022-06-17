@@ -75,6 +75,7 @@ npm install --save-dev ts-node ts-node-dev
 npm install --save-dev eslint 
 npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
+npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai
 npm install --save-dev @types/supertest
 
 npm install express cors axios

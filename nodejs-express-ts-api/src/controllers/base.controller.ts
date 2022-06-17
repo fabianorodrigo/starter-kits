@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {NotFoundError} from "../customErrors";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {ServerError as IServerError} from "../model";
 import {IRepository} from "../repositories";
@@ -30,13 +31,23 @@ export abstract class BaseController<T> {
    * @param {T|IServerError} res The entity when found
    */
   async getById(req: Request, res: Response<T | IServerError>): Promise<void> {
-    const result = await this.readOneEntity(
-      this.parseID(req.params["id"] as string)
-    );
-    if (result) {
-      res.status(200).json(result);
-    } else {
-      res.status(404).json(this.NOT_FOUND_ERROR);
+    try {
+      const result = await this.readOneEntity(
+        this.parseID(req.params["id"] as string)
+      );
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+      }
+    } catch (e: any) {
+      if (e instanceof NotFoundError) {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+      } else if (e instanceof ApplicationError) {
+        res.status(400).json({message: e.message});
+      } else {
+        res.status(500).json({message: e.message});
+      }
     }
   }
 
@@ -56,11 +67,21 @@ export abstract class BaseController<T> {
     req: Request,
     res: Response<ReadonlyArray<T> | IServerError>
   ): Promise<void> {
-    const result = await this.readEntities(req);
-    if (result) {
-      res.status(200).json(result);
-    } else {
-      res.status(404).json({message: `${this.entityName} not found`});
+    try {
+      const result = await this.readEntities(req);
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+      }
+    } catch (e: any) {
+      if (e instanceof NotFoundError) {
+        res.status(404).json(this.NOT_FOUND_ERROR);
+      } else if (e instanceof ApplicationError) {
+        res.status(400).json({message: e.message});
+      } else {
+        res.status(500).json({message: e.message});
+      }
     }
   }
 

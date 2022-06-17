@@ -1,5 +1,4 @@
-import {Request, Response, NextFunction} from "express";
-import {invalidateRefreshToken, verifyRefreshToken} from "../auth";
+import {NextFunction, Request, Response} from "express";
 import {UserController} from "../controllers";
 import {AuthorizationError} from "../customErrors";
 
@@ -18,9 +17,10 @@ export async function refreshTokenMiddleware(
   // query string
   const {refreshToken} = req.body;
   try {
-    const id = parseInt(await verifyRefreshToken(refreshToken));
-    await invalidateRefreshToken(refreshToken);
-    req.user = await new UserController().getUserById(id);
+    const userCtl = new UserController();
+    const id = parseInt(await userCtl.verifyRefreshToken(refreshToken));
+    await userCtl.invalidateRefreshToken(refreshToken);
+    req.user = await userCtl.getUserById(id);
     return next();
   } catch (e: any) {
     if (e instanceof AuthorizationError) {

@@ -8,7 +8,7 @@ export interface ILocalStrategyResult {
   username: string;
 }
 
-export function initAuthLocalStrategy() {
+export async function initAuthLocalStrategy() {
   const userController = new UserController();
 
   passport.use(

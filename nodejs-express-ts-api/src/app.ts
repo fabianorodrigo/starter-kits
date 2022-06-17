@@ -1,10 +1,11 @@
 import cors from "cors";
 import express, {Request, Response} from "express";
+import {initAuthBearerStrategy, initAuthLocalStrategy} from "./auth";
 import {PersonRouter, UserGitHubRouter, UserRouter} from "./routes/";
-import {initAuthLocalStrategy, initAuthBearerStrategy} from "./auth";
 
 // init express
 const app = express();
+
 // init local and bearer strategies authentication via passport
 initAuthLocalStrategy();
 initAuthBearerStrategy();
