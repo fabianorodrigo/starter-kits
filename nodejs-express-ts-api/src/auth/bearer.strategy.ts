@@ -30,7 +30,7 @@ export async function initAuthBearerStrategy() {
           user = await userCtl.verifyJWT(jwt);
           return done(null, {username: user.username, accessToken: jwt});
         } catch (e) {
-          done(e as Error);
+          return done(e as Error);
         }
       }
     )
