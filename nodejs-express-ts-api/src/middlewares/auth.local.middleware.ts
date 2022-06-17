@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction} from "express";
+import {NextFunction, Request, Response} from "express";
 import passport from "passport";
 import {ILocalStrategyResult} from "../auth";
-import {ApplicationError} from "../customErrors/ApplicationError";
+import {handleRequestErrors} from "../customErrors";
 
 /**
  * Middleware para fazer o tratamento adequado de autenticação
@@ -20,10 +20,9 @@ export function authLocalStrategyMiddleware(
     "local",
     {session: false},
     (err, user: ILocalStrategyResult) => {
-      if (err instanceof ApplicationError) {
-        return res.status(401).json({message: err.message});
-      } else if (err) {
-        return res.status(500).json({message: err.message});
+      //if the error was properly handled, returns
+      if (handleRequestErrors(err, req, res)) {
+        return;
       }
       if (!user) {
         return res.status(401).json();

@@ -17,7 +17,7 @@ export default function () {
     expect(response.body.message).to.be.undefined;
     expect(response.statusCode).to.eql(200);
     expect(response.body).to.be.an("array").with.length(1);
-    expect(response.body[0].id).to.eql(5);
+    expect(response.body[0].id).to.eql(4);
     expect(response.body[0].name).to.eql("João Nascimento");
     expect(response.body[0].age).to.eql(57);
     expect(response.body[0].url).to.be.undefined;

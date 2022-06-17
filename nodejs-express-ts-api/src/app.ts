@@ -1,10 +1,11 @@
 import cors from "cors";
-import express from "express";
+import express, {Request, Response} from "express";
+import {initAuthBearerStrategy, initAuthLocalStrategy} from "./auth";
 import {PersonRouter, UserGitHubRouter, UserRouter} from "./routes/";
-import {initAuthLocalStrategy, initAuthBearerStrategy} from "./auth";
 
 // init express
 const app = express();
+
 // init local and bearer strategies authentication via passport
 initAuthLocalStrategy();
 initAuthBearerStrategy();
@@ -22,6 +23,12 @@ app.use(express.json());
 //app.use(logging);
 
 /*************************** ROUTES  ****************************************/
+//Shutdown
+app.get("/stop", (req: Request, res: Response) => {
+  process.kill(process.pid, "SIGTERM");
+  res.status(200).send();
+});
+
 // User
 app.use(`/user`, UserRouter);
 // Person

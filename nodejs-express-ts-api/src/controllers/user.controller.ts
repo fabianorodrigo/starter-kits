@@ -1,23 +1,24 @@
 import {Request, Response} from "express";
-import {createJWT, IBearerStrategyResult} from "../auth";
+import {
+  IBearerStrategyResult,
+  ILocalStrategyResult,
+  TokenFactory,
+} from "../auth";
+import {handleRequestErrors} from "../customErrors";
 import {ApplicationError} from "../customErrors/ApplicationError";
-import {IToken, IUser} from "../model";
-import {FileSystemRepository, RedisRepository} from "../repositories";
+import {IUser} from "../model";
+import {FileSystemRepository} from "../repositories";
 import {BaseController} from "./base.controller";
 
 const DATABASE_PATH = `./data/user.json`;
 
 export class UserController extends BaseController<IUser> {
-  private _blackListRepository: RedisRepository<IToken>;
+  private _tokenFactory: TokenFactory;
 
   constructor() {
     super(`User`, FileSystemRepository.getInstance("User", DATABASE_PATH));
     this.repository.connect();
-    this._blackListRepository = RedisRepository.getInstance(
-      "blackListToken",
-      process.env.REDIS_URL as string
-    );
-    //TODO: this._blackListRepository.connect();
+    this._tokenFactory = new TokenFactory(this);
   }
 
   /**
@@ -33,27 +34,34 @@ export class UserController extends BaseController<IUser> {
   ];
 
   async login(req: Request, res: Response): Promise<void> {
-    const username = req.body.username;
-    const password = req.body.password;
-
+    const user: ILocalStrategyResult = req.user as ILocalStrategyResult;
     try {
-      const user = await this.authUser(username, password);
-      if (user) {
-        const token = createJWT(user);
-        res.set("Authorization", `Bearer ${token}`);
-        res.status(204).send();
+      if (req.user) {
+        const accessToken = this._tokenFactory.createJWT(user);
+        const refreshToken = await this._tokenFactory.createOpaqueToken(user);
+        res.set("Authorization", `Bearer ${accessToken}`);
+        res.status(200).send({refreshToken});
       } else {
         res.status(401).send();
       }
-    } catch (e) {
-      res.status(401).send();
+    } catch (err: any) {
+      handleRequestErrors(err, req, res);
     }
   }
 
   async logout(req: Request, res: Response): Promise<void> {
-    //TODO: implementar o logout jogando o token para uma blacklist
-    console.log((req.user as IBearerStrategyResult).accessToken);
-    res.status(204).send();
+    try {
+      //TODO: implementar o logout jogando o token para uma blacklist
+      const jwtToken = (req.user as IBearerStrategyResult).accessToken;
+      await TokenFactory.getRedisBlockedJWTTokens().setSingleValue(
+        jwtToken,
+        ""
+      );
+      console.log(jwtToken);
+      res.status(204).send();
+    } catch (err: any) {
+      handleRequestErrors(err, req, res);
+    }
   }
 
   /**
@@ -71,6 +79,52 @@ export class UserController extends BaseController<IUser> {
         resolve(users[0]);
       }
     });
+  }
+
+  /**
+   * Create a valid JWT token for the user
+   * @param user user to be created
+   * @returns
+   */
+  createJWT(user: ILocalStrategyResult): string {
+    return this._tokenFactory.createJWT(user);
+  }
+
+  /**
+   * Create a opaque token (random string)
+   * @returns 24 bytes randomic string
+   */
+  async createOpaqueToken(user: ILocalStrategyResult) {
+    return this._tokenFactory.createOpaqueToken(user);
+  }
+
+  /**
+   * Check if the token is valid and returns a instance of the user related to it
+   * @param token JWT token
+   * @returns
+   */
+  verifyJWT(token: string): Promise<IUser> {
+    return this._tokenFactory.verifyJWT(token);
+  }
+
+  /**
+   * Verify if the token is valid and returns the userId related to it
+   *
+   * @param token refresh token to be checked
+   * @returns User ID
+   */
+  async verifyRefreshToken(token: string): Promise<string> {
+    return this._tokenFactory.verifyRefreshToken(token);
+  }
+
+  /**
+   * Invalidates the refresh token deleting it from Redis
+   *
+   * @param token refresh token to be invalidated
+   * @returns
+   */
+  async invalidateRefreshToken(token: string): Promise<boolean> {
+    return this._tokenFactory.invalidateRefreshToken(token);
   }
 
   /**

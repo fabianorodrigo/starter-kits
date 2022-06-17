@@ -1,5 +1,6 @@
 import fs, {promises as fsPromises, WriteFileOptions} from "fs";
 import path from "path";
+import {NotFoundError} from "../customErrors";
 import {ApplicationError} from "../customErrors/ApplicationError";
 import {IBase} from "../model";
 import {IRepository} from "./repository.interface";
@@ -53,9 +54,7 @@ export class FileSystemRepository<T extends IBase> implements IRepository<T> {
         resolve(this._db[id]);
       } else {
         reject(
-          new ApplicationError(
-            `${this.entityName} with ID: ${id} does not exist`
-          )
+          new NotFoundError(`${this.entityName} with ID: ${id} does not exist`)
         );
       }
     });
@@ -105,9 +104,7 @@ export class FileSystemRepository<T extends IBase> implements IRepository<T> {
     const result = this._db[id];
     //new
     if (result == null) {
-      throw new ApplicationError(
-        `There is no ${this.entityName} with ID: ${id}`
-      );
+      throw new NotFoundError(`There is no ${this.entityName} with ID: ${id}`);
     } else {
       delete this._db[id];
       return this.overWriteDB(this._db);

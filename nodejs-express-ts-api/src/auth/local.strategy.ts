@@ -4,10 +4,11 @@ import {ApplicationError} from "../customErrors/ApplicationError";
 import {UserController} from "./../controllers/";
 
 export interface ILocalStrategyResult {
+  id: number;
   username: string;
 }
 
-export function initAuthLocalStrategy() {
+export async function initAuthLocalStrategy() {
   const userController = new UserController();
 
   passport.use(
@@ -26,7 +27,7 @@ export function initAuthLocalStrategy() {
         if (user == null) {
           return done(new ApplicationError(`User and password not found`));
         } else {
-          return done(null, {username: user.username});
+          return done(null, {id: user.id as number, username: user.username});
         }
       }
     )

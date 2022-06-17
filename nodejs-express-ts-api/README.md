@@ -34,6 +34,7 @@ Uma aplicação Express pode usar os seguintes tipos de middleware:
 - mocha
 - chai
 - supertest
+- Redis
 
 ## Uso
 
@@ -47,6 +48,14 @@ npx tsc && node dist/index.js
 ```
 
 Para testar, acesse via navegador a URL: [http://localhost:3000/?username=fabianorodrigo](http://localhost:3000/?username=fabianorodrigo)
+
+## Autenticação / Autorização
+
+O uso de access tokens e refresh tokens em estratégias de autenticação/autorização não é algo inédito. Dois protocolos de autorização e autenticação se popularizaram nos últimos anos que utilizam tokens para representar os certificados de uma pessoa para clientes terceiros: [OAuth 2.0](https://auth0.com/docs/protocols/oauth2) e [OpenID Connect](https://auth0.com/docs/protocols/oidc).
+
+O [artigo e vídeo da Okta](https://developer.okta.com/blog/2019/10/21/illustrated-guide-to-oauth-and-oidc) explica muito bem as motivações e funcionamento desses dois protocolos. Além disso, existem [diversas bibliotecas](https://oauth.net/code/nodejs/) para Node.js que implementam isso.
+
+
 
 ## Como foi criado
 
@@ -66,6 +75,7 @@ npm install --save-dev ts-node ts-node-dev
 npm install --save-dev eslint 
 npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
+npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai
 npm install --save-dev @types/supertest
 
 npm install express cors axios
