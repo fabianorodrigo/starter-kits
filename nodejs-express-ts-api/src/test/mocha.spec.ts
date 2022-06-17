@@ -15,7 +15,6 @@ import personPOSTSearchSpec from "./integrationTests/person/person.POST.search.s
 import personPOSTSpec from "./integrationTests/person/person.POST.spec";
 import personPUTSpec from "./integrationTests/person/person.PUT.spec";
 import {RedisServiceStub} from "./stubs";
-import {initAuthBearerStrategy, initAuthLocalStrategy} from "../auth";
 
 describe("Unit testing", function (this: Suite) {
   describe("getUserData", getUserDataSpec);
