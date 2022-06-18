@@ -96,7 +96,6 @@ npm install --save-dev @types/express-session
 
 # sequelize
 npm install sequelize sequelize-cli  
-npm install sequelize sequelize-cli 
 npm install pg pg-hstore # Postgres
 ```
 
@@ -104,6 +103,16 @@ npm install pg pg-hstore # Postgres
 - Edição do tsconfig.json
 - Criação do arquivo `.eslintrc.js`
 - Criação do .eslintignore
+- Criação do .sequilizerc ajustando para apontar para os diretórios abaixo de `./src/repositories/sequelize`
+
+```shell
+npx sequelize-cli init
+# criação modelo
+npx sequelize-cli model:create --name UF --attributes codigo:string,nome:string
+npx sequelize-cli seed:generate --name demo-ufs
+# depois de editar o seed
+npx sequelize-cli db:seed:all
+```
 
 # Fontes
 
