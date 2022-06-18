@@ -1,6 +1,6 @@
 import express from "express";
 import {PersonController} from "../controllers";
-import {authBearerlStrategyMiddleware} from "../middlewares";
+import {authBearerStrategyMiddleware} from "../middlewares";
 
 const PersonRouter = express.Router();
 
@@ -16,7 +16,7 @@ PersonRouter.put("/", personCtl.put.bind(personCtl));
 //DELETE está protegido pela autenticação (estratégia Bearer)
 PersonRouter.delete(
   "/:id",
-  authBearerlStrategyMiddleware,
+  authBearerStrategyMiddleware,
   personCtl.delete.bind(personCtl)
 );
 

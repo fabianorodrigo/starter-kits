@@ -1,3 +1,4 @@
+import {IAttributeFilter} from "./attributeFilter.interface";
 import fs, {promises as fsPromises, WriteFileOptions} from "fs";
 import path from "path";
 import {NotFoundError} from "../customErrors";
@@ -59,11 +60,34 @@ export class FileSystemRepository<T extends IBase> implements IRepository<T> {
       }
     });
   }
-  getByAttribute(attribute: string, value: unknown): Promise<ReadonlyArray<T>> {
+  getByAttribute(filter: IAttributeFilter): Promise<ReadonlyArray<T>> {
     return new Promise((resolve) => {
-      resolve(Object.values(this._db).filter((row) => row[attribute] == value));
+      resolve(
+        Object.values(this._db).filter(
+          (row) => row[filter.attribute] == filter.value
+        )
+      );
     });
   }
+  getByAttributesAND(filter: IAttributeFilter[]): Promise<ReadonlyArray<T>> {
+    return new Promise((resolve) => {
+      resolve(
+        Object.values(this._db).filter((row) =>
+          filter.every((f) => row[f.attribute] == f.value)
+        )
+      );
+    });
+  }
+  getByAttributesOR(filter: IAttributeFilter[]): Promise<ReadonlyArray<T>> {
+    return new Promise((resolve) => {
+      resolve(
+        Object.values(this._db).filter((row) =>
+          filter.some((f) => row[f.attribute] == f.value)
+        )
+      );
+    });
+  }
+
   getAll(): Promise<ReadonlyArray<T>> {
     return new Promise((resolve) => {
       resolve(Object.values(this._db));

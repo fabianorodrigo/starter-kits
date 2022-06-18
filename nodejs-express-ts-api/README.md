@@ -87,6 +87,10 @@ npm install --save-dev @types/jsonwebtoken
 npm install dotenv
 npm install redis
 npm install --save-dev @types/redis
+npm install passport-twitter
+npm install --save @types/passport-twitter
+npm install express-session
+npm install --save-dev @types/express-session
 ```
 
 - criação pasta `src`

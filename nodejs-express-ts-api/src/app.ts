@@ -1,14 +1,33 @@
 import cors from "cors";
 import express, {Request, Response} from "express";
-import {initAuthBearerStrategy, initAuthLocalStrategy} from "./auth";
-import {PersonRouter, UserGitHubRouter, UserRouter} from "./routes/";
+import session from "express-session";
+import {
+  initAuthBearerStrategy,
+  initAuthLocalStrategy,
+  initAuthTwitterStrategy,
+} from "./auth";
+import {
+  AuthRouter,
+  PersonRouter,
+  UserGitHubRouter,
+  UserRouter,
+} from "./routes/";
 
 // init express
 const app = express();
+// Uso de sessão foi exigido pela autenticação via Twitter
+app.use(
+  session({
+    secret: process.env.EXPRESS_SESSION_SECRET as string,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // init local and bearer strategies authentication via passport
 initAuthLocalStrategy();
 initAuthBearerStrategy();
+initAuthTwitterStrategy();
 
 // Enable CORS
 app.use(cors());
@@ -28,7 +47,13 @@ app.get("/stop", (req: Request, res: Response) => {
   process.kill(process.pid, "SIGTERM");
   res.status(200).send();
 });
+//home
+app.get("/home", (req: Request, res: Response) => {
+  res.status(200).send("You're home");
+});
 
+// Authentication
+app.use("/", AuthRouter);
 // User
 app.use(`/user`, UserRouter);
 // Person

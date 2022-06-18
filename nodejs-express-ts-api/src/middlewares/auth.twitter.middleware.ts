@@ -1,25 +1,25 @@
 import {NextFunction, Request, Response} from "express";
 import passport from "passport";
-import {IBearerStrategyResult} from "../auth";
+import {ITwitterStrategyResult} from "../auth/twitter.strategy";
 import {handleRequestErrors} from "../customErrors";
 
 /**
  * Middleware para fazer o tratamento adequado de autenticação
- * via estratégia Bearer (token)
+ * via estratégia Twitter
  *
  * @param req Request
  * @param res Response
  * @param next next
  */
-export function authBearerStrategyMiddleware(
+export function authTwitterStrategyMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ) {
   passport.authenticate(
-    "bearer",
-    {session: false},
-    (err, user: IBearerStrategyResult) => {
+    "twitter",
+    {failureRedirect: "/login", failureMessage: true},
+    (err, user: ITwitterStrategyResult) => {
       // console.log(
       //   ` =================== PASSEI no MiDDLEware ==================================== `
       // );

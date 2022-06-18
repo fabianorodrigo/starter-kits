@@ -24,7 +24,12 @@ export class UserController extends BaseController<IUser> {
   /**
    * If during POST or PUT, the entity has others attributes than these, it will throw an error.
    */
-  protected allowedAttributes: ReadonlyArray<string> = ["username", "password"];
+  protected allowedAttributes: ReadonlyArray<string> = [
+    "username",
+    "password",
+    "profileId",
+    "provider",
+  ];
   /**
    * If during POST or PUT, the entity miss these attributes, it will throw an error.
    */
@@ -72,9 +77,46 @@ export class UserController extends BaseController<IUser> {
    */
   authUser(username: string, password: string): Promise<IUser | null> {
     return new Promise<IUser | null>(async (resolve) => {
-      const users = await this.repository.getByAttribute("username", username);
+      const users = await this.repository.getByAttribute({
+        attribute: "username",
+        value: username,
+      });
       if (users.length == 0 || users[0].password != password) {
         resolve(null);
+      } else {
+        resolve(users[0]);
+      }
+    });
+  }
+
+  /**
+   * Authenticates the user with Twitter
+   *
+   * @param profileId identification of user at Twitter
+   * @returns The object user if is found one with the username and password informed
+   */
+  authUserByTwitter(profileId: string): Promise<IUser | null> {
+    return new Promise<IUser | null>(async (resolve) => {
+      const users = await this.repository.getByAttributesAND([
+        {
+          attribute: "provider",
+          value: "https://twitter.com",
+        },
+        {
+          attribute: "profileId",
+          value: profileId,
+        },
+      ]);
+      // The Twitter account has not logged in to this app before.  Create
+      // new user record and link it to the Twitter account.
+      if (users.length == 0) {
+        const newUser = await this.createEntity({
+          username: profileId,
+          profileId,
+          provider: "https://twitter.com",
+          password: "",
+        });
+        resolve(newUser);
       } else {
         resolve(users[0]);
       }
@@ -177,13 +219,10 @@ export class UserController extends BaseController<IUser> {
 
   /**
    * Write a new person registry to the database.
-   * @param {Request<IUser>} req Expected to have a IUser in the body
+   * @param {IUser} user IUser to be created
    */
-  protected async createEntity(req: Request<IUser>): Promise<IUser> {
-    if (req.body.id) {
-      throw new ApplicationError("Person's already has an id, use PUT instead");
-    }
-    return this.repository.create(req.body);
+  protected async createEntity(user: IUser): Promise<IUser> {
+    return this.repository.create(user);
   }
 
   /**

@@ -100,7 +100,7 @@ export abstract class BaseController<T> {
   async post(req: Request<T>, res: Response<T | IServerError>): Promise<void> {
     try {
       this.validateAttributes(req.body);
-      const result = await this.createEntity(req);
+      const result = await this.createEntity(req.body);
       res.status(201).json(result);
     } catch (e: any) {
       if (e.domain) {
@@ -113,9 +113,9 @@ export abstract class BaseController<T> {
   }
   /**
    * Must implement the logic to create a new entity in the repository
-   * @param req Request from client
+   * @param entity Entity to create
    */
-  protected abstract createEntity(req: Request<T>): Promise<T>;
+  protected abstract createEntity(entity: T): Promise<T>;
 
   /**
    * Update an entity in the database.

@@ -67,13 +67,10 @@ export class PersonController extends BaseController<IPerson> {
 
   /**
    * Write a new person registry to the database.
-   * @param {Request<IPerson>} req Expected to have a IPerson in the body
+   * @param {Request<IPerson>} entity Expected to have a IPerson in the body
    */
-  protected async createEntity(req: Request<IPerson>): Promise<IPerson> {
-    if (req.body.id) {
-      throw new ApplicationError("Person's already has an id, use PUT instead");
-    }
-    return this.repository.create(req.body);
+  protected async createEntity(entity: IPerson): Promise<IPerson> {
+    return this.repository.create(entity);
   }
 
   /**
