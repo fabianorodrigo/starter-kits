@@ -57,6 +57,10 @@
     "passport-http-bearer": "^1.0.1",
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "redis": "^4.1.0"
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "redis": "^4.1.0",
+    "sequelize": "^6.21.0",
+    "sequelize-cli": "^6.4.1"
   }
 }
