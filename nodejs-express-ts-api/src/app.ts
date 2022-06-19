@@ -8,6 +8,7 @@ import {
 } from "./auth";
 import {
   AuthRouter,
+  CityRouter,
   PersonRouter,
   UFRouter,
   UserGitHubRouter,
@@ -59,8 +60,11 @@ app.use("/", AuthRouter);
 app.use(`/user`, UserRouter);
 // Person
 app.use(`/person`, PersonRouter);
-// UFsd
+// UFs
 app.use(`/uf`, UFRouter);
+// Cities
+app.use(`/city`, CityRouter);
+
 // Users GitHub
 app.get("/usergithub/", UserGitHubRouter);
 

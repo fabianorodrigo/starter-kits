@@ -2,16 +2,16 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("ta_unidade_federacao", {
-      codigo: {
+      code: {
         allowNull: false,
         autoIncrement: false,
         primaryKey: true,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(2),
         field: "cd_uf",
       },
-      nome: {
+      name: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         field: "nm_uf",
       },
       createdAt: {
@@ -19,12 +19,12 @@ module.exports = {
         type: Sequelize.DATE,
       },
       updatedAt: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("UFs");
+    await queryInterface.dropTable("ta_unidade_federacao");
   },
 };

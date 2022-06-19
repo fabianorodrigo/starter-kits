@@ -31,6 +31,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("uf", null, {});
+    await queryInterface.bulkDelete("ta_unidade_federacao", null, {});
   },
 };
