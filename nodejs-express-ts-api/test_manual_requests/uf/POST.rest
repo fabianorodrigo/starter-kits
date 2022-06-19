@@ -1,0 +1,8 @@
+
+POST http://localhost:3000/uf/
+Content-Type: application/json
+
+ {
+    "code": "ES",
+    "name": "Espírito Santo"
+  }

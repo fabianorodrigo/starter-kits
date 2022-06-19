@@ -11,6 +11,9 @@
       "sourceMap": true,
       "outDir": "./dist",
       "strict": true,                                      /* Enable all strict type-checking options. */
+      "allowJs": true,                                     /* Allow JavaScript files to be compiled. [Sequelize ainda sem suporte full Typescript]*/
+      "experimentalDecorators": true,                      /* Enable experimental support for ES7 decorators. [SEQUELIZE] */
+      "emitDecoratorMetadata": true                        /* Emit metadata for class decorators. [SEQUELIZE] */
     },
     "lib": ["es2015"]
   }

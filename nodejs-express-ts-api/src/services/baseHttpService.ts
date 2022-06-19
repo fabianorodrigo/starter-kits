@@ -1,5 +1,5 @@
 import axios, {AxiosError, AxiosRequestConfig} from "axios";
-import {APIResponse, ServerError} from "../model";
+import {APIResponse, IServerError} from "../model";
 
 export class BaseHttpService {
   constructor(private baseUrl: string) {}
@@ -13,7 +13,7 @@ export class BaseHttpService {
       return {success: true, message: "", result: data};
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        const serverError = e as AxiosError<ServerError>;
+        const serverError = e as AxiosError<IServerError>;
         if (serverError && serverError.response) {
           return {
             success: false,

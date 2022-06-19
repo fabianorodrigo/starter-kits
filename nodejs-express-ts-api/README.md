@@ -79,24 +79,40 @@ npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai
 npm install --save-dev @types/supertest
 
 npm install express cors axios
+
+npm install dotenv
 npm install passport passport-local 
 npm install passport-http-bearer
 npm install --save-dev @types/passport
 npm install jsonwebtoken
 npm install --save-dev @types/jsonwebtoken
-npm install dotenv
 npm install redis
 npm install --save-dev @types/redis
+
 npm install passport-twitter
 npm install --save @types/passport-twitter
 npm install express-session
 npm install --save-dev @types/express-session
+
+# sequelize
+npm install sequelize sequelize-cli  
+npm install pg pg-hstore # Postgres
 ```
 
 - criação pasta `src`
 - Edição do tsconfig.json
 - Criação do arquivo `.eslintrc.js`
 - Criação do .eslintignore
+- Criação do .sequilizerc ajustando para apontar para os diretórios abaixo de `./src/repositories/sequelize`
+
+```shell
+npx sequelize-cli init
+# criação modelo
+npx sequelize-cli model:create --name UF --attributes codigo:string,nome:string
+npx sequelize-cli seed:generate --name demo-ufs
+# depois de editar o seed
+npx sequelize-cli db:seed:all
+```
 
 # Fontes
 

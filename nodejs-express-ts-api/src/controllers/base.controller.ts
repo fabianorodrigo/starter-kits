@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {NotFoundError} from "../customErrors";
 import {ApplicationError} from "../customErrors/ApplicationError";
-import {ServerError as IServerError} from "../model";
+import {IServerError as IServerError} from "../model";
 import {IRepository} from "../repositories";
 
 export abstract class BaseController<T> {
