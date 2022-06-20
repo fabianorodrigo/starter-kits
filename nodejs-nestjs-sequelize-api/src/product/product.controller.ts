@@ -3,15 +3,12 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
 import { ProductDTO } from './DTO/product.dto';
-import { Product } from './product.model';
 import { ProductService } from './product.service';
 
 @Controller('product')
