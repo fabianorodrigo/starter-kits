@@ -1,7 +1,8 @@
 import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { ProductDTO } from './DTO/product.dto';
 
 @Table
-export class Product extends Model<Product> {
+export class Product extends Model<ProductDTO> {
   @Column({
     type: DataType.STRING(60),
     allowNull: false,
@@ -11,6 +12,11 @@ export class Product extends Model<Product> {
   @Column({
     type: DataType.STRING(100),
     allowNull: false,
+    unique: true,
+    validate: {
+      notEmpty: true,
+      len: [3, 100],
+    },
   })
   name: string;
 

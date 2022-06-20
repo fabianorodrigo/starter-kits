@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { ProductDTO } from './DTO/product.dto';
 import { Product } from './product.model';
 
 @Injectable()
@@ -9,11 +10,11 @@ export class ProductService {
     private productModel: typeof Product,
   ) {}
 
-  get(): Promise<ReadonlyArray<Product>> {
+  get(): Promise<ReadonlyArray<ProductDTO>> {
     return this.productModel.findAll();
   }
 
-  getById(id: number): Promise<Product> {
+  getById(id: number): Promise<ProductDTO> {
     return this.productModel.findByPk(id);
   }
 
@@ -21,12 +22,12 @@ export class ProductService {
     return this.productModel.findAll({ where: { code: code } });
   }
 
-  create(product: Product) {
-    this.productModel.create(product);
+  create(product: ProductDTO): Promise<ProductDTO> {
+    return this.productModel.create(product);
   }
 
-  update(product: Product) {
-    this.productModel.update(product, {
+  update(product: ProductDTO) {
+    return this.productModel.update(product, {
       where: { id: product.id },
     });
   }
