@@ -3,7 +3,7 @@ POST http://localhost:3000/product/
 Content-Type: application/json
 
  {
-    "code": "XPTO",
-    "name": "Sweet Potato",
-    "price": 5.60
+    "code": "XYZ",
+    "name": "Donuts",
+    "price": 4.60
   }

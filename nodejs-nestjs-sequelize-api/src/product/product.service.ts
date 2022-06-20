@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Product } from 'src/model';
+import { Product } from './product.model';
 
 @Injectable()
 export class ProductService {
@@ -17,6 +17,10 @@ export class ProductService {
     return this.productModel.findByPk(id);
   }
 
+  getByCode(code: string): Promise<Product[]> {
+    return this.productModel.findAll({ where: { code: code } });
+  }
+
   create(product: Product) {
     this.productModel.create(product);
   }
@@ -29,5 +33,8 @@ export class ProductService {
 
   async del(id: number): Promise<void> {
     const result = await this.productModel.destroy({ where: { id: id } });
+    if (result === 0) {
+      throw new Error('Product not deleted');
+    }
   }
 }

@@ -6,32 +6,36 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { Product } from 'src/model';
-import { ProductService } from 'src/services';
+import { Product } from './product.model';
+import { ProductService } from './product.service';
 
 @Controller('product')
 export class ProductController {
   constructor(private productService: ProductService) {}
 
-  @Get()
-  async get(): Promise<ReadonlyArray<Product>> {
-    return this.productService.get();
-  }
-
   @Get(':id')
-  async getById(@Param() params): Promise<Product> {
-    const { id } = params;
+  async getById(@Param('id') id): Promise<Product> {
     return this.productService.getById(id);
   }
 
+  @Get()
+  async getByCode(@Query('code') code): Promise<ReadonlyArray<Product>> {
+    if (code) {
+      return this.productService.getByCode(code);
+    } else {
+      return this.productService.get();
+    }
+  }
+
   @Post()
-  async post(@Body() product) {
+  async post(@Body() product: Product) {
     return this.productService.create(product);
   }
 
   @Put()
-  put(@Body() product) {
+  put(@Body() product: Product) {
     return this.productService.update(product);
   }
 

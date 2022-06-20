@@ -35,6 +35,26 @@
         "program": "${workspaceFolder}/nodejs-express-ts-api/node_modules/mocha/bin/_mocha",
         "runtimeArgs": ["-r", "ts-node/register"],
         "args": ["${workspaceRoot}/nodejs-express-ts-api/src/test/person.DELETE.spec.ts"]
+      },
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Debug nodejs-nestjs-sequelize-api",
+        "args": [
+            "${workspaceFolder}/nodejs-nestjs-sequelize-api/src/main.ts"
+        ],
+        "runtimeArgs": [
+            "--nolazy",
+            "-r",
+            "ts-node/register",
+            "-r",
+            "tsconfig-paths/register"
+        ],
+        "sourceMaps": true,
+        "envFile": "${workspaceFolder}/nodejs-nestjs-sequelize-api/.env",
+        "cwd": "${workspaceRoot}/nodejs-nestjs-sequelize-api",
+        "console": "integratedTerminal",
+        "preLaunchTask": "tsc: watch - nodejs-nestjs-sequelize-api/tsconfig.build.json",
       }
 
     ]

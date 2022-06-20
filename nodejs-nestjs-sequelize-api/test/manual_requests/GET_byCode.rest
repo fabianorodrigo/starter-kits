@@ -1,0 +1,4 @@
+
+GET http://localhost:3000/product?code=XYZ
+Content-Type: application/json
+
