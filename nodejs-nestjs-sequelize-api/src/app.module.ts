@@ -23,6 +23,12 @@ import { UserModule } from './user/user.module';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    // ativa o interceptador disponibilizado pelo NestJS que trata da serialização dos dados
+    // com isso, as anotações do class-transformer feitas nos DTOs passam a fazer efeito
+    // NÃO ROLOU
+    //{ provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+  ],
 })
 export class AppModule {}

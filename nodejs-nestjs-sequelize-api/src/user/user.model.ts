@@ -6,6 +6,7 @@ import {
   PrimaryKey,
 } from 'sequelize-typescript';
 import { UserDTO } from './DTO/user.dto';
+import { Exclude } from 'class-transformer';
 
 @Table({ tableName: 'tb_user' })
 export class User extends Model<UserDTO> {
@@ -21,6 +22,8 @@ export class User extends Model<UserDTO> {
   })
   username: string;
 
+  //remove a senha quando serializa para JSON (para não devolver senha pro cliente)
+  @Exclude({ toPlainOnly: true })
   @Column({
     type: DataType.STRING(64),
     allowNull: false,
