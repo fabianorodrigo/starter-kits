@@ -45,12 +45,14 @@ npm install typescript --save-dev
 npx tsc --version
 
 npx tsc --init
-npm install -save-dev @types/node
+npm install --save-dev @types/node
 npm install @tsconfig/node16 --save-dev
-npm install ts-node --save-dev
+npm install --save-dev ts-node ts-node-dev
 npm install eslint --save-dev
 npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
 npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
+npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai  
+npm install redis
 ```
 
 - criação pasta `src`

@@ -1,0 +1,9 @@
+
+POST http://localhost:3000/person/
+Content-Type: application/json
+
+{
+    "name": "Fabiano Nascimento",
+    "age": 42,
+    "url": "https://github.com/fabianorodrigo"
+}

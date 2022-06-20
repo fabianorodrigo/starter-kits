@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Debug nodejs-express-ts-api",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-express-ts-api",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-express-ts-api/src/index.ts"]
+      },
+      {
+        "name": "Debug Tests nodejs-ts",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-ts",
+        "program": "${workspaceFolder}/nodejs-ts/node_modules/mocha/bin/_mocha",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-ts/src/test/mocha.spec.ts"]
+        
+      },{
+        "name": "Debug Tests nodejs-express-ts-api",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-express-ts-api",
+        "program": "${workspaceFolder}/nodejs-express-ts-api/node_modules/mocha/bin/_mocha",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-express-ts-api/src/test/mocha.spec.ts"]
+      },
+      {
+        "name": "Debug Tests SPECIAL nodejs-express-ts-api",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceRoot}/nodejs-express-ts-api",
+        "program": "${workspaceFolder}/nodejs-express-ts-api/node_modules/mocha/bin/_mocha",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["${workspaceRoot}/nodejs-express-ts-api/src/test/person.DELETE.spec.ts"]
+      }
+
+    ]
+  }

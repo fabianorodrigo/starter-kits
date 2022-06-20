@@ -20,6 +20,8 @@ module.exports = {
     ui.functionResult(RegExpression.findNumericCharacters, TEXT);
     //exec: /[0-9]+/g
     ui.functionResult(RegExpression.findNumbers, TEXT);
+    //match: /([0-9])+/g
+    ui.functionResult(RegExpression.matchNumbers, TEXT);
     //RegEx
     ui.functionResult(
       RegExpression.replaceDynamically,

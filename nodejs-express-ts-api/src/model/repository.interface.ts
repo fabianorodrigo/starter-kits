@@ -1,4 +1,4 @@
-import {User} from "./user.interface";
+import {User} from "./userGithub.interface";
 
 export interface Repository {
   id: number;

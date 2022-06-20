@@ -1,24 +1,21 @@
-import cors from "cors";
-import express from "express";
-import {UserDTO} from "./model/user.interface";
-import {getUserData} from "./services/userService";
+import dotenv from "dotenv";
+// load environment variables from .env file
+dotenv.config();
 
-const app = express();
-app.use(cors());
+import app from "./app";
+import {RedisService} from "./services";
+
 const port = 3000;
 
-const cache: {[key: string]: UserDTO} = {};
-
-app.get("/", async (req, res) => {
-  const name = req.query["username"] as string;
-  console.log("name", name);
-  if (!cache.hasOwnProperty(name)) {
-    console.log(`WE HAD TO FETCH`);
-    cache[name] = await getUserData(name);
-  }
-  res.json(cache[name]);
+const server = app.listen(port, () => {
+  return console.log(`Express is listening at http://localhost:${port}`);
 });
 
-app.listen(port, () => {
-  return console.log(`Express is listening at http://localhost:${port}`);
+//Tratamento no encerramento
+process.on("SIGTERM", () => {
+  server.close(async () => {
+    console.log(`Disconnecting from Redis ...`);
+    await RedisService.disconnectAllInstances();
+    console.log(`BYE!`);
+  });
 });

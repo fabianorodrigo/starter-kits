@@ -1,0 +1,4 @@
+
+GET http://localhost:3000/user/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjU1MzkyMDM1LCJleHAiOjE2NTUzOTI5MzV9.N6Vxjj0hUveAbHn25F5duMUHIeUHs40lyOVZkQk2MUo

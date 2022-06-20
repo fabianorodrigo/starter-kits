@@ -1,0 +1,3 @@
+
+GET http://localhost:3000/person/3?username=teste
+Content-Type: application/json

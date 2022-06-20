@@ -8,6 +8,7 @@ import {
   findNumericCharacters,
   findNumbers,
   replaceDynamically,
+  matchNumbers,
 } from "./index";
 
 chai.use(chaiAsPromised);
@@ -46,7 +47,7 @@ export default function () {
       expect(r[3][0]).to.eql("0");
       expect(r[4][0]).to.eql("0");
     });
-    it(`# should take the numbers in a text when they exist`, async function () {
+    it(`# should take the numbers in a text when they exist (Regex.exec)`, async function () {
       // NO numbers
       const rNoNumbers = findNumbers(TEXT);
       expect(rNoNumbers).to.be.an("array").that.have.length(0);
@@ -55,6 +56,16 @@ export default function () {
       expect(r).to.be.an("array").that.have.length(2);
       expect(r[0][0]).to.eql("20");
       expect(r[1][0]).to.eql("100");
+    });
+    it(`# should match the numbers in a text when they exist (String.match)`, async function () {
+      // NO numbers
+      const rNoNumbers = matchNumbers(TEXT);
+      expect(rNoNumbers).to.be.null;
+      // With numbers
+      const r = matchNumbers(`I want 20 coffes of 100ml`);
+      expect(r).to.be.an("array").that.have.length(2);
+      expect(r[0]).to.eql("20");
+      expect(r[1]).to.eql("100");
     });
   });
   describe(`Replacement`, function () {
