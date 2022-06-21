@@ -21,12 +21,8 @@ export class ProductController {
   }
 
   @Get()
-  async getByCode(@Query('code') code): Promise<ReadonlyArray<ProductDTO>> {
-    if (code) {
-      return this.productService.getByCode(code);
-    } else {
-      return this.productService.get();
-    }
+  async get(@Query('filter') filter): Promise<ReadonlyArray<ProductDTO>> {
+    return this.productService.get(filter);
   }
 
   @Post()
