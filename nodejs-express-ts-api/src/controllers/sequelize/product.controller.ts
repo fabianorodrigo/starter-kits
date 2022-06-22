@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import {Op} from "sequelize";
 import {NotFoundError} from "../../customErrors";
 import {ApplicationError} from "../../customErrors/ApplicationError";
 import {IServerError} from "../../model";
@@ -44,19 +45,25 @@ export class ProductController {
    * @param {Request} req Request
    * @param {T|IServerError} res The entity when found
    */
-  static async get(
+  static async filter(
     req: Request,
     res: Response<ReadonlyArray<Product> | IServerError>
   ): Promise<void> {
     try {
-      const where: {[key: string]: string} = {};
-      if (req.body) {
-        Object.keys(req.body).forEach((key) => {
-          where[key] = req.body[key];
-        });
-      }
+      const {filter} = req.query;
+      const where =
+        !filter || filter == ""
+          ? {}
+          : {
+              where: {
+                [Op.or]: [
+                  {name: {[Op.iLike]: `%${filter}%`}},
+                  {code: {[Op.iLike]: `%${filter}%`}},
+                ],
+              },
+            };
 
-      res.status(200).json(await Product.findAll({where: where}));
+      res.status(200).json(await Product.findAll(where));
     } catch (e: unknown) {
       if (e instanceof NotFoundError) {
         res.status(404).json(ProductController.NOT_FOUND_ERROR);
