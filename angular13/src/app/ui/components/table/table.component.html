@@ -5,12 +5,38 @@
   <ng-container *ngFor="let column of columns">
     <ng-container [matColumnDef]="column.propertyName">
       <th mat-header-cell *matHeaderCellDef>{{ column.headerTitle }}</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element[column.propertyName] }}
+      <td mat-cell *matCellDef="let row">
+        {{ row[column.propertyName] }}
       </td>
     </ng-container>
   </ng-container>
+  <ng-container matColumnDef="Actions" *ngIf="edit.observed || delete.observed">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let row">
+      <button
+        *ngIf="edit.observed"
+        mat-icon-button
+        aria-label="Edit row"
+        (click)="onEdit($event, row)"
+      >
+        <mat-icon>drive_file_rename_outline</mat-icon>
+      </button>
+      <button
+        *ngIf="delete.observed"
+        mat-icon-button
+        aria-label="Delete row"
+        (click)="onDelete($event, row)"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="getColumnsDef()"></tr>
-  <tr mat-row *matRowDef="let row; columns: getColumnsDef()"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: getColumnsDef()"
+    (click)="clickRow($event, row)"
+    [class.row-selected]="selectedRows.has(row)"
+  ></tr>
 </table>

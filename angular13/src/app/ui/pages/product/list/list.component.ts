@@ -45,8 +45,9 @@ export class ProductListComponent implements OnInit {
     this.productList$ = this.form.controls['filter'].valueChanges.pipe(
       //só repassado o fluxo após 300ms
       debounceTime(ESPERA_DIGITACAO_MS),
-      // só passa elemento se atender o valor digitado tiver pelo menos 3 caracteres
-      filter((v) => v.length >= 3 || !v.length),
+      // só passa elemento se atender o valor digitado tiver pelo
+      // menos 3 caracteres ou não tiver sido digitado nada
+      //filter((v) => v.length >= 3 || !v.length),
       //só passa se for diferente do último
       distinctUntilChanged(),
       // redireciona fluxo para outro observable
@@ -56,5 +57,12 @@ export class ProductListComponent implements OnInit {
       this.showResults = true;
       this.searchResult = products;
     });
+  }
+
+  onEdit(product: Product) {
+    alert(`Editar ${product.name}`);
+  }
+  onDelete(product: Product) {
+    alert(`Deletar ${product.name}`);
   }
 }

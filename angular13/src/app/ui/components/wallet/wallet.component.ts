@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Web3Service } from 'src/app/services';
-import { ProviderErrors } from './../../../model/eip1193/providerErrors';
+import { ProviderErrors } from '../../../web3.0/model/eip1193/providerErrors';
 import { MessageService } from './../../../services/message.service';
 
 declare let window: any;
