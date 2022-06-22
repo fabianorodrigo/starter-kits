@@ -6,15 +6,19 @@ import { MaterialModule } from './../material.module';
 import { ComponentsModule } from './components/components.module';
 import { HomeComponent } from './pages/home/home.component';
 import { UiRoutingModule } from './ui.routes';
+import { ProductListComponent } from './pages/product/list/list.component';
+import { FormComponent } from './pages/product/form/form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ProductListComponent, FormComponent],
   imports: [
     CommonModule,
     RouterModule,
     MaterialModule,
     UiRoutingModule,
     ComponentsModule,
+    ReactiveFormsModule,
   ],
   //snackbar global default options
   providers: [

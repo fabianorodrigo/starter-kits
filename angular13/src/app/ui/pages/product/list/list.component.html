@@ -1,0 +1,21 @@
+<div>
+  <form class="form" [formGroup]="form">
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Products searching</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Product name or code"
+          formControlName="filter"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+  <dapp-table
+    [dataSource]="searchResult"
+    [columns]="displayedResultColumns"
+    *ngIf="showResults"
+  >
+  </dapp-table>
+</div>

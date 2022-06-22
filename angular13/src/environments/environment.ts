@@ -7,6 +7,7 @@ export const environment = {
   chainId: 31337, //set on backend-hardhat/package.json `ganache` script
   chainName: 'Localhost',
   chainCurrencyName: 'Ether',
+  api: `http://localhost:3000`,
 };
 
 /*
