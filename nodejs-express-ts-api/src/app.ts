@@ -18,6 +18,13 @@ import {
 
 // init express
 const app = express();
+// Enable CORS
+app.use(
+  cors({
+    origin: "http://localhost:4200",
+  })
+);
+
 // Uso de sessão foi exigido pela autenticação via Twitter
 app.use(
   session({
@@ -32,8 +39,6 @@ initAuthLocalStrategy();
 initAuthBearerStrategy();
 initAuthTwitterStrategy();
 
-// Enable CORS
-app.use(cors());
 // Parse JSON bodies for this app. Make sure you put
 // `app.use(express.json())` **before** your route handlers!
 app.use(express.json());
