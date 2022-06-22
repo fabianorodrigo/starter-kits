@@ -10,6 +10,7 @@ import {
   AuthRouter,
   CityRouter,
   PersonRouter,
+  ProductRouter,
   UFRouter,
   UserGitHubRouter,
   UserRouter,
@@ -64,6 +65,8 @@ app.use(`/person`, PersonRouter);
 app.use(`/uf`, UFRouter);
 // Cities
 app.use(`/city`, CityRouter);
+// Products
+app.use(`/product`, ProductRouter);
 
 // Users GitHub
 app.get("/usergithub/", UserGitHubRouter);
