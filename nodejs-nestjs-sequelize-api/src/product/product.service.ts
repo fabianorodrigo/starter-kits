@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import { ProductDTO } from './DTO/product.dto';
 import { Product } from './product.model';
 
@@ -10,16 +11,23 @@ export class ProductService {
     private productModel: typeof Product,
   ) {}
 
-  get(): Promise<ReadonlyArray<ProductDTO>> {
-    return this.productModel.findAll();
+  get(filter: string): Promise<ReadonlyArray<ProductDTO>> {
+    const where =
+      !filter || filter.trim() == ''
+        ? {}
+        : {
+            where: {
+              [Op.or]: [
+                { name: { [Op.iLike]: `%${filter}%` } },
+                { code: { [Op.iLike]: `%${filter}%` } },
+              ],
+            },
+          };
+    return this.productModel.findAll(where);
   }
 
   getById(id: number): Promise<ProductDTO> {
     return this.productModel.findByPk(id);
-  }
-
-  getByCode(code: string): Promise<Product[]> {
-    return this.productModel.findAll({ where: { code: code } });
   }
 
   create(product: ProductDTO): Promise<ProductDTO> {

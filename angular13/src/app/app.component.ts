@@ -21,20 +21,19 @@ export class AppComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    const chainId = await this._web3Service.getCurrentChainId();
-    if (chainId != environment.chainId) {
-      const msg = `Unexpected chain: Change network to ${environment.chainName}`;
-      this._messageService.show(msg);
-      throw new Error(msg);
-    }
-
-    this.getOwner().subscribe((ownerAddress) => {
-      this.owner = ownerAddress;
-    });
-
-    this._web3Service.getUserAccountAddressSubject().subscribe((address) => {
-      this.changeWalletAccount(address);
-    });
+    // TODO: move code to WEB3 PAGES
+    // const chainId = await this._web3Service.getCurrentChainId();
+    // if (chainId != environment.chainId) {
+    //   const msg = `Unexpected chain: Change network to ${environment.chainName}`;
+    //   this._messageService.show(msg);
+    //   throw new Error(msg);
+    // }
+    // this.getOwner().subscribe((ownerAddress) => {
+    //   this.owner = ownerAddress;
+    // });
+    // this._web3Service.getUserAccountAddressSubject().subscribe((address) => {
+    //   this.changeWalletAccount(address);
+    // });
   }
 
   changeWalletAccount(_address: string | null) {

@@ -11,6 +11,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { MenuComponent } from './menu/menu.component';
 import { ShortScaleNumberComponent } from './short-scale-number/short-scale-number.component';
 import { WalletComponent } from './wallet/wallet.component';
+import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { WalletComponent } from './wallet/wallet.component';
     LayoutComponent,
     ConfirmDialogComponent,
     ShortScaleNumberComponent,
+    TableComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { WalletComponent } from './wallet/wallet.component';
     LayoutComponent,
     ConfirmDialogComponent,
     ShortScaleNumberComponent,
+    TableComponent,
   ],
 })
 export class ComponentsModule {}

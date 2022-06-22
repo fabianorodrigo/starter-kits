@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -15,6 +16,7 @@ import { UiModule } from './ui/ui.module';
     BrowserAnimationsModule,
     MaterialModule,
     UiModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
