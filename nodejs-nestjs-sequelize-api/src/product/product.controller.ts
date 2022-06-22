@@ -21,7 +21,9 @@ export class ProductController {
   }
 
   @Get()
-  async get(@Query('filter') filter): Promise<ReadonlyArray<ProductDTO>> {
+  async get(
+    @Query('filter') filter: string,
+  ): Promise<ReadonlyArray<ProductDTO>> {
     return this.productService.get(filter);
   }
 
