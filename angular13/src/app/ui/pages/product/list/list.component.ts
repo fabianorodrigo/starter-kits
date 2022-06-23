@@ -13,6 +13,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { MessageService } from 'src/app/shared/services';
 
 const ESPERA_DIGITACAO_MS = 300;
 
@@ -34,12 +35,13 @@ export class ProductListComponent implements OnInit {
   showResults = false;
 
   constructor(
-    private formBuilder: FormBuilder,
-    private productService: ProductService
+    private _formBuilder: FormBuilder,
+    private _messageService: MessageService,
+    private _productService: ProductService
   ) {}
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
+    this.form = this._formBuilder.group({
       filter: [''],
     });
     this.productList$ = this.form.controls['filter'].valueChanges.pipe(
@@ -51,11 +53,30 @@ export class ProductListComponent implements OnInit {
       //só passa se for diferente do último
       distinctUntilChanged(),
       // redireciona fluxo para outro observable
-      switchMap((v) => this.productService.getProducts(v))
+      switchMap((v) =>
+        this._productService.getProducts(v).pipe(
+          // SEM ESSE CATCHERROR, os eventos de digitação no campo param de funcionar:
+          // Error handler in the subscriber works as completion, so the the observable
+          // stops working. This is by design. If you want you observable to keep emitting despite errors,
+          // you have to handle the errors in a catch block and emit Observable of something that is not error.
+          //return of(new Error(`Service failed: ${err.message}`));
+          catchError((err) => {
+            this._messageService.show(err.message);
+            return of([]);
+          })
+        )
+      )
     );
-    this.productList$.subscribe((products) => {
-      this.showResults = true;
-      this.searchResult = products;
+    this.productList$.subscribe({
+      next: (products) => {
+        this.showResults = true;
+        this.searchResult = products;
+      },
+      // Esse tratamento encerra o observable, portanto, o catchError do `switchMap`
+      // deve tratar as falhas de conexão com o backend
+      error: (err) => {
+        this._messageService.show(err.message);
+      },
     });
   }
 

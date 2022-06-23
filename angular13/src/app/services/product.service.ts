@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { catchError, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -28,6 +28,11 @@ export class ProductService {
       ? new HttpParams().append('filter', filter)
       : undefined;
     //debugger;
-    return this.http.get<Product[]>(this.baseURL, { params });
+    return this.http.get<Product[]>(this.baseURL, { params }).pipe(
+      catchError((err) => {
+        console.log('Service failed', err);
+        return throwError(() => new Error(err.message));
+      })
+    );
   }
 }
