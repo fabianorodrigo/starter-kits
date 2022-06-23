@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MessageService, Web3Service } from './services';
+import { MessageService } from './shared/services';
+import { Web3Service } from './web3-ui/web3js/services';
 
 @Component({
   selector: 'app-root',

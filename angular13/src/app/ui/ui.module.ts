@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from './../material.module';
+import { MaterialModule } from '../material/material.module';
 import { ComponentsModule } from './components/components.module';
 import { HomeComponent } from './pages/home/home.component';
 import { UiRoutingModule } from './ui.routes';
@@ -22,7 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   //snackbar global default options
   providers: [
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3500 } },
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 5500 } },
   ],
   exports: [ComponentsModule],
 })

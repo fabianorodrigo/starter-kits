@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Components
-import { ErrorComponent } from './components/error/error.component';
+import { ErrorComponent } from '../shared/components/error/error.component';
 import { HomeComponent } from './pages/home/home.component';
 import { ProductListComponent } from './pages/product/list/list.component';
 
