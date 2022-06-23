@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as BN from 'bn.js';
-import { NumbersService } from '../../services';
+import { NumbersService } from '../../services/numbers.service';
 
 @Component({
   selector: 'dapp-short-scale-number',

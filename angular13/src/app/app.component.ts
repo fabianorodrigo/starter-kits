@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { MessageService } from './shared/services';
-import { Web3Service } from './web3-ui/web3js/services';
+import { MessageService } from './shared/services/message.service';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +16,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private _changeDetectorRefs: ChangeDetectorRef,
-    private _web3Service: Web3Service,
     private _messageService: MessageService
   ) {}
 

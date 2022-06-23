@@ -11,15 +11,12 @@ import {
   ProviderMessage,
   TransactionResult,
 } from '../model';
-import { WEB3 } from '../core/web3';
-import { Web3jsModule } from '../web3js.module';
 
 declare let window: any;
 
-@Injectable({
-  providedIn: Web3jsModule,
-})
+@Injectable({ providedIn: null })
 export class Web3Service {
+  private _web3: Web3;
   /**
    * Subject to handle the current user account address and it's changes
    */
@@ -28,7 +25,8 @@ export class Web3Service {
 
   private _chainId!: string;
 
-  constructor(@Inject(WEB3) private _web3: Web3) {
+  constructor() {
+    this._web3 = new Web3(Web3.givenProvider);
     this.hasEthereumProvider();
   }
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ProviderErrors } from '../../model';
-import { MessageService } from '../../../../shared/services';
-import { Web3Service } from '../../services';
+import { MessageService } from '../../../../shared/services/message.service';
+import { Web3Service } from '../../services/web3.service';
 
 declare let window: any;
 

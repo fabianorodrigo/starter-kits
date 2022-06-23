@@ -8,13 +8,11 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
 import { MenuComponent } from './menu/menu.component';
-import { WalletComponent } from '../../web3-ui/web3js/components/wallet/wallet.component';
 import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    WalletComponent,
     MenuComponent,
     LayoutComponent,
     ConfirmDialogComponent,
@@ -29,7 +27,6 @@ import { TableComponent } from './table/table.component';
   ],
   exports: [
     HeaderComponent,
-    WalletComponent,
     MenuComponent,
     LayoutComponent,
     ConfirmDialogComponent,

@@ -1,7 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { LinkTokenService, Web3Service } from '../../services';
-import { MessageService, NumbersService } from 'src/app/shared/services';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import BN from 'bn.js';
+import { MessageService } from 'src/app/shared/services/message.service';
+import { NumbersService } from 'src/app/shared/services/numbers.service';
+import { LinkTokenService } from '../../services/link-token.service';
+import { Web3Service } from '../../services/web3.service';
 
 @Component({
   selector: 'dapp-link',

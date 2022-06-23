@@ -10,7 +10,6 @@ import { UiModule } from './ui/ui.module';
 import { SharedModule } from './shared/shared.module';
 import { RequestInterceptor } from './core/request.interceptor';
 import { GlobalErrorHandlerService } from './services';
-import { Web3jsModule } from './web3-ui/web3js/web3js.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +20,6 @@ import { Web3jsModule } from './web3-ui/web3js/web3js.module';
     HttpClientModule,
     SharedModule,
     UiModule,
-    Web3jsModule,
     // Notice that in the module imports array, the AppRoutingModule is last and comes after the HeroesModule.
     // The order of route configuration is important because the router accepts the first route that matches a
     // navigation request path. Each routing module augments the route configuration in the order of import

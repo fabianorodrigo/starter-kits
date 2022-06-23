@@ -1,10 +1,6 @@
-import { Injectable } from '@angular/core';
 import * as BN from 'bn.js';
-import { SharedModule } from '../shared.module';
 
-@Injectable({
-  providedIn: SharedModule,
-})
+// Está sem o @Inject: https://angular.io/guide/providers#providedin-and-ngmodules
 export class NumbersService {
   constructor() {}
 

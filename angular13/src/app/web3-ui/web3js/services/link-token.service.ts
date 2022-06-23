@@ -4,12 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AbiItem } from 'web3-utils';
 import { TransactionResult } from '../model';
-import { Web3jsModule } from '../web3js.module';
 import { BaseContract } from './baseContract';
 import { Web3Service } from './web3.service';
 
 @Injectable({
-  providedIn: Web3jsModule,
+  providedIn: null,
 })
 export class LinkTokenService extends BaseContract {
   getContractABI(): AbiItem[] {

@@ -13,7 +13,7 @@ import {
   tap,
 } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { MessageService } from 'src/app/shared/services';
+import { MessageService } from 'src/app/shared/services/message.service';
 
 const ESPERA_DIGITACAO_MS = 300;
 
