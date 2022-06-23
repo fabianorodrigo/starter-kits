@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ErrorComponent } from './shared/components/error/error.component';
 
 const routes: Routes = [
   {
@@ -14,9 +15,16 @@ const routes: Routes = [
   //definindo a rota default como o '/web3js'
   {
     path: '',
-    redirectTo: '/web3js',
+    redirectTo: '/web3js/link',
     pathMatch: 'full',
   },
+  // {
+  //   path: 'adminBetToken',
+  //   component: BettokenHomeComponent,
+  //   canActivate: [OwnerGuard],
+  // },
+  { path: '404', component: ErrorComponent },
+  { path: '**', redirectTo: '/404' },
 ];
 
 @NgModule({
@@ -24,8 +32,8 @@ const routes: Routes = [
     // The RouterModule.forRoot() method returns a module that contains the configured
     // Router service provider, plus other providers that the routing library requires.
     RouterModule.forRoot(
-      routes,
-      { enableTracing: true } // <-- debugging purposes only
+      routes
+      //{ enableTracing: true } // <-- debugging purposes only
     ),
   ],
   exports: [RouterModule],

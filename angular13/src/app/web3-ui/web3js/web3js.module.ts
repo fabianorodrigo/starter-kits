@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LinkComponent } from './pages/link/link.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { Web3JSRoutingModule } from './web3js.routes';
+import { Web3JSRoutingModule } from './web3js.routing.module';
 
 @NgModule({
   declarations: [LinkComponent],
