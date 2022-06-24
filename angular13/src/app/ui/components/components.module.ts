@@ -7,13 +7,11 @@ import { UiRoutingModule } from '../ui.routing.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
-import { MenuComponent } from './menu/menu.component';
 import { TableComponent } from './table/table.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    MenuComponent,
     LayoutComponent,
     ConfirmDialogComponent,
     TableComponent,
@@ -27,7 +25,6 @@ import { TableComponent } from './table/table.component';
   ],
   exports: [
     HeaderComponent,
-    MenuComponent,
     LayoutComponent,
     ConfirmDialogComponent,
     TableComponent,

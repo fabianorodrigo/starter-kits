@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IMenuItem } from './menu-item.interface';
 
 @Component({
-  selector: 'dapp-menu',
+  selector: 'dapp-menu2',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
 export class MenuComponent implements OnInit {
-  @Input() owner: string | null = null;
-  @Input() userAccountAddress: string | null = null;
+  @Input() items: IMenuItem[] = [];
 
   @Output() sidenavClose = new EventEmitter();
 

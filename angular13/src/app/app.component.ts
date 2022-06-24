@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { MessageService } from './shared/services/message.service';
+import menu from './menu.json';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ export class AppComponent implements OnInit {
   icon = 'fa-duotone'; //https://fontawesome.com/search
   userAccountAddress: string | null = null;
   owner: string | null = null;
+  menu = menu;
 
   constructor(
     private _changeDetectorRefs: ChangeDetectorRef,

@@ -1,0 +1,9 @@
+[{"label":"Home", "link":"/home","icon": "home" },
+    {"label":"Product REST", "link":"/product","icon": "redeem" },
+    {"label":"Ðapp Web3.js", "link":"/web3js","icon": "monetization_on" },
+    {"label":"Ðapp Ethers.js", "link":"/ethersjs","icon": "monetization_on" },
+    {"label":"Administration", "icon": "build", "children":[
+        {"label":"Bet Token", "link":"/adminBetToken" },
+        {"label":"Games", "link":"/adminGames" }
+    ] }
+]

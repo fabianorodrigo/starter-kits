@@ -7,11 +7,7 @@
   ></dapp-header>
   <mat-sidenav-container>
     <mat-sidenav #sidenav role="navigation">
-      <dapp-menu
-        [userAccountAddress]="userAccountAddress"
-        [owner]="owner"
-        (sidenavClose)="sidenav.close()"
-      ></dapp-menu>
+      <dapp-menu2 [items]="menu" (sidenavClose)="sidenav.close()"></dapp-menu2>
     </mat-sidenav>
     <mat-sidenav-content>
       <main>
