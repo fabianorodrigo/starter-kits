@@ -10,6 +10,8 @@ import {
 
 export const environment = {
   production: true,
+  debugging: false,
+  tracing: false,
   chainId: 80001, //mumbai
   chainName: 'Mumbai',
   chainCurrencyName: 'MATIC',
