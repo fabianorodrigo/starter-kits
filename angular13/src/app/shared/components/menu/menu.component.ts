@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IMenuItem } from './menu-item.interface';
 
 @Component({
-  selector: 'dapp-menu2',
+  selector: 'dapp-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
