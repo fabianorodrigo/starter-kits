@@ -1,3 +1,5 @@
+export const MUMBAI_CHAINID = 80001;
+
 // valores obtidos em: https://docs.chain.link/docs/vrf-contracts/v1
 export const MUMBAI_LINK_TOKEN = '0x326C977E6efc84E512bB9C30f76E30c160eD06FB';
 

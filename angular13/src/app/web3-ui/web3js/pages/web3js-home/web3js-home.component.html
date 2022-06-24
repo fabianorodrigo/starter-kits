@@ -1,2 +1,12 @@
-<!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
-<router-outlet></router-outlet>
+<div class="flexDirectionRow">
+  <div class="sideMenu">
+    <dapp-wallet [userAccountAddress]="userAccountAddress"></dapp-wallet>
+    <dapp-menu
+      [items]="[{ label: 'LINK Token', link: '/web3js/link', icon: 'sell' }]"
+    ></dapp-menu>
+  </div>
+  <div class="flexItemGrow5">
+    <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

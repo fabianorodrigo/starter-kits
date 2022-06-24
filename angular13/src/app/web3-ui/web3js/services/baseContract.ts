@@ -12,6 +12,7 @@ import {
 import { Web3Event } from '../Event';
 import { Web3Subscription } from '../Subscription';
 import { Web3Service } from './web3.service';
+import { LoggingService } from 'src/app/shared/services/logging.service';
 
 export abstract class BaseContract {
   protected contract!: Contract;
@@ -20,7 +21,11 @@ export abstract class BaseContract {
   private _fromAccount!: string | null;
   public address: string;
 
-  constructor(protected _web3Service: Web3Service, _address: string) {
+  constructor(
+    private _loggingService: LoggingService,
+    protected _web3Service: Web3Service,
+    _address: string
+  ) {
     this.address = _address;
     this._web3Service.getUserAccountAddressSubject().subscribe((_account) => {
       this._fromAccount = _account;
@@ -79,11 +84,11 @@ export abstract class BaseContract {
    * @returns returns TRUE if the wallet address is equal to the contract owner
    */
   isOwner(): Observable<boolean> {
+    this._loggingService.debug(BaseContract.name, 'isOwner', 'CALLED');
     return new Observable<boolean>((_subscriber) => {
-      this.owner().subscribe((_ownerAddress) => {
-        this._web3Service.getUserAccountAddress().subscribe((_userAddress) => {
-          _subscriber.next(_ownerAddress === _userAddress);
-        });
+      this.owner().subscribe(async (_ownerAddress) => {
+        const _userAddress = await this._web3Service.getUserAccountAddress();
+        _subscriber.next(_ownerAddress === _userAddress);
       });
     });
   }
@@ -254,54 +259,47 @@ export abstract class BaseContract {
     ..._args: any
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((subscriber) => {
-      this.getContract(_abi as AbiItem[]).then((_contract) => {
+      this.getContract(_abi as AbiItem[]).then(async (_contract) => {
         let result;
-        this._web3Service
-          .getUserAccountAddress()
-          .subscribe(async (fromAccount) => {
-            try {
-              result = await _contract.methods[_functionName](..._args)
-                .send({
-                  from: fromAccount,
-                })
-                .on(`transactionHash`, (hash: string) => {
-                  subscriber.next({ success: true, result: _successMessage });
-                })
-                .once(
-                  `confirmation`,
-                  (
-                    confNumber: number,
-                    receipt: any,
-                    latestBlockHash: string
-                  ) => {
-                    if (_callback)
-                      _callback({
-                        success: true,
-                        result: _confirmationMessage || ``,
-                      });
-                  }
-                );
-            } catch (e: any) {
-              const providerError = ProviderErrors[e.code];
-              console.log(e.message);
-              let message = `We had some problem. The transaction wasn't sent.`;
-              if (providerError) {
-                message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+        const fromAccount = await this._web3Service.getUserAccountAddress();
+        try {
+          result = await _contract.methods[_functionName](..._args)
+            .send({
+              from: fromAccount,
+            })
+            .on(`transactionHash`, (hash: string) => {
+              subscriber.next({ success: true, result: _successMessage });
+            })
+            .once(
+              `confirmation`,
+              (confNumber: number, receipt: any, latestBlockHash: string) => {
+                if (_callback)
+                  _callback({
+                    success: true,
+                    result: _confirmationMessage || ``,
+                  });
               }
-              console.warn(e);
-              if (_callback) {
-                _callback({
-                  success: false,
-                  result: message,
-                });
-              } else {
-                subscriber.next({
-                  success: false,
-                  result: message,
-                });
-              }
-            }
-          });
+            );
+        } catch (e: any) {
+          const providerError = ProviderErrors[e.code];
+          console.log(e.message);
+          let message = `We had some problem. The transaction wasn't sent.`;
+          if (providerError) {
+            message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+          }
+          console.warn(e);
+          if (_callback) {
+            _callback({
+              success: false,
+              result: message,
+            });
+          } else {
+            subscriber.next({
+              success: false,
+              result: message,
+            });
+          }
+        }
       });
     });
   }
@@ -404,32 +402,29 @@ export abstract class BaseContract {
     ..._args: any
   ): Observable<TransactionResult<T>> {
     return new Observable<TransactionResult<T>>((subscriber) => {
-      this.getContract(_abi as AbiItem[]).then((_contract) => {
+      this.getContract(_abi as AbiItem[]).then(async (_contract) => {
         let result;
-        this._web3Service
-          .getUserAccountAddress()
-          .subscribe(async (fromAccount) => {
-            try {
-              result = await _contract.methods[_functionName](..._args).call({
-                from: fromAccount,
-              });
-              subscriber.next({
-                success: true,
-                result: transform(result),
-              });
-            } catch (e: any) {
-              const providerError = ProviderErrors[e.code];
-              let message = `We had some problem. The transaction wasn't sent.`;
-              if (providerError) {
-                message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
-              }
-              console.warn(e);
-              subscriber.next({
-                success: false,
-                result: message,
-              });
-            }
+        const fromAccount = await this._web3Service.getUserAccountAddress();
+        try {
+          result = await _contract.methods[_functionName](..._args).call({
+            from: fromAccount,
           });
+          subscriber.next({
+            success: true,
+            result: transform(result),
+          });
+        } catch (e: any) {
+          const providerError = ProviderErrors[e.code];
+          let message = `We had some problem. The transaction wasn't sent.`;
+          if (providerError) {
+            message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+          }
+          console.warn(e);
+          subscriber.next({
+            success: false,
+            result: message,
+          });
+        }
       });
     });
   }

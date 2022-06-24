@@ -8,13 +8,14 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { Web3JSRoutingModule } from './web3js.routing.module';
 import { Web3Service } from './services/web3.service';
 import { LinkTokenService } from './services/link-token.service';
+import { WalletComponent } from './components/wallet/wallet.component';
 
 // LAZY LOADING: detach the web3js feature set from the main application.
 // The root AppModule must neither load nor reference the Web3jsModule or its files.
 // When the router navigates to Web3js route, it uses the loadChildren to
 // dynamically load the Web3jsModule.
 @NgModule({
-  declarations: [Web3jsHomeComponent, LinkComponent],
+  declarations: [Web3jsHomeComponent, LinkComponent, WalletComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -27,7 +27,7 @@ export class WalletComponent implements OnInit {
    */
   async connect(event: MouseEvent): Promise<void> {
     try {
-      this._web3Service.fetchCurrentAccount();
+      this._web3Service.connect();
     } catch (err: any) {
       console.error(err);
       const providerError = ProviderErrors[err.code];

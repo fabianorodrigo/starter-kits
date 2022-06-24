@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 import detectEthereumProvider from '@metamask/detect-provider';
 import * as BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LoggingService } from 'src/app/shared/services/logging.service';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
@@ -9,6 +10,7 @@ import {
   CallbackFunction,
   ProviderErrors,
   ProviderMessage,
+  ProviderRpcError,
   TransactionResult,
 } from '../model';
 
@@ -23,15 +25,16 @@ export class Web3Service {
   private _userAccountAddressSubject = new BehaviorSubject<string | null>(null);
   private _userAccountAddress!: string | null;
 
-  private _chainId!: string;
-
-  constructor() {
+  constructor(private _loggingService: LoggingService) {
     this._web3 = new Web3(Web3.givenProvider);
     this.hasEthereumProvider();
   }
 
-  async getCurrentChainId() {
-    return await window.ethereum.request({
+  /**
+   * @returns ID of the current chain Metamask is connected with
+   */
+  getCurrentChainId(): Promise<number> {
+    return window.ethereum.request({
       method: 'eth_chainId',
     });
   }
@@ -46,37 +49,46 @@ export class Web3Service {
   /**
    * @returns The current user account address in the provider (wallet)
    */
-  getUserAccountAddress(): Observable<string | null> {
-    return new Observable((_subscriber) => {
+  getUserAccountAddress(): Promise<string | null> {
+    return new Promise((resolve) => {
+      // se o atributo já está preenchido, retorna-o
       if (this._userAccountAddress) {
-        _subscriber.next(this._userAccountAddress);
-      } else {
-        this._userAccountAddressSubject.subscribe((_address) => {
-          _subscriber.next(_address);
-        });
-        this.fetchCurrentAccount();
+        resolve(this._userAccountAddress);
+      }
+      // senão, subscreve ao subject e em seguida dispara o método de conexão.
+      // quando conectado, recebe a notificação e resolve a Promise pra quem chamou
+      else {
+        const subsription = this._userAccountAddressSubject.subscribe(
+          (_address) => {
+            resolve(_address);
+            subsription.unsubscribe();
+          }
+        );
+        this.connect();
       }
     });
   }
 
   /**
-   * Request accounts to the provider (wallet) and triggers the {userAccountAddressSubject} when done
+   * Calls wallet 'connect' action and triggers the {userAccountAddressSubject} when done
    */
-  fetchCurrentAccount(): void {
-    window.ethereum
-      .request({
+  async connect(): Promise<string | null> {
+    try {
+      const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
-      })
-      .then(this.handleOnAccountsChanged.bind(this));
-    /*.catch((err: ProviderRpcError) => {
-        if (err.code === 4001) {
-          // EIP-1193 userRejectedRequest error
-          // If this happens, the user rejected the connection request.
-          console.log('Please connect to MetaMask.');
-        } else {
-          console.error(err);
-        }
-      });*/
+      });
+      this.handleOnAccountsChanged(accounts);
+      return accounts[0];
+    } catch (err: unknown) {
+      if ((err as ProviderRpcError).code === 4001) {
+        // EIP-1193 userRejectedRequest error
+        // If this happens, the user rejected the connection request.
+        alert('Please connect to MetaMask.');
+      } else {
+        console.error(err);
+      }
+      return null;
+    }
   }
 
   /**
@@ -185,10 +197,11 @@ export class Web3Service {
   }
 
   /**
-   * Return the contrat based on ABIs and address informed
+   * Instance a Web3js contrat based on ABIs and address informed
    *
    * @param _abis Abis of contract
    * @param _address Address of contract
+   * @returns instance of Contract
    */
   async getContract(
     _abis: AbiItem[],
@@ -204,7 +217,7 @@ export class Web3Service {
   }
 
   /**
-   * Returns the version of address with checksum (lower e upper case) as specified at EIP-55
+   * Generates address with checksum (lower e upper case) as specified at EIP-55
    *
    * @param {string} _address the given HEX address
    * @return {string} The HEX address with checksum
@@ -213,10 +226,17 @@ export class Web3Service {
     return this._web3.utils.toChecksumAddress(_address);
   }
 
+  /**
+   * @returns Lastest block in the current connected chain
+   */
   getCurrentBlockNumber(): Promise<number> {
     return this._web3.eth.getBlockNumber();
   }
 
+  /**
+   * Detects Metamask Ethereum provider and makes the bindings of events: connect, disconnect, accountsChanged, message etc
+   * @returns TRUE if Wallet detected and bindings made successfully
+   */
   private async hasEthereumProvider(): Promise<boolean> {
     // this returns the provider, or null if it wasn't detected
     const provider = await detectEthereumProvider();
@@ -272,6 +292,11 @@ export class Web3Service {
    * @param connectInfo ProviderRpcError
    */
   private handleOnAccountsChanged(_accounts: string[]) {
+    this._loggingService.debug(
+      Web3Service.name,
+      'handleOnAccountsChanged',
+      _accounts
+    );
     this._userAccountAddress =
       _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : null;
     this._userAccountAddressSubject.next(this._userAccountAddress);

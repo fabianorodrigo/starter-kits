@@ -3,12 +3,19 @@
 // The list of file replacements can be found in `angular.json`.
 
 import { ABI } from './abis';
-import { KOVAN_DATA_FEED_ETH_USD_ADDRESS, KOVAN_LINK_TOKEN } from './kovan';
+import {
+  KOVAN_CHAINID,
+  KOVAN_DATA_FEED_ETH_USD_ADDRESS,
+  KOVAN_LINK_TOKEN,
+} from './kovan';
 import { MUMBAI_DATA_FEED_ETH_USD_ADDRESS, MUMBAI_LINK_TOKEN } from './mumbai';
 
 export const environment = {
   production: false,
-  chainId: 31337, //set on backend-hardhat/package.json `ganache` script
+  debugging: false,
+  tracing: false,
+  //chainId: 31337, //set on backend-hardhat/package.json `ganache` script
+  chainId: KOVAN_CHAINID,
   chainName: 'Localhost',
   chainCurrencyName: 'Ether',
   api: `http://localhost:3000`,
