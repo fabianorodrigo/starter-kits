@@ -1,18 +1,33 @@
 <mat-tab-group>
-  <mat-tab label="Metadata"
-    ><dapp-erc20-metadata
-      [contractERC20]="linkTokenService"
-      (metadataRead)="onMetadataRead($event)"
-    ></dapp-erc20-metadata>
+  <mat-tab label="Metadata">
+    <div class="container">
+      Presents the metadata of token LINK
+      <dapp-erc20-metadata
+        [contractERC20]="linkTokenService"
+        (metadataRead)="onMetadataRead($event)"
+      ></dapp-erc20-metadata>
+    </div>
   </mat-tab>
   <mat-tab label="Balance">
-    <dapp-erc20-balance
-      [contractERC20]="linkTokenService"
-      [symbol]="metadata['symbol']"
-      [decimals]="metadata['decimals']"
-    ></dapp-erc20-balance
+    <div class="container">
+      Request the LINK balance of a specific address
+      <dapp-erc20-balance
+        [contractERC20]="linkTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-balance></div
   ></mat-tab>
-  <mat-tab label="Allowance"> </mat-tab>
+  <mat-tab label="Allowance">
+    <div class="container">
+      Request the allowance that a address gave to another address to spend LINK
+      on its behalf
+      <dapp-erc20-allowance
+        [contractERC20]="linkTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-allowance>
+    </div>
+  </mat-tab>
   <mat-tab label="Transfer"> </mat-tab>
   <mat-tab label="Transfer From"> </mat-tab>
   <mat-tab label="Approve"> </mat-tab>

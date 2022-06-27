@@ -1,3 +1,4 @@
+import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
 import { NgModule } from '@angular/core';
@@ -24,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     WalletComponent,
     ERC20MetadataComponent,
     ERC20BalanceComponent,
+    ERC20AllowanceComponent,
   ],
   imports: [
     CommonModule,
