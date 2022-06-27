@@ -1,4 +1,4 @@
-import { ITableColumn } from './../../../components/table/tableColumn.interface';
+import { ITableColumn } from '../../../../shared/components/table/tableColumn.interface';
 import { Product } from '../../../../model';
 import { ProductService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';

@@ -9,6 +9,7 @@ import { UiRoutingModule } from './ui.routing.module';
 import { ProductListComponent } from './pages/product/list/list.component';
 import { FormComponent } from './pages/product/form/form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [HomeComponent, ProductListComponent, FormComponent],
@@ -19,6 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     UiRoutingModule,
     ComponentsModule,
     ReactiveFormsModule,
+    SharedModule,
   ],
   //snackbar global default options
   providers: [

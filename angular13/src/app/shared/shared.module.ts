@@ -6,12 +6,23 @@ import { MaterialModule } from '../material/material.module';
 import { NumbersService } from './services/numbers.service';
 import { MenuComponent } from './components/menu/menu.component';
 import { RouterModule } from '@angular/router';
+import { TableComponent } from './components/table/table.component';
 
 @NgModule({
-  declarations: [ShortScaleNumberComponent, ErrorComponent, MenuComponent],
+  declarations: [
+    ShortScaleNumberComponent,
+    ErrorComponent,
+    MenuComponent,
+    TableComponent,
+  ],
   imports: [CommonModule, RouterModule, MaterialModule],
   // https://angular.io/guide/providers#providedin-and-ngmodules
   providers: [NumbersService],
-  exports: [ShortScaleNumberComponent, ErrorComponent, MenuComponent],
+  exports: [
+    ShortScaleNumberComponent,
+    ErrorComponent,
+    MenuComponent,
+    TableComponent,
+  ],
 })
 export class SharedModule {}

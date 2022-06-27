@@ -7,15 +7,9 @@ import { UiRoutingModule } from '../ui.routing.module';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout/layout.component';
-import { TableComponent } from './table/table.component';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    LayoutComponent,
-    ConfirmDialogComponent,
-    TableComponent,
-  ],
+  declarations: [HeaderComponent, LayoutComponent, ConfirmDialogComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -23,11 +17,6 @@ import { TableComponent } from './table/table.component';
     UiRoutingModule,
     ReactiveFormsModule,
   ],
-  exports: [
-    HeaderComponent,
-    LayoutComponent,
-    ConfirmDialogComponent,
-    TableComponent,
-  ],
+  exports: [HeaderComponent, LayoutComponent, ConfirmDialogComponent],
 })
 export class ComponentsModule {}
