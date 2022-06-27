@@ -58,10 +58,11 @@ export class Web3Service {
       // senão, subscreve ao subject e em seguida dispara o método de conexão.
       // quando conectado, recebe a notificação e resolve a Promise pra quem chamou
       else {
-        const subsription = this._userAccountAddressSubject.subscribe(
+        const subscription = this._userAccountAddressSubject.subscribe(
           (_address) => {
             resolve(_address);
-            subsription.unsubscribe();
+
+            subscription.unsubscribe();
           }
         );
         this.connect();

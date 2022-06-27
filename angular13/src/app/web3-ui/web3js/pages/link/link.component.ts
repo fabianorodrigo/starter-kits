@@ -20,7 +20,7 @@ export class LinkComponent implements OnInit {
     private _messageService: MessageService,
     private _numberService: NumbersService,
     private _web3Service: Web3Service,
-    private _linkTokenService: LinkTokenService
+    public readonly linkTokenService: LinkTokenService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +35,7 @@ export class LinkComponent implements OnInit {
 
   private getBalance() {
     if (this.userAccountAddress) {
-      this._linkTokenService
+      this.linkTokenService
         .balanceOf(this.userAccountAddress)
         .subscribe((_balanceSBT) => {
           if (_balanceSBT.success == false) {

@@ -9,16 +9,26 @@ import { Web3JSRoutingModule } from './web3js.routing.module';
 import { Web3Service } from './services/web3.service';
 import { LinkTokenService } from './services/link-token.service';
 import { WalletComponent } from './components/wallet/wallet.component';
+import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metadata.component';
+import { ERC20BalanceComponent } from './components/erc20-balance/erc20-balance.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // LAZY LOADING: detach the web3js feature set from the main application.
 // The root AppModule must neither load nor reference the Web3jsModule or its files.
 // When the router navigates to Web3js route, it uses the loadChildren to
 // dynamically load the Web3jsModule.
 @NgModule({
-  declarations: [Web3jsHomeComponent, LinkComponent, WalletComponent],
+  declarations: [
+    Web3jsHomeComponent,
+    LinkComponent,
+    WalletComponent,
+    ERC20MetadataComponent,
+    ERC20BalanceComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule,
     MaterialModule,
     SharedModule,
     Web3JSRoutingModule,

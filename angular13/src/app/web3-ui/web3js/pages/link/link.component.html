@@ -1,11 +1,17 @@
-<div class="label-balance" *ngIf="userAccountAddress">
-  <mat-label>LINK Balance:</mat-label>
-  <div class="balance" [matTooltip]="formatedBalanceTooltip">
-    {{ formatedBalance }}
-  </div>
-</div>
-
-<div *ngIf="!userAccountAddress">Connect you wallet to check your balance</div>
+<mat-tab-group>
+  <mat-tab label="Metadata"
+    ><dapp-erc20-metadata
+      [contractERC20]="linkTokenService"
+    ></dapp-erc20-metadata>
+  </mat-tab>
+  <mat-tab label="Balance">
+    <dapp-erc20-balance [contractERC20]="linkTokenService"></dapp-erc20-balance
+  ></mat-tab>
+  <mat-tab label="Allowance"> </mat-tab>
+  <mat-tab label="Transfer"> </mat-tab>
+  <mat-tab label="Transfer From"> </mat-tab>
+  <mat-tab label="Approve"> </mat-tab>
+</mat-tab-group>
 
 <!--div class="actions">
   <button
