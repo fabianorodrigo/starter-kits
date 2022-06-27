@@ -15,13 +15,20 @@ export class ShortScaleNumberComponent implements OnInit {
 
   formatedBalance!: string;
   formatedBalanceTooltip!: string;
+  decimals: number = 1;
 
   constructor(private _numberService: NumbersService) {}
 
   ngOnInit(): void {
     if (this.value) {
-      this.formatedBalance = this._numberService.formatBNShortScale(this.value);
-      this.formatedBalanceTooltip = this._numberService.formatBN(this.value);
+      this.formatedBalance = this._numberService.formatBNShortScale(
+        this.value,
+        this.decimals
+      );
+      this.formatedBalanceTooltip = this._numberService.formatBN(
+        this.value,
+        this.decimals
+      );
     }
   }
 }

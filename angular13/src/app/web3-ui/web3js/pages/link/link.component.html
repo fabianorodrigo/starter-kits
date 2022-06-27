@@ -2,10 +2,15 @@
   <mat-tab label="Metadata"
     ><dapp-erc20-metadata
       [contractERC20]="linkTokenService"
+      (metadataRead)="onMetadataRead($event)"
     ></dapp-erc20-metadata>
   </mat-tab>
   <mat-tab label="Balance">
-    <dapp-erc20-balance [contractERC20]="linkTokenService"></dapp-erc20-balance
+    <dapp-erc20-balance
+      [contractERC20]="linkTokenService"
+      [symbol]="metadata['symbol']"
+      [decimals]="metadata['decimals']"
+    ></dapp-erc20-balance
   ></mat-tab>
   <mat-tab label="Allowance"> </mat-tab>
   <mat-tab label="Transfer"> </mat-tab>

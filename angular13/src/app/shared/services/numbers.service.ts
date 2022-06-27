@@ -1,4 +1,4 @@
-import * as BN from 'bn.js';
+import BN from 'bn.js';
 
 // Está sem o @Inject: https://angular.io/guide/providers#providedin-and-ngmodules
 export class NumbersService {
@@ -35,12 +35,20 @@ export class NumbersService {
   }
 
   /**
-   * @param bn Return the {bn} formatted with thousands separator
+   * Return the {bn} formatted with thousands separator
+   *
+   * @param bn The bignumber to be formatted
+   * @param decimals the number of decimals representantion in the {bn}
    */
-  formatBN(bn: BN): string {
+  formatBN(bn: BN, decimals: number): string {
     if (!bn) return '?';
     let result = '';
-    const bnString = bn.toString();
+    // como o bn.js não suporta decimais, foi feita a formatação com
+    // 3 decimais a menos para possibilitar a representação de frações
+    const decimalsLess3 = decimals > 3 ? decimals - 3 : decimals;
+    const bnString = bn
+      .div(new BN(Math.pow(10, decimalsLess3).toString()))
+      .toString(); // bn.toString();
     for (let i = bnString.length; i > 0; i = i - 3) {
       result =
         bnString.substring(i - 3, i) + (result.length > 0 ? ',' : '') + result;
@@ -50,10 +58,11 @@ export class NumbersService {
 
   /**
    * @param bn format the {bn} formatted with expression in shortscale 'million', 'billion', 'trillion'.
+   * @param decimals the number of decimals representantion in the {bn}
    * @see: https://www.antidote.info/en/blog/reports/millions-billions-and-other-large-numbers
    */
-  formatBNShortScale(bn: BN): string {
-    let bnFormatted = this.formatBN(bn);
+  formatBNShortScale(bn: BN, decimals: number): string {
+    let bnFormatted = this.formatBN(bn, decimals);
     if (bnFormatted.indexOf(',') == -1) return bnFormatted;
     const parts = bnFormatted.split(',');
     if (parts.length <= 2) return bnFormatted;
