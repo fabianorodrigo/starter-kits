@@ -18,7 +18,7 @@ export const environment = {
   chainId: KOVAN_CHAINID,
   chainName: 'Localhost',
   chainCurrencyName: 'Ether',
-  api: `http://localhost:3000`,
+  api: `/api`,
 
   MUMBAI: {
     LINK_TOKEN: MUMBAI_LINK_TOKEN,
