@@ -47,9 +47,15 @@ export class NumbersService {
     // 3 decimais a menos para possibilitar a representação de frações
     const decimalsLess3 = decimals > 3 ? decimals - 3 : decimals;
     try {
-      const bnString = bn
-        .div(new BN(Math.pow(10, decimalsLess3).toString()))
-        .toString(); // bn.toString();
+      const bnDivByDecimalsLess3 = bn.div(
+        new BN(Math.pow(10, decimalsLess3).toString())
+      );
+      // Se o valor de {bn} for menor que os decimais menos 3 casas decimais, resultando
+      // em zero na divisão, será retornado simplesmente o valor dividido por {decimals}
+      if (bnDivByDecimalsLess3.isZero() && !bn.isZero()) {
+        return (bn.toNumber() / Math.pow(10, decimals)).toString();
+      }
+      const bnString = bnDivByDecimalsLess3.toString(); // bn.toString();
       for (let i = bnString.length; i > 0; i = i - 3) {
         result =
           bnString.substring(i - 3, i) +
