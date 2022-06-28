@@ -1,19 +1,16 @@
-import { ITableColumn } from '../../../../shared/components/table/tableColumn.interface';
-import { Product } from '../../../../model';
-import { ProductService } from '../../../../services';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, of } from 'rxjs';
 import {
   catchError,
-  finalize,
   debounceTime,
   distinctUntilChanged,
-  filter,
   switchMap,
-  tap,
 } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { Product } from '../../../../model';
+import { ProductService } from '../../../../services';
+import { ITableColumn } from '../../../../shared/components/table/tableColumn.interface';
 
 const ESPERA_DIGITACAO_MS = 300;
 
