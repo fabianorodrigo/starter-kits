@@ -32,7 +32,6 @@ export class WalletComponent implements OnInit {
           this._web3Service
             .chainCurrencyBalanceOf(this.userAccountAddress as string)
             .subscribe((value) => {
-              console.log('value', value);
               this.balance = this._numberService.formatBN(new BN(value), 18);
             });
         }

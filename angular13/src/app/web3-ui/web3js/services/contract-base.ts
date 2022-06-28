@@ -94,50 +94,6 @@ export abstract class BaseContract {
   }
 
   /**
-   * If already exists an BehaviorSubject associated to the event {_eventName} and {_filter}, returns it
-   * Otherwise, instances a BehaviorSubject associated to the event and returns it
-   *
-   * @param _monitorParameter Object with the parameteres of event monitoring including Name of the event
-   * which BehaviorSubject will be associated; an optional filter and an optional  parameter that indicates,
-   * if is a historical search, from which block
-   *
-   * @returns Promise of instance of BehaviorSubject associated with the event {_eventName}
-   */
-  async getEventBehaviorSubject(
-    _monitorParameter: EventMonitoringParameters
-  ): Promise<BehaviorSubject<any>> {
-    const _contract = await this.getContract(this.getContractABI());
-    const _validationResult = this._validateEventAndInstanceSubject(
-      _contract,
-      _monitorParameter.eventName,
-      _monitorParameter.filter
-    );
-    const _key = _validationResult.key;
-    if (_validationResult.new) {
-      let _eventParam = undefined;
-      if (_monitorParameter.filter) {
-        _eventParam = { filter: _monitorParameter.filter };
-      }
-
-      const subscription =
-        _contract.events[_monitorParameter.eventName](_eventParam);
-      // console.log(_monitorParameter.eventName, subscription);
-      // console.log(`unsub`, subscription.unsubscribe);
-      subscription
-        .on('data', (event: any) => {
-          if (this._eventListeners[_key]) {
-            this._eventListeners[_key].next(event.returnValues);
-          }
-        })
-        .on('error', (e: any) => {
-          console.error(_monitorParameter.eventName, e);
-          //throw e;
-        });
-    }
-    return this._eventListeners[_key];
-  }
-
-  /**
    * Gets a instance of WEB3.JS Subscription of an event with the parameters requested
    * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event
    * and an optional filter and an optional  parameter that indicates,
@@ -167,36 +123,6 @@ export abstract class BaseContract {
       _monitorParameter.eventName,
       _monitorParameter
     );
-  }
-
-  /**
-   * Check if {_contract} has a event named {_eventName}. If not, throws an exception
-   * If exists, create a instance of BehaviorSubject at this._eventListeners[_eventName]
-   *
-   * @param _contract Contract evaluated
-   * @param _eventName Name of the event
-   * @param _filter Optional filter that may be used as index along with _eventName
-   *
-   * @returns The key of BehaviorSubject
-   */
-  private _validateEventAndInstanceSubject(
-    _contract: Contract,
-    _eventName: string,
-    _filter?: { [key: string]: any }
-  ): { new: boolean; key: string } {
-    if (!_contract.events[_eventName]) {
-      throw new Error(`Event '${_eventName}' does not exists in the contract`);
-    } else {
-      let _new = false;
-      const _key = _filter
-        ? _eventName.concat(JSON.stringify(_filter))
-        : _eventName;
-      if (!this._eventListeners[_key]) {
-        this._eventListeners[_key] = new BehaviorSubject<any>(null);
-        _new = true;
-      }
-      return { new: _new, key: _key };
-    }
   }
 
   /**
