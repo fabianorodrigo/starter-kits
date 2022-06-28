@@ -138,7 +138,7 @@ export class Web3Service {
             to: _addressTo,
             value: weiAmmountHEX,
           })
-          .on(`transactionHash`, (hash: string) => {
+          .once(`transactionHash`, (hash: string) => {
             _subscriber.next({ success: true, result: _successMessage });
           })
           .once(`confirmation`, (confNumber: any) => {
@@ -148,7 +148,7 @@ export class Web3Service {
                 result: _confirmationMessage || ``,
               });
           })
-          .on(`error`, (e: any) => {
+          .once(`error`, (e: any) => {
             const providerError = ProviderErrors[e.code];
             let message = `We had some problem. The transaction wasn't sent.`;
             if (providerError) {
@@ -254,7 +254,7 @@ export class Web3Service {
           'accountsChanged',
           this.handleOnAccountsChanged.bind(this)
         );
-        window.ethereum.on('message', this.handleOnMessage);
+        //window.ethereum.on('message', this.handleOnMessage);
         //Metamask Docs strongly recommend reloading the page on chain changes, unless you have good reason not to.
         window.ethereum.on('chainChanged', (_chainId: string) =>
           window.location.reload()
