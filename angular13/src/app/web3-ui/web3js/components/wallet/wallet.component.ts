@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProviderErrors } from '../../model';
 import { MessageService } from '../../../../shared/services/message.service';
 import { Web3Service } from '../../services/web3.service';
+import { NumbersService } from 'src/app/shared/services/numbers.service';
+import BN from 'bn.js';
 
 declare let window: any;
 
@@ -11,14 +13,31 @@ declare let window: any;
   styleUrls: ['./wallet.component.css'],
 })
 export class WalletComponent implements OnInit {
-  @Input() userAccountAddress: string | null = null;
+  //@Input() userAccountAddress: string | null = null;
+  userAccountAddress: string | null = null;
+  balance: string = '0';
 
   constructor(
     private _web3Service: Web3Service,
+    private _numberService: NumbersService,
     private _messageService: MessageService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._web3Service
+      .getUserAccountAddressSubject()
+      .subscribe((_accountAddress) => {
+        this.userAccountAddress = _accountAddress;
+        if (this.userAccountAddress != null) {
+          this._web3Service
+            .chainCurrencyBalanceOf(this.userAccountAddress as string)
+            .subscribe((value) => {
+              console.log('value', value);
+              this.balance = this._numberService.formatBN(new BN(value), 18);
+            });
+        }
+      });
+  }
 
   /**
    * Ask permission to connect to the Wallet (eg. Metamask) accounts
@@ -39,18 +58,5 @@ export class WalletComponent implements OnInit {
         this._messageService.show('We had some problem connecting you wallet');
       }
     }
-  }
-
-  /**
-   * Show BetToken balance of an specific account
-   *
-   * @param _accountAddress Account address to show balance
-   */
-  showBalance(_accountAddress: string) {
-    // TODO: this._betTokenContractService
-    //   .balanceOf(_accountAddress)
-    //   .subscribe((value) => {
-    //     console.log(value.result);
-    //   });
   }
 }

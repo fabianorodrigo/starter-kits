@@ -55,6 +55,11 @@ export class NumbersService {
       if (bnDivByDecimalsLess3.isZero() && !bn.isZero()) {
         return (bn.toNumber() / Math.pow(10, decimals)).toString();
       }
+      // Se o resultado for menor que 1000, a lógica do FOR abaixo não vai funcionar.
+      // Neste caso, dividimos este resultado por 1000 (refente às 3 casas decimais retirada acima)
+      else if (bnDivByDecimalsLess3.ltn(1000) && decimals != decimalsLess3) {
+        return (bnDivByDecimalsLess3.toNumber() / 1000).toString();
+      }
       const bnString = bnDivByDecimalsLess3.toString(); // bn.toString();
       for (let i = bnString.length; i > 0; i = i - 3) {
         result =

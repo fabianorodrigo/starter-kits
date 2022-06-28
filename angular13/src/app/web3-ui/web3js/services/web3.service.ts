@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import detectEthereumProvider from '@metamask/detect-provider';
 import * as BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -101,14 +101,18 @@ export class Web3Service {
    */
   chainCurrencyBalanceOf(_accountAddress: string): Observable<string> {
     return new Observable<string>((_subscriber) => {
-      this._web3.eth
-        .getBalance(_accountAddress)
-        .then((_balance: string | undefined) => {
-          _subscriber.next(_balance);
-        })
-        .catch((e: Error) => {
-          console.warn(`web3Service`, e);
-        });
+      if (_accountAddress == null) {
+        _subscriber.next('');
+      } else {
+        this._web3.eth
+          .getBalance(_accountAddress)
+          .then((_balance: string | undefined) => {
+            _subscriber.next(_balance);
+          })
+          .catch((e: Error) => {
+            console.warn(`web3Service`, e);
+          });
+      }
     });
   }
 
