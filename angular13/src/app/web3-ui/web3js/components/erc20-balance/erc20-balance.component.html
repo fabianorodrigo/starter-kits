@@ -19,13 +19,13 @@
   </mat-form-field>
 </form>
 
-<div class="balance-container" *ngIf="showBalance">
-  <label class="balance-label">{{ symbol }} Balance:</label>
+<div class="value-container" *ngIf="showBalance">
+  <label class="value-label">Balance:</label>
   <mat-spinner diameter="50" *ngIf="isLoading; else balance"></mat-spinner>
 </div>
 
 <ng-template #balance>
   <div class="balance" [matTooltip]="formatedBalanceTooltip">
-    {{ formatedBalance }}
+    {{ formatedBalance }} {{ symbol }}
   </div>
 </ng-template>

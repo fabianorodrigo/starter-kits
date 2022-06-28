@@ -46,12 +46,23 @@ export class NumbersService {
     // como o bn.js não suporta decimais, foi feita a formatação com
     // 3 decimais a menos para possibilitar a representação de frações
     const decimalsLess3 = decimals > 3 ? decimals - 3 : decimals;
-    const bnString = bn
-      .div(new BN(Math.pow(10, decimalsLess3).toString()))
-      .toString(); // bn.toString();
-    for (let i = bnString.length; i > 0; i = i - 3) {
-      result =
-        bnString.substring(i - 3, i) + (result.length > 0 ? ',' : '') + result;
+    try {
+      const bnString = bn
+        .div(new BN(Math.pow(10, decimalsLess3).toString()))
+        .toString(); // bn.toString();
+      for (let i = bnString.length; i > 0; i = i - 3) {
+        result =
+          bnString.substring(i - 3, i) +
+          (result.length > 0 ? ',' : '') +
+          result;
+      }
+    } catch (e) {
+      console.error(
+        decimalsLess3,
+        new BN(Math.pow(10, decimalsLess3).toString()),
+        e
+      );
+      result = bn.toString();
     }
     return result;
   }

@@ -21,9 +21,9 @@ export class ERC20AllowanceComponent
   @Input() decimals: number = 1;
 
   isLoading = false;
-  showBalance = false;
-  formatedBalance: string = '0';
-  formatedBalanceTooltip: string = '0';
+  showAllowance = false;
+  formatedAllowance: string = '0';
+  formatedAllowanceTooltip: string = '0';
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -36,7 +36,15 @@ export class ERC20AllowanceComponent
   ngOnInit(): void {
     //o minLength é para prevenir o "Short address/parameter Attack"
     this.form = this._formBuilder.group({
-      accountAddress: [
+      ownerAddress: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(42),
+          ethereumAddressValidator,
+        ],
+      ],
+      spenderAddress: [
         '',
         [
           Validators.required,
@@ -47,27 +55,30 @@ export class ERC20AllowanceComponent
     });
   }
 
-  getBalance(event: Event) {
+  getAllowance(event: Event) {
     event.preventDefault();
     if (this.form.valid) {
       this.isLoading = true;
-      this.showBalance = true;
+      this.showAllowance = true;
       try {
         this.contractERC20
-          .balanceOf((this.form.get('accountAddress') as FormControl).value)
+          .allowance(
+            (this.form.get('ownerAddress') as FormControl).value,
+            (this.form.get('spenderAddress') as FormControl).value
+          )
           .subscribe((result) => {
             if (result.success == false) {
               this._messageService.show(
-                `It was not possible to get ${this.form.controls['accountAddress'].value} ${this.symbol} balance`
+                `It was not possible to get the ${this.symbol} allowance from ${this.form.controls['ownerAddress'].value} to  ${this.form.controls['spenderAddress'].value}`
               );
-              this.showBalance = false;
+              this.showAllowance = false;
               return;
             }
-            this.formatedBalance = this._numberService.formatBNShortScale(
+            this.formatedAllowance = this._numberService.formatBNShortScale(
               result.result as BN,
               this.decimals
             );
-            this.formatedBalanceTooltip = this._numberService.formatBN(
+            this.formatedAllowanceTooltip = this._numberService.formatBN(
               result.result as BN,
               this.decimals
             );
@@ -78,7 +89,7 @@ export class ERC20AllowanceComponent
         this._messageService.show((<Error>e).message);
       }
     } else {
-      this.showBalance = false;
+      this.showAllowance = false;
       this._messageService.show(
         `The data filled in the form is not valid. Please, fill the form correctly before submit it`
       );

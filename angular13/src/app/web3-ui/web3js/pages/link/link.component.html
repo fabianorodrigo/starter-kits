@@ -19,7 +19,8 @@
   ></mat-tab>
   <mat-tab label="Allowance">
     <div class="container">
-      Request the allowance that a address gave to another address to spend LINK
+      Request the allowance that an owner address gave to another spender
+      address to spend {{ metadata["symbol"] }}
       on its behalf
       <dapp-erc20-allowance
         [contractERC20]="linkTokenService"
