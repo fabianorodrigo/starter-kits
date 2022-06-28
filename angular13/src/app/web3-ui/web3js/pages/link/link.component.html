@@ -31,8 +31,8 @@
   </mat-tab>
   <mat-tab label="Transfer"
     ><div class="container">
-      Tranfer an amount of {{ metadata["symbol"] }} to another account from the
-      current account connected at the wallet
+      Tranfer an amount of {{ metadata["symbol"] }} from the current account
+      connected at the wallet to another account
       <dapp-erc20-transfer
         [contractERC20]="linkTokenService"
         [symbol]="metadata['symbol']"
@@ -40,7 +40,18 @@
       ></dapp-erc20-transfer>
     </div>
   </mat-tab>
-  <mat-tab label="Transfer From"> </mat-tab>
+  <mat-tab label="Transfer From"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} an informed account to
+      another account. The account connect at the wallet must be the owner of
+      the contract in order to run successfully
+      <dapp-erc20-transfer-from
+        [contractERC20]="linkTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-transfer-from>
+    </div>
+  </mat-tab>
   <mat-tab label="Approve">
     <div class="container">
       Execute a transaction which the current account connected at the wallet
@@ -55,53 +66,3 @@
     </div>
   </mat-tab>
 </mat-tab-group>
-
-<!--div class="actions">
-  <button
-    class="button"
-    mat-raised-button
-    [disabled]="!this.userAccountAddress || loading || paused"
-    [class.spinner]="currentAction == 'BUY'"
-    color="primary"
-    [matTooltip]="
-      'Buy an ammount of Soccer Bet Tokens using ' + chainCurrencyName
-    "
-    (click)="buy($event)"
-  >
-    Buy Soccer Bet Tokens...
-  </button>
-  <button
-    class="button"
-    mat-raised-button
-    [disabled]="!this.userAccountAddress || loading || paused"
-    [class.spinner]="currentAction == 'EXCHANGE'"
-    matTooltip="Exchange an ammount of Soccer Bet Tokens for Ether"
-    (click)="exchange($event)"
-  >
-    Exchange Soccer Bet Tokens...
-  </button>
-  <button
-    class="button"
-    *ngIf="!paused && isAdmin"
-    mat-flat-button
-    [disabled]="!this.userAccountAddress || loading"
-    [class.spinner]="currentAction == 'PAUSE'"
-    color="warn"
-    matTooltip="Pause the contract"
-    (click)="pause()"
-  >
-    Pause
-  </button>
-  <button
-    class="button"
-    *ngIf="paused && isAdmin"
-    mat-flat-button
-    [disabled]="!this.userAccountAddress || loading"
-    [class.spinner]="currentAction == 'UNPAUSE'"
-    color="accent"
-    matTooltip="Unpause the contract returning it to the normal state"
-    (click)="unpause()"
-  >
-    Unpause
-  </button>
-</div -->

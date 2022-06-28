@@ -279,15 +279,26 @@ export abstract class BaseContract {
                   });
                 }
               }
-            );
+            )
+            .once('error', (e: any) => {
+              console.error(e);
+              if (_callback) {
+                let msg = `Transaction has been reverted by the blockchain network`;
+                if (e.code && ProviderErrors[e.code]) {
+                  msg = ProviderErrors[e.code].message;
+                }
+                _callback({
+                  success: false,
+                  result: msg,
+                });
+              }
+            });
         } catch (e: any) {
           const providerError = ProviderErrors[e.code];
-          console.log(e.message);
           let message = `We had some problem. The transaction wasn't sent.`;
           if (providerError) {
             message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
           }
-          console.warn(e);
           if (_callback) {
             _callback({
               success: false,
