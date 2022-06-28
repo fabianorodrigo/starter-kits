@@ -13,8 +13,8 @@
     <mat-hint
       >Inform the 42 characters long account address and ENTER.</mat-hint
     >
-    <mat-error *ngIf="getErrors('accountAddress').length > 0">{{
-      getErrors("accountAddress")[0]
+    <mat-error *ngIf="getErrorMessage('accountAddress')">{{
+      getErrorMessage("accountAddress")
     }}</mat-error>
   </mat-form-field>
 </form>

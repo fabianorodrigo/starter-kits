@@ -285,7 +285,9 @@ export abstract class BaseContract {
               if (_callback) {
                 let msg = `Transaction has been reverted by the blockchain network`;
                 if (e.code && ProviderErrors[e.code]) {
-                  msg = ProviderErrors[e.code].message;
+                  msg = `${ProviderErrors[e.code].title}: ${
+                    ProviderErrors[e.code].message
+                  }`;
                 }
                 _callback({
                   success: false,

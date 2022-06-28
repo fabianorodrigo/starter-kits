@@ -45,6 +45,7 @@ export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
   }
 
   getBalance(event: Event) {
+    this.submitted = true;
     event.preventDefault();
     if (this.form.valid) {
       this.isLoading = true;

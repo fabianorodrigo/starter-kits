@@ -11,8 +11,8 @@
       minlength="40"
     />
     <mat-hint>Inform the 42 characters long owner's account address</mat-hint>
-    <mat-error *ngIf="getErrors('fromAddress').length > 0">{{
-      getErrors("fromAddress")[0]
+    <mat-error *ngIf="getErrorMessage('fromAddress')">{{
+      getErrorMessage("fromAddress")
     }}</mat-error>
   </mat-form-field>
   <mat-form-field class="input_40characters" appearance="outline">
@@ -29,8 +29,8 @@
     <mat-hint
       >Inform the 42 characters long recipient's account address</mat-hint
     >
-    <mat-error *ngIf="getErrors('toAddress').length > 0">{{
-      getErrors("toAddress")[0]
+    <mat-error *ngIf="getErrorMessage('toAddress')">{{
+      getErrorMessage("toAddress")
     }}</mat-error>
   </mat-form-field>
   <mat-form-field class="input_40characters" appearance="outline">
@@ -45,8 +45,8 @@
       type="number"
     />
     <mat-hint>Inform the transfer value in WEI units</mat-hint>
-    <mat-error *ngIf="getErrors('value').length > 0">{{
-      getErrors("value")[0]
+    <mat-error *ngIf="getErrorMessage('value')">{{
+      getErrorMessage("value")
     }}</mat-error>
   </mat-form-field>
   <button

@@ -53,6 +53,7 @@ export class ERC20TransferFromComponent
   }
 
   transferFrom(event: Event) {
+    this.submitted = true;
     event.preventDefault();
     if (this.form.valid) {
       this.isLoading = true;

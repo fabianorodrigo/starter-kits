@@ -5,6 +5,7 @@ import * as errorMessagesJSON from './common-errors-messages.json';
 export abstract class BaseFormComponent {
   protected errorMessages: { [errorId: string]: string } = {};
   public form!: FormGroup;
+  protected submitted = false;
 
   constructor() {
     this.errorMessages = errorMessagesJSON;
@@ -22,29 +23,34 @@ export abstract class BaseFormComponent {
 
   /**
    * @param controlName Name of the control in this.form
-   * @returns List with all error messages in the control with name {controlName}
+   * @returns the message of the first error in the control with name {controlName}. return NULL if there is no error
    */
-  getErrors(controlName: string): string[] {
-    let result = [];
-
+  getErrorMessage(controlName: string): string | null {
+    if (
+      !this.form.controls[controlName].dirty &&
+      !this.form.controls[controlName].touched &&
+      !this.submitted
+    ) {
+      return null;
+    }
     for (let errorId in this.form.controls[controlName].errors) {
-      //TODO: repensar isso aqui console.log(controlName, this.form.controls[controlName].errors);
+      //TODO: repensar isso aqui  console.log(controlName, this.form.controls[controlName].errors);
       if (
         this.errorMessages[errorId] &&
         this.errorMessages[errorId].indexOf('{0}') == -1
       ) {
-        result.push(`${this.errorMessages[errorId]}`);
+        return this.errorMessages[errorId];
       } else if (this.errorMessages[errorId]) {
         const required = Object.values(
           this.form.controls[controlName].getError(errorId)
         )[0] as string;
-        result.push(`${this.errorMessages[errorId]}`.replace(`{0}`, required));
+        return `${this.errorMessages[errorId]}`.replace(`{0}`, required);
       } else {
-        result.push(`${errorId}`);
+        return errorId;
       }
     }
 
-    return result;
+    return null;
   }
 
   /**

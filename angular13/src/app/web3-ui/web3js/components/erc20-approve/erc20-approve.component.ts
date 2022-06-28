@@ -44,6 +44,7 @@ export class ERC20ApproveComponent extends BaseFormComponent implements OnInit {
   }
 
   approve(event: Event) {
+    this.submitted = true;
     event.preventDefault();
     if (this.form.valid) {
       this.isLoading = true;

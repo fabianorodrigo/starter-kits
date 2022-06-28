@@ -11,8 +11,8 @@
       minlength="40"
     />
     <mat-hint>Inform the 42 characters long owner's account address</mat-hint>
-    <mat-error *ngIf="getErrors('ownerAddress').length > 0">{{
-      getErrors("ownerAddress")[0]
+    <mat-error *ngIf="getErrorMessage('ownerAddress')">{{
+      getErrorMessage("ownerAddress")
     }}</mat-error>
   </mat-form-field>
   <mat-form-field class="input_40characters" appearance="outline">
@@ -27,8 +27,8 @@
       minlength="40"
     />
     <mat-hint>Inform the 42 characters long spender's account address</mat-hint>
-    <mat-error *ngIf="getErrors('spenderAddress').length > 0">{{
-      getErrors("spenderAddress")[0]
+    <mat-error *ngIf="getErrorMessage('spenderAddress')">{{
+      getErrorMessage("spenderAddress")
     }}</mat-error>
   </mat-form-field>
   <button
