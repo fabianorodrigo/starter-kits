@@ -260,24 +260,24 @@ export abstract class BaseContract {
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((subscriber) => {
       this.getContract(_abi as AbiItem[]).then(async (_contract) => {
-        let result;
         const fromAccount = await this._web3Service.getUserAccountAddress();
         try {
-          result = await _contract.methods[_functionName](..._args)
+          await _contract.methods[_functionName](..._args)
             .send({
               from: fromAccount,
             })
-            .on(`transactionHash`, (hash: string) => {
+            .once(`transactionHash`, (hash: string) => {
               subscriber.next({ success: true, result: _successMessage });
             })
             .once(
               `confirmation`,
               (confNumber: number, receipt: any, latestBlockHash: string) => {
-                if (_callback)
+                if (_callback) {
                   _callback({
                     success: true,
                     result: _confirmationMessage || ``,
                   });
+                }
               }
             );
         } catch (e: any) {

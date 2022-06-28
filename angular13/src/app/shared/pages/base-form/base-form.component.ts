@@ -28,6 +28,7 @@ export abstract class BaseFormComponent {
     let result = [];
 
     for (let errorId in this.form.controls[controlName].errors) {
+      //TODO: repensar isso aqui console.log(controlName, this.form.controls[controlName].errors);
       if (
         this.errorMessages[errorId] &&
         this.errorMessages[errorId].indexOf('{0}') == -1

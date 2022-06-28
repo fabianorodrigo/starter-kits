@@ -61,8 +61,9 @@ export class Web3Service {
         const subscription = this._userAccountAddressSubject.subscribe(
           (_address) => {
             resolve(_address);
-
-            subscription.unsubscribe();
+            if (subscription) {
+              subscription.unsubscribe();
+            }
           }
         );
         this.connect();

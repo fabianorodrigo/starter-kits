@@ -1,13 +1,30 @@
 import BN from 'bn.js';
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { LoggingService } from 'src/app/shared/services/logging.service';
 import { CallbackFunction, TransactionResult } from '../model';
 import { BaseContract } from './contract-base';
+import { Web3Service } from './web3.service';
 
 /**
  * Base contract to interact with ERC-20 smart contracts
  */
 export abstract class ERC20BaseContract extends BaseContract {
   protected _symbol!: string;
+  private _subscriptionSymbol: Subscription;
+
+  constructor(
+    _loggingService: LoggingService,
+    _web3Service: Web3Service,
+    _address: string
+  ) {
+    super(_loggingService, _web3Service, _address);
+    // Quando instanciar um serviço para interagir com um ERC-20,
+    // já faz uma chamada ao método  `symbol()` para buscar
+    // esse informação e armazenar em _symbol
+    this._subscriptionSymbol = this.symbol().subscribe((result) => {
+      this._subscriptionSymbol.unsubscribe();
+    });
+  }
 
   /**
    * @returns Returns the name of the token
@@ -25,7 +42,24 @@ export abstract class ERC20BaseContract extends BaseContract {
         subscriber.next({ success: true, result: this._symbol });
       });
     } else {
-      return this.call(this.getContractABI(), `symbol`);
+      // Como nós queremos que o resultado da chamada o `this.call` seja
+      // retornado para quem chamou esse método `symbol()` mas também
+      // seja utilizado aqui para atribuí-lo à propriedade `_symbol`, criamos
+      // um Subject, que é ao mesmo tempo Observable e Observer.
+      //
+      // Com esse Subject, subscreve-se no Observable retornado pelo `this.call`.
+      const subject = new Subject<TransactionResult<unknown>>();
+      this.call(this.getContractABI(), `symbol`).subscribe(subject);
+      // subscreve uma função neste mesmo subject (já Subjects também são Observables) para
+      // atualizar o valor da propriedade `_symbol`
+      const subscription = subject.subscribe((result) => {
+        if (result.success) {
+          this._symbol = result.result as string;
+          subscription.unsubscribe();
+        }
+      });
+      // retorna o subject para o caller deste método
+      return subject.asObservable() as Observable<TransactionResult<string>>;
     }
   }
 
@@ -145,9 +179,9 @@ export abstract class ERC20BaseContract extends BaseContract {
     return this.send(
       this.getContractABI(),
       'approve',
-      `Transaction to approve allowance of ${_value} ${this.symbol} to ${_spender} was sent successfully`,
+      `Transaction to approve allowance of ${_value} ${this._symbol} to ${_spender} was sent successfully`,
       _callback,
-      `Transaction to approve allowance of ${_value} ${this.symbol} to ${_spender} was confirmed`,
+      `Transaction to approve allowance of ${_value} ${this._symbol} to ${_spender} was confirmed`,
       _spender,
       _value
     );
