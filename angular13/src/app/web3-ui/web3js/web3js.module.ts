@@ -14,6 +14,7 @@ import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metada
 import { ERC20BalanceComponent } from './components/erc20-balance/erc20-balance.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ERC20ApproveComponent } from './components/erc20-approve/erc20-approve.component';
+import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 
 // LAZY LOADING: detach the web3js feature set from the main application.
 // The root AppModule must neither load nor reference the Web3jsModule or its files.
@@ -28,6 +29,7 @@ import { ERC20ApproveComponent } from './components/erc20-approve/erc20-approve.
     ERC20BalanceComponent,
     ERC20AllowanceComponent,
     ERC20ApproveComponent,
+    ERC20TransferComponent,
   ],
   imports: [
     CommonModule,

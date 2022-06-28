@@ -29,7 +29,17 @@
       ></dapp-erc20-allowance>
     </div>
   </mat-tab>
-  <mat-tab label="Transfer"> </mat-tab>
+  <mat-tab label="Transfer"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} to another account from the
+      current account connected at the wallet
+      <dapp-erc20-transfer
+        [contractERC20]="linkTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-transfer>
+    </div>
+  </mat-tab>
   <mat-tab label="Transfer From"> </mat-tab>
   <mat-tab label="Approve">
     <div class="container">
