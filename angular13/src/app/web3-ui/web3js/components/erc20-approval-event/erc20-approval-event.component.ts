@@ -28,25 +28,6 @@ export class ERC20ApprovalEventComponent implements OnInit, OnDestroy {
   constructor(private _web3Service: Web3Service) {}
 
   async ngOnInit(): Promise<void> {
-    // const web3 = new Web3(Web3.givenProvider);
-
-    // this.jureba = new web3.eth.Contract(
-    //   this.contractERC20.getContractABI(),
-    //   environment.KOVAN.LINK_TOKEN
-    // );
-    // this.jureba.events.Transfer().on('data', (ev: any) => {
-    //   console.log('toma evento', ev);
-    // });
-    // this.jureba
-    //   .getPastEvents('Transfer', {
-    //     fromBlock: (await web3.eth.getBlockNumber()) - 1000,
-    //     toBlock: 'latest',
-    //     filter: { from: '0x97b6183621504b18Ccb97D0422c33a5D3601b862' },
-    //   })
-    //   .then((events: EventData[]) => {
-    //     console.log(`toma past da jureba`, events);
-    //   });
-    /////////
     this._web3Service
       .getUserAccountAddressSubject()
       .subscribe(async (accountAddress) => {
