@@ -1,6 +1,7 @@
 import BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Contract } from 'web3-eth-contract';
+import { LoggingService } from 'src/app/shared/services/logging.service';
+import { Contract, EventData } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import {
   CallbackFunction,
@@ -9,10 +10,8 @@ import {
   ProviderErrors,
   TransactionResult,
 } from '../model';
-import { Web3Event } from '../Event';
-import { Web3Subscription } from '../Subscription';
+import { Web3Subscription } from '../model/events/Subscription';
 import { Web3Service } from './web3.service';
-import { LoggingService } from 'src/app/shared/services/logging.service';
 
 export abstract class BaseContract {
   protected contract!: Contract;
@@ -33,13 +32,6 @@ export abstract class BaseContract {
   }
 
   protected async getContract(_abis: AbiItem[]): Promise<Contract> {
-    /*if (this.contract != null) {
-      return this.contract;
-    } else if (this._web3Service) {
-      return this._web3Service.getContract(_abis, this.address);
-    } else {
-      throw new Error(`Web3 not instanciated`);
-    }*/
     if (this.contract != null) {
       return this.contract;
     } else if (this._web3Service) {
@@ -105,7 +97,9 @@ export abstract class BaseContract {
     _monitorParameter: EventMonitoringParameters
   ): Promise<Web3Subscription> {
     const _contract = await this.getContract(this.getContractABI());
-    return _contract.events[_monitorParameter.eventName](_monitorParameter);
+    return _contract.events[_monitorParameter.eventName](
+      _monitorParameter.web3jsParameters
+    );
   }
 
   /**
@@ -117,11 +111,12 @@ export abstract class BaseContract {
    */
   async getWeb3PastEventSubscription(
     _monitorParameter: EventPastParameters
-  ): Promise<Web3Event[]> {
+  ): Promise<EventData[]> {
     const _contract = await this.getContract(this.getContractABI());
+
     return _contract.getPastEvents(
       _monitorParameter.eventName,
-      _monitorParameter
+      _monitorParameter.web3jsParameters
     );
   }
 

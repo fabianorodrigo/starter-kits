@@ -1,3 +1,4 @@
+import { ERC20TransferEventComponent } from './components/erc20-transfer-event/erc20-transfer-event.component';
 import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../material/material.module';
@@ -32,6 +33,7 @@ import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc
     ERC20ApproveComponent,
     ERC20TransferComponent,
     ERC20TransferFromComponent,
+    ERC20TransferEventComponent,
   ],
   imports: [
     CommonModule,
