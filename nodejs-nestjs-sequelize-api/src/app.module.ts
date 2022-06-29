@@ -3,13 +3,11 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProductController } from './controllers';
-import { Product } from './model';
-import { ProductService } from './services';
+import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
     SequelizeModule.forRoot({
       dialect: 'postgres',
       host: process.env.POSTGRES_DB_HOSTNAME,
@@ -20,9 +18,17 @@ import { ProductService } from './services';
       autoLoadModels: true,
       synchronize: true,
     }),
-    SequelizeModule.forFeature([Product]),
+    ConfigModule.forRoot(),
+    ProductModule,
+    UserModule,
   ],
-  controllers: [AppController, ProductController],
-  providers: [AppService, ProductService],
+  controllers: [AppController],
+  providers: [
+    AppService,
+    // ativa o interceptador disponibilizado pelo NestJS que trata da serialização dos dados
+    // com isso, as anotações do class-transformer feitas nos DTOs passam a fazer efeito
+    // NÃO ROLOU
+    //{ provide: APP_INTERCEPTOR, useClass: ClassSerializerInterceptor },
+  ],
 })
 export class AppModule {}
