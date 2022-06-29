@@ -25,6 +25,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/app/shared/README.md",
+              "src/app/ui/README.md",
               "src/app/web3-ui/web3js/README.md"
             ],
             "styles": [
