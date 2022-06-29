@@ -14,7 +14,7 @@
   </form>
   <div class="table-container" *ngIf="showResults">
     <dapp-table
-      [dataSource]="searchResult"
+      [data]="searchResult"
       [columns]="displayedResultColumns"
       #result
       (edit)="this.onEdit($event)"

@@ -1,0 +1,32 @@
+<mat-nav-list>
+  <ng-container *ngFor="let item of items">
+    <ng-container
+      [ngTemplateOutlet]="!item.children ? regularItem : parentItems"
+      [ngTemplateOutletContext]="{ item: item }"
+    ></ng-container>
+  </ng-container>
+</mat-nav-list>
+
+<ng-template #regularItem let-item="item">
+  <a mat-list-item [routerLink]="item.link" (click)="onSidenavClose()">
+    <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+    <span class="nav-caption">{{ item.label }}</span>
+  </a>
+</ng-template>
+
+<ng-template #parentItems let-item="item">
+  <mat-list-item [matMenuTriggerFor]="menu">
+    <mat-icon>{{ item.icon }}</mat-icon>
+    <a matline>{{ item.label }}</a>
+  </mat-list-item>
+  <mat-menu #menu="matMenu">
+    <button
+      *ngFor="let child of item.children"
+      mat-menu-item
+      [routerLink]="child.link"
+      (click)="onSidenavClose()"
+    >
+      {{ child.label }}
+    </button>
+  </mat-menu>
+</ng-template>
