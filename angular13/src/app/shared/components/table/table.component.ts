@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { ITableColumn } from './tableColumn.interface';
 import { ITableConfig } from './tableConfig.interface';
 
@@ -9,7 +17,7 @@ import { ITableConfig } from './tableConfig.interface';
 })
 export class TableComponent<T> implements OnInit {
   @Input() columns: ITableColumn[] = [];
-  @Input() dataSource: T[] = [];
+  @Input() data: T[] = [];
   @Input() config: ITableConfig = {
     selectable: true,
   };
@@ -17,11 +25,21 @@ export class TableComponent<T> implements OnInit {
   @Output() edit = new EventEmitter<T>();
   @Output() delete = new EventEmitter<T>();
 
+  dataSource!: MatTableDataSource<T>;
   selectedRows = new Set<T>();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  /**
+   * Chamado quando o Angular seta ou reseta propriedades de entrada data-bound.
+   * Ou seja, se this.columns, this.data ou this.config forem modificados, cria-se
+   * uma nova instância de datasource
+   */
+  ngOnChanges(changes: SimpleChanges) {
+    this.dataSource = new MatTableDataSource<T>(this.data);
+  }
 
   /**
    *

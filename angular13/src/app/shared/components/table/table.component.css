@@ -1,6 +1,7 @@
 /** Tags HTML */
 table {
   width: 100%;
+  min-height: 100px;
 }
 
 /* Angular Material overwrite */

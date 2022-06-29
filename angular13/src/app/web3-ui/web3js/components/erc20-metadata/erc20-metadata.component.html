@@ -3,8 +3,5 @@
 </div>
 
 <ng-template #table>
-  <dapp-table
-    [dataSource]="metadata"
-    [columns]="displayedResultColumns"
-  ></dapp-table>
+  <dapp-table [data]="metadata" [columns]="displayedResultColumns"></dapp-table>
 </ng-template>

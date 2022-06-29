@@ -1,7 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import BN from 'bn.js';
-import { MessageService } from 'src/app/shared/services/message.service';
-import { NumbersService } from 'src/app/shared/services/numbers.service';
+import { Component, OnInit } from '@angular/core';
 import { IMetadata } from '../../components/erc20-metadata/metadata.interface';
 import { LinkTokenService } from '../../services/link-token.service';
 import { Web3Service } from '../../services/web3.service';
