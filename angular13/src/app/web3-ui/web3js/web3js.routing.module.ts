@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MarkdownComponent } from 'src/app/shared/pages/markdown/markdown.component';
 
 // Components
 import { LinkComponent } from './pages/link/link.component';
@@ -13,7 +14,14 @@ export const routes: Routes = [
     // containing child routes.
     path: '',
     component: Web3jsHomeComponent,
-    children: [{ path: 'link', component: LinkComponent }],
+    children: [
+      {
+        path: '',
+        component: MarkdownComponent,
+        data: { url: 'app/web3-ui/web3js/README.md' },
+      },
+      { path: 'link', component: LinkComponent },
+    ],
   },
 ];
 

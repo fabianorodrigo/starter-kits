@@ -5,8 +5,8 @@
 }
 
 .sideMenu{
-  min-width: 200px;
-  min-height: 80vh; /* vh stands for view-port height, 1vh is 1% of screen height */
+  min-width: 350px;
+  min-height: 90vh; /* vh stands for view-port height, 1vh is 1% of screen height */
   box-sizing: border-box;
   padding-right: 10px;
   margin-right: 30px;
@@ -15,18 +15,18 @@
 }
 
 .flexItemGrow1{
-  /* This defines the ability for a flex item to grow if necessary. 
-  It accepts a unitless value that serves as a proportion. 
-  It dictates what amount of the available space inside the flex container the item should take up. 
-  
+  /* This defines the ability for a flex item to grow if necessary.
+  It accepts a unitless value that serves as a proportion.
+  It dictates what amount of the available space inside the flex container the item should take up.
+
   If all items have flex-grow set to 1, the remaining space in the container will be distributed equally to all children. */
   flex-grow: 1
 }
-.flexItemGrow5{
-  /* This defines the ability for a flex item to grow if necessary. 
-  It accepts a unitless value that serves as a proportion. 
-  It dictates what amount of the available space inside the flex container the item should take up. 
-  
+.flexItemGrow4{
+  /* This defines the ability for a flex item to grow if necessary.
+  It accepts a unitless value that serves as a proportion.
+  It dictates what amount of the available space inside the flex container the item should take up.
+
   If all items have flex-grow set to 1, the remaining space in the container will be distributed equally to all children. */
-  flex-grow: 5
+  flex-grow: 4
 }

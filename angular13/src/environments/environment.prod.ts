@@ -1,12 +1,12 @@
 import { ABI } from './abis';
 import {
-  KOVAN_DATA_FEED_ETH_USD_ADDRESS,
-  KOVAN_LINK_TOKEN,
-} from './kovan prod';
+  ETHEREUM_DATA_FEED_ETH_USD_ADDRESS,
+  ETHEREUM_LINK_TOKEN,
+} from './ethereum_prod';
 import {
-  MUMBAI_DATA_FEED_ETH_USD_ADDRESS,
-  MUMBAI_LINK_TOKEN,
-} from './mumbai.prod';
+  POLYGON_DATA_FEED_ETH_USD_ADDRESS,
+  POLYGON_LINK_TOKEN,
+} from './polygon.prod';
 
 export const environment = {
   production: true,
@@ -17,15 +17,7 @@ export const environment = {
   chainCurrencyName: 'MATIC',
   api: `http://localhost:3000`,
 
-  MUMBAI: {
-    LINK_TOKEN: MUMBAI_LINK_TOKEN,
-    DATA_FEED_ETH_USD_ADDRESS: MUMBAI_DATA_FEED_ETH_USD_ADDRESS,
-  },
-
-  KOVAN: {
-    LINK_TOKEN: KOVAN_LINK_TOKEN,
-    DATA_FEED_ETH_USD_ADDRESS: KOVAN_DATA_FEED_ETH_USD_ADDRESS,
-  },
+  LINK_TOKEN: ETHEREUM_LINK_TOKEN,
 
   ABIS: {
     LINK_TOKEN: ABI.LINK_TOKEN,

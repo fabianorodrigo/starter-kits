@@ -6,7 +6,7 @@
 
 .sideMenu{
   min-width: 200px;
-  min-height: 80vh; /* vh stands for view-port height, 1vh is 1% of screen height */
+  min-height: 90vh; /* vh stands for view-port height, 1vh is 1% of screen height */
   box-sizing: border-box;
   padding-right: 10px;
   margin-right: 30px;

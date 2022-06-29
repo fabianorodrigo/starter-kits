@@ -12,10 +12,14 @@ const routes: Routes = [
     path: 'rest',
     loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
   },
-  //definindo a rota default como o '/web3js'
+  {
+    path: 'home',
+    loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
+  },
+  //definindo a rota default como o '/home'
   {
     path: '',
-    redirectTo: '/web3js/link',
+    redirectTo: '/home',
     pathMatch: 'full',
   },
   // {
