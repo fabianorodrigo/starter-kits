@@ -1,6 +1,12 @@
 .container{
   display: flex;
   flex-direction: column;
+  height:90vh;
+  gap:20px;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
   padding-top:5px
 }
 
@@ -24,4 +30,7 @@
 .value{
   color: #3f51b5;
   font-size: x-large;
+}
+h2{
+  margin-bottom: 5px;
 }

@@ -97,6 +97,7 @@ export abstract class BaseContract {
     _monitorParameter: EventMonitoringParameters
   ): Promise<Web3Subscription> {
     const _contract = await this.getContract(this.getContractABI());
+    console.log(JSON.stringify(_monitorParameter.web3jsParameters));
     return _contract.events[_monitorParameter.eventName](
       _monitorParameter.web3jsParameters
     );
