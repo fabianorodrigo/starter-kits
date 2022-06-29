@@ -5,14 +5,8 @@ Aplicação Angular para bootstrap de projetos com diferentes páginas para dife
 ## Stack
 
 - Angular
-  - ReactiveFormsModule
 - RXJS
-  - pipe
-  - finalize
-  - subscribe
 - Angular Material
-- Icons
-  - https://fontawesomeicons.com/materialdesign/icons
 
 ## Uso
 
@@ -83,6 +77,7 @@ global.process = {
 
 # Fontes
 
-https://www.notion.so/Bootstrap-com-Angular-Material-35a377613ec64c8b8e4cac05cc80b616\
-https://github.com/ChainSafe/web3.js\
-https://stackoverflow.com/questions/71092985/angular-13-clean-install-wouldnt-work-with-web3-js\
+https://www.notion.so/Bootstrap-com-Angular-Material-35a377613ec64c8b8e4cac05cc80b616 \
+https://github.com/ChainSafe/web3.js \
+https://stackoverflow.com/questions/71092985/angular-13-clean-install-wouldnt-work-with-web3-js \
+https://fontawesomeicons.com/materialdesign/icons
