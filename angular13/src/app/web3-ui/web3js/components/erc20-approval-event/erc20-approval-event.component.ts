@@ -93,7 +93,6 @@ export class ERC20ApprovalEventComponent implements OnInit, OnDestroy {
 
     const tempArray = [];
     for (const e of pastEvents) {
-      console.log(`approval past`, e);
       tempArray.push({
         blockNumber: e.blockNumber,
         owner: e.returnValues['owner'],

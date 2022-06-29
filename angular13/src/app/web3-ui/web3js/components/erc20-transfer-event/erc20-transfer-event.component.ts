@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
 import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
@@ -13,7 +13,7 @@ import { ITransferEvent } from './transfer-event.interface';
   templateUrl: './erc20-transfer-event.component.html',
   styleUrls: ['./erc20-transfer-event.component.css'],
 })
-export class ERC20TransferEventComponent implements OnInit {
+export class ERC20TransferEventComponent implements OnInit, OnDestroy {
   @Input() contractERC20!: ERC20BaseContract;
 
   eventPastSubscription!: Web3Subscription;
@@ -67,13 +67,13 @@ export class ERC20TransferEventComponent implements OnInit {
           this.eventSubscription =
             await this.contractERC20.getWeb3EventSubscription({
               eventName: 'Transfer',
-              //TODO: // web3jsParameters: {
-              //   filter: { _from: accountAddress },
-              // },
+              web3jsParameters: {
+                filter: { from: accountAddress },
+              },
             });
 
           this.eventSubscription.on('data', (event: EventData) => {
-            console.log('subscr evento', event.returnValues);
+            console.log('subscr evento Transfer', event.returnValues);
             this.eventList = [
               ...this.eventList,
               {
@@ -91,6 +91,12 @@ export class ERC20TransferEventComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    if (this.eventSubscription) {
+      this.eventSubscription.unsubscribe();
+    }
+  }
+
   /**
    * Fetches the past events on the blockchain since current block less 10 and feed the {pastEvents} array
    *
@@ -102,7 +108,7 @@ export class ERC20TransferEventComponent implements OnInit {
     const pastEvents = await this.contractERC20.getWeb3PastEventSubscription({
       eventName: 'Transfer',
       web3jsParameters: {
-        //TODO: // filter: { from: accountAddress },
+        filter: { from: accountAddress },
         fromBlock: currentBlock - 10,
         toBlock: 'latest',
       },
