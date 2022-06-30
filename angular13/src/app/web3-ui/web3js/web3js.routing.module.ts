@@ -26,6 +26,8 @@ export const routes: Routes = [
 ];
 
 @NgModule({
+  //Only call RouterModule.forRoot() in the root AppRoutingModule.
+  // In any other module, you must call the RouterModule.forChild() method to register additional routes.
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
