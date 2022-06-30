@@ -1,14 +1,12 @@
 <div class="container-column">
   <div class="container-basic" [ngStyle]="style">
-    text
     <div
-      [ngClass]="'item-basic ' + allItemsClasses"
+      [ngClass]="'item-basic '"
       *ngFor="let item of [].constructor(childrenNumber); let i = index"
     >
       {{ getChar(i) }}
     </div>
   </div>
-  <mat-slide-toggle color="primary" [(ngModel)]="showCSS">CSS</mat-slide-toggle>
   <div
     *ngIf="showCSS"
     class="div-css"

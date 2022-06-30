@@ -1,3 +1,4 @@
+import { DemoJustifyContentComponent } from './components/demo-property-flex-directions/demo-property-flex-directions.component';
 import { JustifyContentComponent } from './pages/justify-content/justify-content.component';
 import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
@@ -14,6 +15,7 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     FlexboxHomeComponent,
     DemoContainerComponent,
+    DemoJustifyContentComponent,
     JustifyContentComponent,
   ],
   imports: [

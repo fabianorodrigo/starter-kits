@@ -14,33 +14,6 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>flex-direction</mat-label>
-    <mat-select [(ngModel)]="flexDirection">
-      <mat-option
-        *ngFor="let d of ['row', 'row-reverse', 'column', 'column-reverse']"
-        [value]="d"
-      >
-        {{ d }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>gap</mat-label>
-    <input type="number" matInput [(ngModel)]="gap" />
-    <span matSuffix>pixels</span>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>flex-wrap</mat-label>
-    <mat-select [(ngModel)]="flexWrap">
-      <mat-option
-        *ngFor="let w of ['nowrap', 'wrap', 'wrap-reverse']"
-        [value]="w"
-      >
-        {{ w }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
     <mat-label>align-items</mat-label>
     <mat-select [(ngModel)]="alignItems">
       <mat-option
@@ -91,116 +64,159 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field>
+    <mat-label>flex-wrap</mat-label>
+    <mat-select [(ngModel)]="flexWrap">
+      <mat-option
+        *ngFor="let w of ['nowrap', 'wrap', 'wrap-reverse']"
+        [value]="w"
+      >
+        {{ w }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field [ngStyle]="{ width: '7ch' }">
+    <mat-label>row gap</mat-label>
+    <input type="number" matInput [(ngModel)]="rowGap" />
+    <span matSuffix>px</span>
+  </mat-form-field>
+  <mat-form-field [ngStyle]="{ width: '7ch' }">
+    <mat-label>column gap</mat-label>
+    <input type="number" matInput [(ngModel)]="columnGap" />
+    <span matSuffix>px</span>
+  </mat-form-field>
+  <mat-slide-toggle color="primary" [(ngModel)]="showCSS">CSS</mat-slide-toggle>
 </div>
 <div class="container-column">
-  <dapp-demo-container
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="flex-start"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="flex-end"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="center"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="space-between"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="space-around"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="space-evenly"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="start"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="end"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="left"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
-  <dapp-demo-container
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="justify-content"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    [container_flexDirection]="flexDirection"
-    [container_flexWrap]="flexWrap"
     container_justifyContent="right"
+    [container_flexWrap]="flexWrap"
     [container_alignItems]="alignItems"
     [container_alignContent]="alignContent"
-    [container_gap]="gap"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
   >
-  </dapp-demo-container>
+  </dapp-demo-property-flex-directions>
 </div>

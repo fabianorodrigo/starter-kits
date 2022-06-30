@@ -14,6 +14,10 @@ The main idea behind the flex layout is to give the container the ability to alt
 
 It's a component that receives a set of flexbox properties and set styles dinamically to the container and its items.
 
+### demo-justify-content
+
+A component the show a parameterized value for `justify-content` in all the four values possible for `flex-direction` side by side.
+
 # Pages
 
 ### justify-content

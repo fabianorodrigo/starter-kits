@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'dapp-demo-container',
@@ -7,19 +14,9 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 })
 export class DemoContainerComponent implements OnInit, OnChanges {
   @Input() childrenNumber: number = 3;
-  @Input() itemAClasses = 'item';
-  @Input() itemBClasses = 'item';
-  @Input() itemCClasses = 'item';
-  @Input() allItemsClasses = 'item';
   @Input() showCSS: boolean = false;
 
-  @Input() container_display!: string;
-  @Input() container_flexDirection!: string;
-  @Input() container_flexWrap!: string;
-  @Input() container_justifyContent!: string;
-  @Input() container_gap!: number;
-  @Input() container_alignItems!: string;
-  @Input() container_alignContent!: string;
+  @Input() container: { [property: string]: string } = {};
 
   css: string = '';
   style: { [property: string]: any } = {};
@@ -28,51 +25,21 @@ export class DemoContainerComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges): void {
     this.mountCssAndStyle();
   }
 
   private mountCssAndStyle() {
     this.css = '';
     this.style = {};
-    if (this.container_display) {
-      this.css += ` display: ${this.container_display};\n`;
-      this.style['display'] = this.container_display;
-    }
-    if (this.container_flexDirection) {
-      this.css += ` flex-direction: ${this.container_flexDirection};\n`;
-      this.style['flex-direction'] = this.container_flexDirection;
-    }
-    if (this.container_flexWrap) {
-      this.css += ` flex-wrap: ${this.container_flexWrap};\n`;
-      this.style['flex-wrap'] = this.container_flexWrap;
-    }
-    if (this.container_justifyContent) {
-      this.css += ` justify-content: ${this.container_justifyContent};\n`;
-      this.style['justify-content'] = this.container_justifyContent;
-    }
-    if (this.container_gap) {
-      this.css += ` gap: ${this.container_gap}px;\n`;
-      this.style['gap'] = `${this.container_gap}px`;
-    }
-    if (this.container_alignItems) {
-      this.css += ` align-items: ${this.container_alignItems};\n`;
-      this.style['align-items'] = this.container_alignItems;
-    }
-    if (this.container_alignContent) {
-      this.css += ` align-content: ${this.container_alignContent};\n`;
-      this.style['align-content'] = this.container_alignContent;
+
+    for (const property in this.container) {
+      if (this.container[property]) {
+        this.css += ` ${property}: ${this.container[property]}\n`;
+        this.style[property] = this.container[property];
+      }
     }
 
-    if (this.container_flexDirection?.startsWith('column')) {
-      this.css += ` /* it is needed in order to be able too
-  notice behavior differences in flex-direction 'column' modes */\n`;
-
-      this.css += ` min-height: 450px;\n`;
-      this.css += ` max-height: 550px; \n`;
-      this.style['min-height'] = '450px';
-      this.style['max-height'] = '550px';
-    }
     //remover última quebra de linha
     this.css = this.css.substring(0, this.css.length - 1);
   }
