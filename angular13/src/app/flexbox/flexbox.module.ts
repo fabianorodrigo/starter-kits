@@ -12,6 +12,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 import { ItemStyleDialogComponent } from './components/item-style-dialog/item-style-dialog.component';
 import { AlignItemsComponent } from './pages/align-items/align-items.component';
+import { AlignContentComponent } from './pages/align-content/align-content.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { AlignItemsComponent } from './pages/align-items/align-items.component';
     DemoJustifyContentComponent,
     JustifyContentComponent,
     AlignItemsComponent,
+    AlignContentComponent,
   ],
   imports: [
     CommonModule,
