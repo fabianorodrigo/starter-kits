@@ -1,1 +1,206 @@
-<p>justify-content works!</p>
+<h1>Container: justify-content</h1>
+<p>
+  <b>justify-content</b> defines the alignment along the main axis. It helps
+  distribute extra free space leftover when either all the flex items on a line
+  are inflexible, or are flexible but have reached their maximum size.
+</p>
+<div class="container-row">
+  <mat-form-field>
+    <mat-label>Children items</mat-label>
+    <mat-select [(ngModel)]="childrenNumber">
+      <mat-option *ngFor="let d of [3, 5, 10, 15, 20, 30, 50]" [value]="d">
+        {{ d }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>flex-direction</mat-label>
+    <mat-select [(ngModel)]="flexDirection">
+      <mat-option
+        *ngFor="let d of ['row', 'row-reverse', 'column', 'column-reverse']"
+        [value]="d"
+      >
+        {{ d }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>gap</mat-label>
+    <input type="number" matInput [(ngModel)]="gap" />
+    <span matSuffix>pixels</span>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>flex-wrap</mat-label>
+    <mat-select [(ngModel)]="flexWrap">
+      <mat-option
+        *ngFor="let w of ['nowrap', 'wrap', 'wrap-reverse']"
+        [value]="w"
+      >
+        {{ w }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>align-items</mat-label>
+    <mat-select [(ngModel)]="alignItems">
+      <mat-option
+        *ngFor="
+          let ai of [
+            'flex-start',
+            'flex-end',
+            'center',
+            'stretch',
+            'baseline',
+            'first baseline',
+            'last baseline',
+            'start',
+            'end',
+            'self-start',
+            'self-end'
+          ]
+        "
+        [value]="ai"
+      >
+        {{ ai }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>align-content</mat-label>
+    <mat-select [(ngModel)]="alignContent">
+      <mat-option
+        *ngFor="
+          let ac of [
+            'flex-start',
+            'flex-end',
+            'center',
+            'space-between',
+            'space-around',
+            'space-evenly',
+            'stretch',
+            'start',
+            'end',
+            'baseline',
+            'first baseline',
+            'last baseline'
+          ]
+        "
+        [value]="ac"
+      >
+        {{ ac }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="container-column">
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="flex-start"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="flex-end"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="center"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="space-between"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="space-around"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="space-evenly"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="start"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="end"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="left"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+  <dapp-demo-container
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    [container_flexDirection]="flexDirection"
+    [container_flexWrap]="flexWrap"
+    container_justifyContent="right"
+    [container_alignItems]="alignItems"
+    [container_alignContent]="alignContent"
+    [container_gap]="gap"
+  >
+  </dapp-demo-container>
+</div>

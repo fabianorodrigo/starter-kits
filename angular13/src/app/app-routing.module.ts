@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
   },
   {
+    path: 'flexbox',
+    loadChildren: () =>
+      import('./flexbox/flexbox.module').then((m) => m.FlexboxModule),
+  },
+  {
     path: 'home',
     loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
   },

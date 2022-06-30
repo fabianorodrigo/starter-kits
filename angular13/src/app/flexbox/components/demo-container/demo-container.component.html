@@ -1,0 +1,13 @@
+<div class="container-row">
+  <div class="div-css" [innerHTML]="css | language: 'css' | markdown"></div>
+
+  <div class="container-basic" [ngStyle]="style">
+    text
+    <div
+      [ngClass]="'item-basic ' + allItemsClasses"
+      *ngFor="let item of [].constructor(childrenNumber); let i = index"
+    >
+      Letter {{ getChar(i) }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.container-row{
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+}
+
+
+.container-column{
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+

@@ -1,0 +1,27 @@
+.container-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.div-css{
+  width: 30%
+}
+
+.container-basic{
+  background-color: whitesmoke;
+  padding: 10px;
+  border: 1px solid gray;
+  border-radius: 10px;
+  width:65%;
+  min-height: 130px;
+}
+
+.item-basic{
+  background-color: yellow;
+  padding: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 25px;
+  width: 55px;
+  white-space: nowrap;
+}
