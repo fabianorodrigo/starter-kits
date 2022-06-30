@@ -10,6 +10,7 @@ import { DemoContainerComponent } from './components/demo-container/demo-contain
 import { MaterialModule } from '../material/material.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
+import { ItemStyleDialogComponent } from './components/item-style-dialog/item-style-dialog.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FormsModule } from '@angular/forms';
     DemoContainerComponent,
     DemoJustifyContentComponent,
     JustifyContentComponent,
+    ItemStyleDialogComponent,
   ],
   imports: [
     CommonModule,

@@ -25,4 +25,5 @@
   width: 20px;
   text-align: center;
   white-space: nowrap;
+  cursor: pointer;
 }

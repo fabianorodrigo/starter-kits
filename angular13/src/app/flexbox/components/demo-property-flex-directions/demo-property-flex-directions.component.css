@@ -2,8 +2,7 @@
   display: flex;
   gap: 10px;
   flex-direction: row;
-  align-items: center;
-  align-content: center;
+  align-items: flex-start;
 }
 
 
@@ -24,6 +23,10 @@
   font-weight: 500;
   width: 100px;
   color: #3f51b5;
+  /*todos as colunas ficarão alnhadas no tipo (container-row.flex-start)
+  mas queremos que a coluna do label fique centralizada. Assim, setamos
+  individualmente no item*/
+  align-self: center;
 }
 .labelRow{
   font-size: 16px;
