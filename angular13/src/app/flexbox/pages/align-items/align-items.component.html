@@ -1,8 +1,8 @@
-<h1>Container: justify-content</h1>
+<h1>Container: align-items</h1>
 <p>
-  <b>justify-content</b> defines the alignment along the main axis. It helps
-  distribute extra free space leftover when either all the flex items on a line
-  are inflexible, or are flexible but have reached their maximum size.
+  <b>align-items</b> defines the default behavior for how flex items are laid
+  out along the cross axis on the current line. Think of it as the
+  justify-content version for the cross-axis (perpendicular to the main-axis).
 </p>
 <div class="container-row">
   <mat-form-field>
@@ -14,28 +14,27 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>align-items</mat-label>
-    <mat-select [(ngModel)]="alignItems">
+    <mat-label>justify-content</mat-label>
+    <mat-select [(ngModel)]="justifyContent">
       <mat-option
         *ngFor="
-          let ai of [
+          let jc of [
             '',
             'flex-start',
             'flex-end',
             'center',
-            'stretch',
-            'baseline',
-            'first baseline',
-            'last baseline',
+            'space-between',
+            'space-around',
+            'space-evenly',
             'start',
             'end',
-            'self-start',
-            'self-end'
+            'left',
+            'right'
           ]
         "
-        [value]="ai"
+        [value]="jc"
       >
-        {{ ai }}
+        {{ jc }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -91,12 +90,12 @@
 </div>
 <div class="container-column">
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="flex-start"
+    container_alignItems="stretch"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -104,12 +103,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="flex-end"
+    container_alignItems="flex-start"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -117,12 +116,25 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="center"
+    container_alignItems="flex-end"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
+    [container_alignContent]="alignContent"
+    [container_gap]="rowGap"
+    [container_columnGap]="columnGap"
+    [showCSS]="showCSS"
+  >
+  </dapp-demo-property-flex-directions>
+  <dapp-demo-property-flex-directions
+    fixedProperty="align-items"
+    [childrenNumber]="childrenNumber"
+    container_display="flex"
+    container_alignItems="center"
+    [container_flexWrap]="flexWrap"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -131,12 +143,12 @@
   </dapp-demo-property-flex-directions>
 
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="space-between"
+    container_alignItems="baseline"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -144,12 +156,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="space-around"
+    container_alignItems="first baseline"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -157,12 +169,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="space-evenly"
+    container_alignItems="last baseline"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -170,12 +182,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="start"
+    container_alignItems="start"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -183,12 +195,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="end"
+    container_alignItems="end"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -196,12 +208,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="left"
+    container_alignItems="self-start"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"
@@ -209,12 +221,12 @@
   >
   </dapp-demo-property-flex-directions>
   <dapp-demo-property-flex-directions
-    fixedProperty="justify-content"
+    fixedProperty="align-items"
     [childrenNumber]="childrenNumber"
     container_display="flex"
-    container_justifyContent="right"
+    container_alignItems="self-end"
     [container_flexWrap]="flexWrap"
-    [container_alignItems]="alignItems"
+    [container_justifyContent]="justifyContent"
     [container_alignContent]="alignContent"
     [container_gap]="rowGap"
     [container_columnGap]="columnGap"

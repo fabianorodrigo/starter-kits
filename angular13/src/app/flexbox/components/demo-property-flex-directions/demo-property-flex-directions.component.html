@@ -1,0 +1,43 @@
+<div class="container-row">
+  <div class="labelColumn">{{ containerCSS[fixedProperty] }}</div>
+  <div class="labelRow">
+    <span class="spCSSProperty">flex-direction:</span> row
+    <dapp-demo-container
+      class="item"
+      [childrenNumber]="childrenNumber"
+      [container]="containerCSS_row"
+      [showCSS]="showCSS"
+    >
+    </dapp-demo-container>
+  </div>
+  <div class="labelRow">
+    <span class="spCSSProperty">flex-direction:</span> column
+    <dapp-demo-container
+      class="item"
+      [childrenNumber]="childrenNumber"
+      [container]="containerCSS_column"
+      [showCSS]="showCSS"
+    >
+    </dapp-demo-container>
+  </div>
+  <div class="labelRow">
+    <span class="spCSSProperty">flex-direction:</span> row-reverse
+    <dapp-demo-container
+      class="item"
+      [childrenNumber]="childrenNumber"
+      [container]="containerCSS_rowReverse"
+      [showCSS]="showCSS"
+    >
+    </dapp-demo-container>
+  </div>
+  <div class="labelRow">
+    <span class="spCSSProperty">flex-direction:</span> column-reverse
+    <dapp-demo-container
+      class="item"
+      [childrenNumber]="childrenNumber"
+      [container]="containerCSS_columnReverse"
+      [showCSS]="showCSS"
+    >
+    </dapp-demo-container>
+  </div>
+</div>

@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -21,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -30,6 +32,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatCardModule,
     MatButtonModule,
     MatTableModule,
@@ -45,6 +48,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
   ],
   exports: [
     MatSidenavModule,
@@ -53,6 +57,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatListModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatCardModule,
     MatButtonModule,
     MatTableModule,
@@ -68,6 +73,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatNativeDateModule,
     MatDatepickerModule,
     MatSnackBarModule,
+    MatSlideToggleModule,
   ],
 })
 export class MaterialModule {}

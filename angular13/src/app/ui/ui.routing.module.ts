@@ -22,6 +22,11 @@ export const routes: Routes = [
         data: { url: 'app/ui/README.md' },
       },
       {
+        path: 'home_flexbox',
+        component: MarkdownComponent,
+        data: { url: 'app/flexbox/README.md' },
+      },
+      {
         path: 'home_web3js',
         component: MarkdownComponent,
         data: { url: 'app/web3-ui/web3js/README.md' },

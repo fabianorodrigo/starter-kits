@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
+import { AlignContentComponent } from './pages/align-content/align-content.component';
+import { AlignItemsComponent } from './pages/align-items/align-items.component';
 
 // Components
 import { FlexboxHomeComponent } from './pages/flexbox-home/flexbox-home.component';
@@ -13,7 +16,16 @@ export const routes: Routes = [
     // containing child routes.
     path: '',
     component: FlexboxHomeComponent,
-    children: [{ path: 'justify', component: JustifyContentComponent }],
+    children: [
+      {
+        path: '',
+        component: MarkdownComponent,
+        data: { url: 'app/flexbox/README.md' },
+      },
+      { path: 'justify', component: JustifyContentComponent },
+      { path: 'alignItems', component: AlignItemsComponent },
+      { path: 'alignContent', component: AlignContentComponent },
+    ],
   },
 ];
 
@@ -21,4 +33,4 @@ export const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class Web3JSRoutingModule {}
+export class FlexboxRoutingModule {}

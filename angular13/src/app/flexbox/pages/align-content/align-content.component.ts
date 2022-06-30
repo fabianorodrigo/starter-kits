@@ -1,18 +1,18 @@
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'dapp-justify-content',
-  templateUrl: './justify-content.component.html',
-  styleUrls: ['./justify-content.component.css'],
+  selector: 'dapp-align-content',
+  templateUrl: './align-content.component.html',
+  styleUrls: ['./align-content.component.css'],
 })
-export class JustifyContentComponent implements OnInit {
+export class AlignContentComponent implements OnInit {
   childrenNumber = 3;
   flexDirection!: string;
   flexWrap!: string;
   rowGap: number = 0;
   columnGap: number = 0;
+  justifyContent!: string;
   alignItems!: string;
-  alignContent!: string;
   showCSS = false;
 
   constructor() {}

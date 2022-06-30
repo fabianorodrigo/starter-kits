@@ -1,0 +1,24 @@
+<div class="container-column">
+  <div class="container-basic" [ngStyle]="containerStyle">
+    <div
+      [ngClass]="'item-basic '"
+      [ngStyle]="itemStyle[this.getChar(i)] ? itemStyle[this.getChar(i)] : {}"
+      *ngFor="let item of [].constructor(childrenNumber); let i = index"
+      (click)="itemClick(i)"
+    >
+      {{ getChar(i) }}
+    </div>
+  </div>
+  <div
+    *ngIf="showCSS"
+    class="div-css"
+    [innerHTML]="css | language: 'css' | markdown"
+  ></div>
+  <ng-container *ngIf="showCSS">
+    <div
+      *ngFor="let cssChild of getCSSChildren()"
+      class="div-css"
+      [innerHTML]="cssChild | language: 'css' | markdown"
+    ></div>
+  </ng-container>
+</div>
