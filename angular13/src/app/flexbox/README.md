@@ -13,7 +13,7 @@ The main idea behind the flex layout is to give the container the ability to alt
 ### demo-container
 
 It's a component that receives a set of flexbox properties and set styles dinamically to the container. It also allows the user edit the flexbox properties
-for the child/item elements.
+for the child/item elements. When its property `showCSS` is TRUE, it also shows equivalent CSS for each configuration.
 
 ### demo-property-flex-directions
 
