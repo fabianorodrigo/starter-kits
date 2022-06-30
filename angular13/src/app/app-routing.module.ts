@@ -9,8 +9,9 @@ const routes: Routes = [
       import('./web3-ui/web3js/web3js.module').then((m) => m.Web3jsModule),
   },
   {
-    path: 'rest',
-    loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
+    path: 'product',
+    loadChildren: () =>
+      import('./product/product.module').then((m) => m.ProductModule),
   },
   {
     path: 'flexbox',

@@ -1,0 +1,18 @@
+<div class="flexDirectionRow">
+  <div class="sideMenu">
+    <dapp-menu
+      [items]="[
+        { label: 'Product Home', link: '/product/', icon: 'home' },
+        {
+          label: 'Search',
+          link: '/product/search',
+          icon: 'search'
+        }
+      ]"
+    ></dapp-menu>
+  </div>
+  <div class="flexItemGrow5">
+    <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

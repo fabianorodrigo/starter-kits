@@ -11,8 +11,8 @@ import { JustifyContentComponent } from './pages/justify-content/justify-content
 export const routes: Routes = [
   {
     // Use empty path routes to group routes together without adding any
-    // additional path segments to the URL. Users will still visit /web3js
-    // and the Web3JSHomeComponent still serves as the Routing Component
+    // additional path segments to the URL. Users will still visit /flexbox
+    // and the FlexboxHomeComponent still serves as the Routing Component
     // containing child routes.
     path: '',
     component: FlexboxHomeComponent,

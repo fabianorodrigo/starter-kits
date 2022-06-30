@@ -8,8 +8,8 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { Product } from '../../../../model';
-import { ProductService } from '../../../../services';
+import { Product } from '../../../model';
+import { ProductService } from '../../../services/product.service';
 import { ITableColumn } from '../../../../shared/components/table/tableColumn.interface';
 
 const ESPERA_DIGITACAO_MS = 300;

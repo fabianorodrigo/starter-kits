@@ -4,9 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from '../shared/components/error/error.component';
 import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { HomeComponent } from './pages/home/home.component';
-import { ProductListComponent } from './pages/product/list/list.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
@@ -33,7 +32,6 @@ export const routes: Routes = [
       },
     ],
   },
-  { path: 'product', component: ProductListComponent },
 ];
 
 @NgModule({
