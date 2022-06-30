@@ -1,6 +1,4 @@
-<div class="container-row">
-  <div class="div-css" [innerHTML]="css | language: 'css' | markdown"></div>
-
+<div class="container-column">
   <div class="container-basic" [ngStyle]="style">
     text
     <div
@@ -10,4 +8,10 @@
       {{ getChar(i) }}
     </div>
   </div>
+  <mat-slide-toggle color="primary" [(ngModel)]="showCSS">CSS</mat-slide-toggle>
+  <div
+    *ngIf="showCSS"
+    class="div-css"
+    [innerHTML]="css | language: 'css' | markdown"
+  ></div>
 </div>

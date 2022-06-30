@@ -11,6 +11,7 @@ export class DemoContainerComponent implements OnInit, OnChanges {
   @Input() itemBClasses = 'item';
   @Input() itemCClasses = 'item';
   @Input() allItemsClasses = 'item';
+  @Input() showCSS: boolean = false;
 
   @Input() container_display!: string;
   @Input() container_flexDirection!: string;
