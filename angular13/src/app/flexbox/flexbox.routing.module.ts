@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
+import { AlignItemsComponent } from './pages/align-items/align-items.component';
 
 // Components
 import { FlexboxHomeComponent } from './pages/flexbox-home/flexbox-home.component';
@@ -21,6 +22,7 @@ export const routes: Routes = [
         data: { url: 'app/flexbox/README.md' },
       },
       { path: 'justify', component: JustifyContentComponent },
+      { path: 'align', component: AlignItemsComponent },
     ],
   },
 ];

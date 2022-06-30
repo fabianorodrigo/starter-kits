@@ -11,14 +11,16 @@ import { MaterialModule } from '../material/material.module';
 import { MarkdownModule } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 import { ItemStyleDialogComponent } from './components/item-style-dialog/item-style-dialog.component';
+import { AlignItemsComponent } from './pages/align-items/align-items.component';
 
 @NgModule({
   declarations: [
     FlexboxHomeComponent,
+    ItemStyleDialogComponent,
     DemoContainerComponent,
     DemoJustifyContentComponent,
     JustifyContentComponent,
-    ItemStyleDialogComponent,
+    AlignItemsComponent,
   ],
   imports: [
     CommonModule,
