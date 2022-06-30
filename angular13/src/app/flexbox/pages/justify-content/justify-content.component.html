@@ -19,6 +19,7 @@
       <mat-option
         *ngFor="
           let ai of [
+            '',
             'flex-start',
             'flex-end',
             'center',
@@ -44,6 +45,7 @@
       <mat-option
         *ngFor="
           let ac of [
+            '',
             'flex-start',
             'flex-end',
             'center',
@@ -68,7 +70,7 @@
     <mat-label>flex-wrap</mat-label>
     <mat-select [(ngModel)]="flexWrap">
       <mat-option
-        *ngFor="let w of ['nowrap', 'wrap', 'wrap-reverse']"
+        *ngFor="let w of ['', 'nowrap', 'wrap', 'wrap-reverse']"
         [value]="w"
       >
         {{ w }}
