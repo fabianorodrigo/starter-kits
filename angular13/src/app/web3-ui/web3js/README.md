@@ -7,7 +7,7 @@ User interface module to interact with Blockchains using the [Web3 Javascript li
 
 # Web3Module
 
-### Web3Service
+## Web3Service
 
 It's a service provider with some methods of general purpose:
 
@@ -22,7 +22,7 @@ It's a service provider with some methods of general purpose:
 - `toCheckSumAddress(_address: string)`: returns the representation ot {_address} following the mixed case checksum by [EIP-55](https://eips.ethereum.org/EIPS/eip-55).
 - `getCurrentBlockNumber()`: returns the lastest block number of the connected chain.
 
-### BaseContract
+## BaseContract
 
 It's a abstract class with generic operations to interact with Smart Contracts. For each contract the application deal with, there is gonna be created a Service Provider (Angular) that extends this class, directly or indirectly. Among these generic operations to a specific contract, some of them are:
 
@@ -39,7 +39,7 @@ It's a abstract class with generic operations to interact with Smart Contracts. 
 - `getWeb3EventSubscription(_monitorParameter: EventMonitoringParameters)`: Gets a Web3JS subscription to monitor future ocurrences of a specific event.
 - `getWeb3PastEventSubscription(_monitorParameter: EventPastParameters)`: Gets a list of `EventData` of past ocurrences of a specific event.
 
-### ERC20BaseContract
+## ERC20BaseContract
 
 It's a abstract class with generic operations to interact with Smart Contracts that implement the [ERC-2O](https://eips.ethereum.org/EIPS/eip-20). For each contract ERC-20 which the application deal with, should have a Service Provider (Angular) that extends this class. It implements a method for each function required by the ERC-2O pattern.
 
@@ -53,7 +53,7 @@ It's a abstract class with generic operations to interact with Smart Contracts t
 - `transferFrom(_from: string,_to: string,_value: BN,_callback?: CallbackFunction)`
 - `approve(_spender: string,_value: BN,_callback?: CallbackFunction)`
 
-### LinkTokenService
+## LinkTokenService
 
 It's a concrete class that inherits from `ERC20BaseContract` and it's purpose is to deal with the `LINK`, the [Chainlink's](https://chain.link) token. Since the parent class implements all the ERC-20 features, all it has to specify is the contract address to be used inside it's constructor.
 
@@ -79,7 +79,7 @@ export class LinkTokenService extends ERC20BaseContract {
 
 # Angular Concepts/Features
 
-### Lazy Loading Route
+## Lazy Loading Route
 
 This module has a [Lazy Loading route configuration](https://angular.io/guide/router-tutorial-toh#lazy-loading-route-configuration). This means that the module will only be loaded when the route that points to it is requested. In order to do so, the route has a `loadChildren` property that takes a function that returns a promise using the browser's built-in syntax for lazy loading code using dynamic imports. After the code is requested and loaded, the Promise resolves an object that contains the NgModule, in this case the `Web3jsModule`. Finally, the root AppModule must neither load nor reference the Web3jsModule or its files.
 
@@ -95,7 +95,7 @@ const routes: Routes = [
 ```
 *app-routing.module.ts*
 
-### Dependency Injection
+## Dependency Injection
 
 The services part of the module are no injected in the root module and consequently they're only available if and when the consumers import the Web3jsModule. For this, these services have their [provider scope](https://angular.io/guide/providers#provider-scope) limited by being declared with the `providedIn` equals null and, in the module are declared in the `provides` section:
 

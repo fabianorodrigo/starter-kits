@@ -7,36 +7,36 @@ User interface module of general purpose. The objective is to serve as library f
 
 Provide a set of components Angular
 
-### error
+## error
 
 To be used as route when some error happen. For instance, a 404.
 
-### menu
+## menu
 
 Provides a menu based on an array of `IMenuItem` passed by `@Input()`.
 
-### short-scale-number
+## short-scale-number
 
 Provides a component to show large number in a short scale. For instance, in spite of render "10.000.000.000.000", shows "1 trillion".
 
 
-### table
+## table
 
 Provides a simple table based on Material Angular `mat-table`. The datasource is passed by `@Input()`.
 
 # Directives
 
-### DisableControlDirective
+## DisableControlDirective
 
 Allows the control of disable/enable for `<input>` elements.
 
 # Pages
 
-### base-form
+## base-form
 
 Provides a abstract class `BaseForm` with basic features to Components that implements a Form. Such as: identify if a specific field has erros and provide the error message.
 
-### markdown
+## markdown
 
 Generic component to render markdown files. It expects the path to the markdown file to be rendered in the `url` attribute inside the router.data:
 ```javascript
@@ -68,15 +68,15 @@ In order to work, the path `app/web3-ui/web3js/README.md` was inserted in the as
 
 # Services
 
-### LoggingService
+## LoggingService
 
 Provides a `debug` and `trace` function to log info in the console. Only logs if the respective variable is `true` in the `environment.ts`.
 
-### MessageService
+## MessageService
 
 Shows a message based on Angular Material `MatSnackBarRef`.
 
-### NumberService
+## NumberService
 
 Offers a set of methods to format/convert numbers:
 
@@ -91,7 +91,7 @@ Offers a set of methods to format/convert numbers:
 # Angular Concepts/Features
 
 
-### Dependency Injection
+## Dependency Injection
 
 The services part of the module are no injected in the root module and consequently they're only available if and when the consumers import the SharedModule. For this, these services have their [provider scope](https://angular.io/guide/providers#provider-scope) limited by being declared with the `providedIn` as the `SharedModule`:
 

@@ -3,10 +3,10 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../model';
+import { ProductModule } from '../product.module';
 
-@Injectable({
-  providedIn: 'root',
-})
+// Está sem o @Inject: https://angular.io/guide/providers#providedin-and-ngmodules
+@Injectable({ providedIn: null })
 export class ProductService {
   private readonly baseURL: string = `${environment.api}/product`;
 

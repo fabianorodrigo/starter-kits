@@ -10,23 +10,23 @@ The main idea behind the flex layout is to give the container the ability to alt
 # Components
 
 
-### demo-container
+## demo-container
 
 It's a component that receives a set of flexbox properties and set styles dinamically to the container. It also allows the user edit the flexbox properties
 for the child/item elements. When its property `showCSS` is TRUE, it also shows equivalent CSS for each configuration.
 
-### demo-property-flex-directions
+## demo-property-flex-directions
 
 A component the shows the behavior of a configuration of flexbox properties with each of the four values possible for `flex-direction` side by side.
 
 
-### item-style-dialog
+## item-style-dialog
 
 A dialog used by demo-container to edit the flexbox properties for a child/item element.
 
 # Pages
 
-### justify-content
+## justify-content
 
 A page that uses an instance of component demo-container in order to demonstrate behavior differences between all the possible values for `justify-content` flexbox property. It also allows the user change a group of others flexbox properties so it is possible to compare a large number of configurations.
 
