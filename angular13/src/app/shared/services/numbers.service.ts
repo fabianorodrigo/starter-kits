@@ -1,6 +1,8 @@
+import { Injectable } from '@angular/core';
 import BN from 'bn.js';
 
-// Está sem o @Inject: https://angular.io/guide/providers#providedin-and-ngmodules
+// Está com providedIn null: https://angular.io/guide/providers#providedin-and-ngmodules
+@Injectable({ providedIn: null })
 export class NumbersService {
   constructor() {}
 
