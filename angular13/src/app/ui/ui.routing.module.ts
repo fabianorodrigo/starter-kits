@@ -1,10 +1,17 @@
+import { ProtectedSecretsComponent } from './pages/protected-secrets/protected-secrets.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Components
 import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { HomeComponent } from './pages/home/home.component';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 const routes: Routes = [
+  {
+    path: 'protected-secrets',
+    component: ProtectedSecretsComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'home',
     component: HomeComponent,

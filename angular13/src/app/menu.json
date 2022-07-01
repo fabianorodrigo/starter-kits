@@ -4,6 +4,7 @@
   {"label":"Flexbox", "link":"/flexbox","icon": "backup_table" },
   {"label":"Ðapp Web3.js", "link":"/web3js","icon": "monetization_on" },
   {"label":"Ðapp Ethers.js", "link":"/ethersjs","icon": "monetization_on" },
+  {"label":"Auth Guard", "link":"/protected-secrets","icon": "lock_clock" },
   {"label":"Administration", "icon": "build", "children":[
       {"label":"Bet Token", "link":"/adminBetToken" },
       {"label":"Games", "link":"/adminGames" }

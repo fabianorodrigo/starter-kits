@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ErrorComponent } from './shared/components/error/error.component';
 
 const routes: Routes = [
+  // Módulos Lazy Loading são atrelados às rotas que indicam quando devem ser carregados
   {
     path: 'web3js',
     loadChildren: () =>
@@ -18,11 +19,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./flexbox/flexbox.module').then((m) => m.FlexboxModule),
   },
-  {
-    path: 'home',
-    loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
-  },
-  //definindo a rota default como o '/home'
+  //definindo a rota default como o '/home'. Essa rota está definida no UiModule (que é carregado eagerly)
   {
     path: '',
     redirectTo: '/home',

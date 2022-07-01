@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AuthModule } from './auth/auth.module';
 import { RequestInterceptor } from './core/request.interceptor';
 import { MaterialModule } from './material/material.module';
 import { GlobalErrorHandlerService } from './services';
@@ -18,8 +19,10 @@ import { UiModule } from './ui/ui.module';
     BrowserAnimationsModule, // https://angular.io/guide/animations
     MaterialModule,
     HttpClientModule,
+    // os módulos que não são carregados de forma Lazy, são importados aqui
     SharedModule,
     UiModule,
+    AuthModule,
     // Os módulos ProductModule, FlexboxModule e Web3jsModule não estão aqui pois são importados de forma Lazy Loading
     // apenas se  e quando a rota que eles correspondem for acessada. Ver em: app-routing.module.ts
 
