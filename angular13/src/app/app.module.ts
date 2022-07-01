@@ -15,7 +15,7 @@ import { UiModule } from './ui/ui.module';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule, // https://angular.io/guide/animations
     MaterialModule,
     HttpClientModule,
     SharedModule,

@@ -11,6 +11,7 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { Product } from '../../../model';
 import { ProductService } from '../../../services/product.service';
 import { ITableColumn } from '../../../../shared/components/table/tableColumn.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const ESPERA_DIGITACAO_MS = 300;
 
@@ -34,13 +35,17 @@ export class ProductListComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _messageService: MessageService,
-    private _productService: ProductService
+    private _productService: ProductService,
+    private _router: Router,
+    private _route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    ////// define o ReactiveForm
     this.form = this._formBuilder.group({
       filter: [''],
     });
+    ////// Monitora as mudanças de valor no campo filter para disparar a busca sob um conjunto de condições
     this.productList$ = this.form.controls['filter'].valueChanges.pipe(
       //só repassado o fluxo após 300ms
       debounceTime(ESPERA_DIGITACAO_MS),
@@ -51,7 +56,7 @@ export class ProductListComponent implements OnInit {
       distinctUntilChanged(),
       // redireciona fluxo para outro observable
       switchMap((v) =>
-        this._productService.getProducts(v).pipe(
+        this._productService.searchProducts(v).pipe(
           // SEM ESSE CATCHERROR, os eventos de digitação no campo param de funcionar:
           // Error handler in the subscriber works as completion, so the the observable
           // stops working. This is by design. If you want you observable to keep emitting despite errors,
@@ -64,6 +69,7 @@ export class ProductListComponent implements OnInit {
         )
       )
     );
+    ////// Assina os retornos do observable de pesquisa de produtos
     this.productList$.subscribe({
       next: (products) => {
         this.showResults = true;
@@ -75,10 +81,24 @@ export class ProductListComponent implements OnInit {
         this._messageService.show(err.message);
       },
     });
+    //// Verifica se recebeu um parâmetro opcional 'filter'. Tipicamente, isso acontecerá quando voltar do ProductFormComponent,
+    ///  que receberá o filtro utilizado na busca que levou a ele, e retornará para que a busca seja refeita
+    /// automaticamente quando o usuário retornar. Foi utilizada a opção 'no-observable' aqui pois há certeza de que
+    /// esse redirecionamento nunca ocorrerá pelo próprio ProductListComponent, logo, o ngOnInit sempre será reexecutado (ao contrário
+    /// do que acontece quando apenas os parâmetros de uma mesma rota são alterados).
+    if (this._route.snapshot.paramMap.get('filter') !== null) {
+      this.form.controls['filter'].setValue(
+        this._route.snapshot.paramMap.get('filter')
+      );
+    }
   }
 
   onEdit(product: Product) {
-    alert(`Editar ${product.name}`);
+    this._router.navigate([
+      '/product',
+      product.id,
+      { filter: this.form.controls['filter'].value },
+    ]);
   }
   onDelete(product: Product) {
     alert(`Deletar ${product.name}`);

@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { ProductRoutingModule } from './product-routing.module';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../material/material.module';
+import { SharedModule } from '../shared/shared.module';
+import { ProductHomeComponent } from './pages/product-home/product-home.component';
 import { ProductFormComponent } from './pages/product/form/form.component';
 import { ProductListComponent } from './pages/product/list/list.component';
-import { SharedModule } from '../shared/shared.module';
-import { MaterialModule } from '../material/material.module';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ProductHomeComponent } from './pages/product-home/product-home.component';
+import { ProductRoutingModule } from './product-routing.module';
 import { ProductService } from './services/product.service';
 
 @NgModule({

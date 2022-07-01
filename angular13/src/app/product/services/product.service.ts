@@ -12,21 +12,32 @@ import { ProductModule } from '../product.module';
 @Injectable({ providedIn: null })
 export class ProductService {
   private readonly baseURL: string = `${environment.api}/product`;
+  private readonly options = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+    }),
+  };
 
   constructor(private http: HttpClient) {}
 
+  findProduct(id: string | null): Observable<Product> {
+    if (Number.isInteger(id)) {
+      throw new Error(`Invalid product id: ${id}`);
+    }
+    return this.http.get<Product>(`${this.baseURL}/${id}`).pipe(
+      catchError((err) => {
+        console.log('Service failed', err);
+        return throwError(() => new Error(err.message));
+      })
+    );
+  }
   /**
    * Request products to the API
    *
    * @param filter filter sent in the request
    * @returns Observable of Product array
    */
-  getProducts(filter?: string): Observable<Product[]> {
-    const options = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+  searchProducts(filter?: string): Observable<Product[]> {
     const params = filter
       ? new HttpParams().append('filter', filter)
       : undefined;

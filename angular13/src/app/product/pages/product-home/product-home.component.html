@@ -2,16 +2,16 @@
   <div class="sideMenu">
     <dapp-menu
       [items]="[
-        { label: 'Product Home', link: '/product/', icon: 'home' },
+        { label: 'Search', link: '/product/', icon: 'search' },
         {
-          label: 'Search',
-          link: '/product/search',
-          icon: 'search'
+          label: 'README',
+          link: '/product/readme',
+          icon: 'text_snippet'
         }
       ]"
     ></dapp-menu>
   </div>
-  <div class="flexItemGrow5">
+  <div class="flexItemGrow5" [@routeAnimation]="getAnimationData()">
     <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
     <router-outlet></router-outlet>
   </div>
