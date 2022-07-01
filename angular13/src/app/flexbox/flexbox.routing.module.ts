@@ -8,7 +8,7 @@ import { AlignItemsComponent } from './pages/align-items/align-items.component';
 import { FlexboxHomeComponent } from './pages/flexbox-home/flexbox-home.component';
 import { JustifyContentComponent } from './pages/justify-content/justify-content.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   {
     // Use empty path routes to group routes together without adding any
     // additional path segments to the URL. Users will still visit /flexbox

@@ -47,7 +47,7 @@ Generic component to render markdown files. It expects the path to the markdown 
 
 An example of route configuration:
 ```javascript
-export const routes: Routes = [
+const routes: Routes = [
   {
     path: '',
     component: Web3jsHomeComponent,
