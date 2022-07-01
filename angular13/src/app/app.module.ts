@@ -20,8 +20,10 @@ import { UiModule } from './ui/ui.module';
     HttpClientModule,
     SharedModule,
     UiModule,
+    // Os módulos ProductModule, FlexboxModule e Web3jsModule não estão aqui pois são importados de forma Lazy Loading
+    // apenas se  e quando a rota que eles correspondem for acessada. Ver em: app-routing.module.ts
 
-    // Notice that in the module imports array, the AppRoutingModule is last and comes after the HeroesModule.
+    // Notice that in the module imports array, the AppRoutingModule is last and comes after the UiModule.
     // The order of route configuration is important because the router accepts the first route that matches a
     // navigation request path. Each routing module augments the route configuration in the order of import
     AppRoutingModule,

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Components
-import { ErrorComponent } from '../shared/components/error/error.component';
 import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { HomeComponent } from './pages/home/home.component';
 
@@ -19,6 +18,11 @@ const routes: Routes = [
         path: 'home_ui',
         component: MarkdownComponent,
         data: { url: 'app/ui/README.md' },
+      },
+      {
+        path: 'home_product',
+        component: MarkdownComponent,
+        data: { url: 'app/product/README.md' },
       },
       {
         path: 'home_flexbox',
