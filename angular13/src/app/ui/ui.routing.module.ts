@@ -22,6 +22,11 @@ const routes: Routes = [
         data: { url: 'app/shared/README.md' },
       },
       {
+        path: 'home_auth',
+        component: MarkdownComponent,
+        data: { url: 'app/auth/README.md' },
+      },
+      {
         path: 'home_ui',
         component: MarkdownComponent,
         data: { url: 'app/ui/README.md' },
