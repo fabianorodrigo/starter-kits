@@ -5,7 +5,7 @@ import { ProductHomeComponent } from './pages/product-home/product-home.componen
 import { ProductFormComponent } from './pages/product/form/form.component';
 import { ProductListComponent } from './pages/product/list/list.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   {
     // Use empty path routes to group routes together without adding any
     // additional path segments to the URL. Users will still visit /flexbox
