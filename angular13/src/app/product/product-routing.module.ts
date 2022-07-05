@@ -4,6 +4,8 @@ import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { ProductHomeComponent } from './pages/product-home/product-home.component';
 import { ProductFormComponent } from './pages/product/form/form.component';
 import { ProductListComponent } from './pages/product/list/list.component';
+import { ProductShowComponent } from './pages/product/show-from-resolver/show.component';
+import { ProductResolver } from './services/product.resolver';
 
 const routes: Routes = [
   {
@@ -24,6 +26,21 @@ const routes: Routes = [
         path: 'readme',
         component: MarkdownComponent,
         data: { url: 'app/product/README.md' },
+      },
+      {
+        path: 'fromResolver/:id',
+        component: ProductShowComponent,
+        /**
+         * In summary, we use a Resolver is used when you want to delay rendering the routed component
+         * until all necessary data has been fetched. In this way, you can handle errors better and also
+         * avoid to show a empty component while the data is being fetched.
+         *
+         * No ProductShowComponent, subscreve-se o método `data` do ActivatedRoute
+         * this._route.data.subscribe((data) => { this.product = data['product'];});
+         */
+        resolve: {
+          product: ProductResolver,
+        },
       },
       // a rota do ID tem que vir depois do readme, senão o 'readme' já
       // dá match pois é interpretado como um ID

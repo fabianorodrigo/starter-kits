@@ -101,6 +101,11 @@ export class ProductListComponent implements OnInit {
     ]);
   }
   onDelete(product: Product) {
-    alert(`Deletar ${product.name}`);
+    this._router.navigate([
+      '/product',
+      'fromResolver',
+      product.id,
+      { filter: this.form.controls['filter'].value },
+    ]);
   }
 }

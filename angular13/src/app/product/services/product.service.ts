@@ -1,9 +1,8 @@
-import { catchError, Observable, of, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, Observable, throwError } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Product } from '../model';
-import { ProductModule } from '../product.module';
 
 // Está com o providedIn igual null devido a uma dependência circular que se formaria
 // ao referenciar o ProductModule e, indiretamente, o ProductModule referenciaria essa

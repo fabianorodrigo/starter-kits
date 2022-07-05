@@ -32,6 +32,11 @@ export class ProductFormComponent implements OnInit {
     // navegar novamente com um novo ID enquanto o ProductService ainda está
     // processando a requisição anterior, o switchMap descarta  o request antigo
     // e retorna o produto com o ID da nova requisição
+    //
+    // UMA SOLUÇÃO MAIS INDICADA PARA ESTE CENÁRIO É O USO DE RESOLVER PARA QUE O COMPONENTE SÓ SEJA
+    // RENDERIZADO QUANDO OS DADOS JÁ ESTIVEREM DISPONÍVEIS. ALÉM DISSO, O TRATAMENTO DE ERRO É MELHOR
+    //  VIA RESOLVER POIS NEM RENDERIZA O COMPONENTE TARGET
+    //
     this.product$ = this._route.paramMap.pipe(
       tap((params: ParamMap) => (this.filter = params.get('filter'))),
       switchMap((params: ParamMap) => {

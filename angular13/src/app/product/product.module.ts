@@ -9,15 +9,18 @@ import { ProductFormComponent } from './pages/product/form/form.component';
 import { ProductListComponent } from './pages/product/list/list.component';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductService } from './services/product.service';
+import { ProductShowComponent } from './pages/product/show-from-resolver/show.component';
+import { ProductResolver } from './services/product.resolver';
 
 @NgModule({
   declarations: [
     ProductListComponent,
     ProductFormComponent,
     ProductHomeComponent,
+    ProductShowComponent,
   ],
   // https://angular.io/guide/providers#providedin-and-ngmodules
-  providers: [ProductService],
+  providers: [ProductService, ProductResolver],
   imports: [
     CommonModule,
     ReactiveFormsModule,
