@@ -85,7 +85,13 @@ Offers a set of methods to format/convert numbers:
 - `convertTimeChainToJS(timeInSeconds: number)`: receives the time in seconds since since 1/1/1970 UTC and returns the time in milliseconds since 1/1/1970 UTC
 - `convertNumberToString(value: number)`: convert a number to locale string.
 - `formatBN(bn: BN, decimals: number)`: formats a BigNumber considering the number of decimals.
-- `formatBNShortScale(bn: BN, decimals: number)`: formats a BigNumber to a short scale format considering the number of decimals..
+- `formatBNShortScale(bn: BN, decimals: number)`: formats a BigNumber to a short scale format considering the number of decimals.
+
+# Guards
+
+## CanDeactivate
+
+An route guard that implements the `CanDeactivate` interfaces offering a reusable canDeactivate guard in order to check if the user can leave the current route accordingly to the method `canDeactivate` implemented in the component received as argument.
 
 
 # Angular Concepts/Features
@@ -103,3 +109,28 @@ export class MessageService {
   ...
 ```
 *message.service.ts*
+
+
+## Route Guards
+
+This module provides a Route Guard `CanDeactivate` in order to decide if the user can leave the current route or not accordingly to the method `canDeactivate` implemented in the component received as argument.
+
+```javascript
+// The guard not knowing the details of any component's deactivation method makes the guard reusable.
+@Injectable({
+  providedIn: SharedModule,
+})
+export class CanDeactivateGuard
+  implements CanDeactivate<ICanComponentDeactivate>
+{
+  canDeactivate(
+    component: ICanComponentDeactivate,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return component.canDeactivate ? component.canDeactivate() : true;
+  }
+}
+```
+

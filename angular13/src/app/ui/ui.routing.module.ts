@@ -5,12 +5,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { HomeComponent } from './pages/home/home.component';
 import { AuthGuard } from '../auth/guards/auth.guard';
+import { CanDeactivateGuard } from '../shared/guards/can-deactivate.guard';
 
 const routes: Routes = [
   {
     path: 'protected-secrets',
     component: ProtectedSecretsComponent,
     canActivate: [AuthGuard],
+    canDeactivate: [CanDeactivateGuard],
   },
   {
     path: 'home',
