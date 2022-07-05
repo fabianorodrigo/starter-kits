@@ -7,10 +7,11 @@ import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 import { ComponentsModule } from './components/components.module';
 import { HomeComponent } from './pages/home/home.component';
+import { ProtectedSecretsComponent } from './pages/protected-secrets/protected-secrets.component';
 import { UiRoutingModule } from './ui.routing.module';
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [HomeComponent, ProtectedSecretsComponent],
   imports: [
     CommonModule,
     RouterModule,
