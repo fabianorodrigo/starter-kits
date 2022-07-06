@@ -1,0 +1,28 @@
+<div class="flexDirectionRow">
+  <div class="sideMenu">
+    <dapp-menu
+      [items]="[
+        { label: 'Angular DI Home', link: '/di/', icon: 'home' },
+        {
+          label: 'useClass',
+          link: '/di/useclass',
+          icon: 'class'
+        },
+        {
+          label: 'useExisting',
+          link: '/di/useexisting',
+          icon: 'front_hand'
+        },
+        {
+          label: 'useValue',
+          link: '/di/usevalue',
+          icon: 'data_object'
+        }
+      ]"
+    ></dapp-menu>
+  </div>
+  <div class="flexItemGrow5">
+    <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
+    <router-outlet></router-outlet>
+  </div>
+</div>

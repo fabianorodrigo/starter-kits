@@ -1,0 +1,12 @@
+<div class="container-column">
+  <div>
+    <div>
+      <h3>{{ demo.title }}</h3>
+      <p>{{ demo.text }}</p>
+      <div
+        class="div-css"
+        [innerHTML]="demo.code | language: 'javascript' | markdown"
+      ></div>
+    </div>
+  </div>
+</div>

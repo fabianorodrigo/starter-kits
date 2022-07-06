@@ -1,5 +1,6 @@
 [
   {"label":"Home", "link":"/home","icon": "home" },
+  {"label":"Angular DI", "link":"/di","icon": "mediation" },
   {"label":"Product REST", "link":"/product","icon": "redeem" },
   {"label":"Flexbox", "link":"/flexbox","icon": "backup_table" },
   {"label":"Ðapp Web3.js", "link":"/web3js","icon": "monetization_on" },

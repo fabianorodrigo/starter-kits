@@ -1,0 +1,10 @@
+h3{
+  margin-top: 20px;
+  margin-bottom: 2px;
+}
+
+.container-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

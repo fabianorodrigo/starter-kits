@@ -22,6 +22,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./flexbox/flexbox.module').then((m) => m.FlexboxModule),
   },
+  {
+    path: 'di',
+    loadChildren: () =>
+      import('./dependency-injection/dependency-injection.module').then(
+        (m) => m.DependencyInjectionModule
+      ),
+  },
   //definindo a rota default como o '/home'. Essa rota está definida no UiModule (que é carregado eagerly)
   {
     path: '',
