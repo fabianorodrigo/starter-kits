@@ -6,13 +6,17 @@ import {
   Router,
   UrlTree,
   CanActivateChild,
+  CanLoad,
+  Route,
+  UrlSegment,
 } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild {
+export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   constructor(private authService: AuthService, private router: Router) {}
 
   /**
@@ -35,6 +39,19 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     state: RouterStateSnapshot
   ): true | UrlTree {
     return this.canActivate(route, state);
+  }
+
+  /**
+   * Usado em módulos lazy loaded para nem carregar o módulo caso não esteja autenticado
+   *
+   * @param route
+   * @param segments
+   * @returns
+   */
+  canLoad(route: Route, segments: UrlSegment[]): boolean | UrlTree {
+    const url = `/${route.path}`;
+
+    return this.checkLogin(url);
   }
 
   checkLogin(url: string): true | UrlTree {
