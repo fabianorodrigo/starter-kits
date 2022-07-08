@@ -12,7 +12,11 @@ export class ProvidersDemoService {
     return {
       title: 'Class Provider Syntax',
       text: 'The class provider syntax is a shorthand expression that expands into a provider configuration.',
-      code: 'providers: [Logger]',
+      code: [
+        {
+          code: 'providers: [Logger]',
+        },
+      ],
     };
   }
 
@@ -22,7 +26,11 @@ export class ProvidersDemoService {
       text: `Angular expands the providers value into a full provider object. The provide property holds the token that serves as the key.
       The second property is a provider definition object, which tells the injector how to create the dependency value.
       The provider-definition key ca be useClass, useExisting, useValue or useFactory.`,
-      code: 'providers: [{ provide: Logger, useClass: Logger }]',
+      code: [
+        {
+          code: 'providers: [{ provide: Logger, useClass: Logger }]',
+        },
+      ],
     };
   }
 
@@ -31,7 +39,11 @@ export class ProvidersDemoService {
       title: 'useClass: Specifying an alternative class provider',
       text: `Different classes can provide the same service. In this example, the injector will return a ProvidersDemoService instance
       when the component asks for a demo service using the 'Demo' token`,
-      code: 'providers: [{ provide: DemoService, useClass: ProvidersDemoService }]',
+      code: [
+        {
+          code: 'providers: [{ provide: DemoService, useClass: ProvidersDemoService }]',
+        },
+      ],
     };
   }
 
@@ -41,7 +53,11 @@ export class ProvidersDemoService {
       title: 'useClass: Configuring class providers with dependencies',
       text: `If the alternative class providers have their own dependencies, specify both providers in the providers metadata property of the parent module or component.
       Otherwise, a exception will be thrown: NullInjectorError: No provider for LoggerConsoleService!`,
-      code: 'providers: [ LoggerConsoleService, { provide: DemoService, useClass: ProvidersDemoService }]',
+      code: [
+        {
+          code: 'providers: [ LoggerConsoleService, { provide: DemoService, useClass: ProvidersDemoService }]',
+        },
+      ],
     };
   }
 
@@ -51,8 +67,12 @@ export class ProvidersDemoService {
       text: `To alias a class provider, specify the alias and the class provider in the providers array with the useExisting property.
       In the example, the injector injects the single instance of ProvidersDemoService when the component asks for a DemoService2 or a ProviderDemoService.
       In this way, 'DemoService2' is just an alias for 'ProviderDemoService'.`,
-      code: `providers: [ ProvidersDemoService,
+      code: [
+        {
+          code: `providers: [ ProvidersDemoService,
             { provide: DemoService2, useExisting: ProvidersDemoService }]`,
+        },
+      ],
     };
   }
 
@@ -60,7 +80,11 @@ export class ProvidersDemoService {
     return {
       title: 'useValue: WONT BE USED THIS',
       text: `WONT BE USED THIS`,
-      code: `WONT BE USED THIS`,
+      code: [
+        {
+          code: `WONT BE USED THIS`,
+        },
+      ],
     };
   }
 
@@ -68,7 +92,11 @@ export class ProvidersDemoService {
     return {
       title: 'useValue: WONT BE USED THIS',
       text: `WONT BE USED THIS`,
-      code: `WONT BE USED THIS`,
+      code: [
+        {
+          code: `WONT BE USED THIS`,
+        },
+      ],
     };
   }
 }

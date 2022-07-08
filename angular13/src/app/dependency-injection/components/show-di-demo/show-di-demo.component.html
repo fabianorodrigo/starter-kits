@@ -3,10 +3,13 @@
     <div>
       <h3>{{ demo.title }}</h3>
       <p>{{ demo.text }}</p>
-      <div
-        class="div-css"
-        [innerHTML]="demo.code | language: 'javascript' | markdown"
-      ></div>
+      <ng-container *ngFor="let file of demo.code">
+        <div
+          class="div-css"
+          [innerHTML]="file.code | language: 'javascript' | markdown"
+        ></div>
+        <span>{{ file.filename }}</span>
+      </ng-container>
     </div>
   </div>
 </div>

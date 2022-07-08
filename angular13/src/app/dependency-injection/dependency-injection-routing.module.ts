@@ -5,6 +5,7 @@ import { MarkdownComponent } from '../shared/pages/markdown/markdown.component';
 import { DIHomeComponent } from './pages/di-home/di-home.component';
 import { DIUseClassComponent } from './pages/di-useClass/di-useClass.component';
 import { DIUseValueComponent } from './pages/diuse-value/diuse-value.component';
+import { DIUseFactoryComponent } from './pages/diuse-factory/diuse-factory.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'useclass', component: DIUseClassComponent },
       { path: 'useexisting', component: DIUseExistingComponent },
       { path: 'usevalue', component: DIUseValueComponent },
+      { path: 'usefactory', component: DIUseFactoryComponent },
     ],
   },
 ];
