@@ -14,6 +14,7 @@ import { DIUseValueComponent } from './pages/diuse-value/diuse-value.component';
 import { ClockService } from './services/clock.service';
 import { Logger } from './services/logger';
 import { LoggerConsoleService } from './services/logger-console.service';
+import { DIOptionalDependencyComponent } from './pages/dioptional-dependency/dioptional-dependency.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { LoggerConsoleService } from './services/logger-console.service';
     DiUseExistingComponent,
     DIUseValueComponent,
     DIUseFactoryComponent,
+    DIOptionalDependencyComponent,
   ],
   imports: [
     CommonModule,

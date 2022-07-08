@@ -161,6 +161,16 @@ Finally, in the DIUseFactoryComponent, we registered MinutesAnalysisServiceProvi
 export class DIUseFactoryComponent implements OnInit {
 ```
 
+### Make a dependency @Optional 
+
+Dependencies can be registered at any level in the component hierarchy. When a component requests a dependency, Angular starts with that component's injector and walks up the injector tree until it finds the first suitable provider. Angular throws an error if it can't find the dependency during that walk. The @Optional property decorator tells Angular to return null when it can't find the dependency.
+
+We did this in the DIOptionalDependencyComponent, annotating the  `demoService2` argument with `@Optional`. Since the DemoService2 was not registered to be provided anywehere, it will be injected as `null`. Without the `@Optional` decorator, an exception R3InjectorError(DependencyInjectionModule)[DemoService2 -> ...
+would be is thrown
+ 
+```javascript
+constructor(@Optional() private demoService2: DemoService2) {}
+```
 
 # Sources
 
