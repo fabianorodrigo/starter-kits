@@ -69,6 +69,98 @@ export class ProvidersDemoService {
 *providers-demo.service.ts*
 
 
+## Dependency Providers
+
+By configuring providers, you can make services available to the parts of your application that need them. A dependency provider configures an injector with a DI token, which that injector uses to provide the runtime version of a dependency value.
+
+
+### useClass: Specify an alternative class provider
+
+Different classes can provide the same service. In the DIUseClassComponent, we specify that where a DemoService is required an instance of ProviderDemoService should be injected.
+
+```javascript
+{ provide: DemoService, useClass: ProvidersDemoService }
+```
+
+### useExisting: Aliasing class providers
+
+To alias a class provider, specify the alias and the class provider in the providers array with the useExisting property. In the DiUseExistingComponent,  the injector injects the singleton instance of ProvidersDemoService when the component asks for either the ProvidersDemoService or the DemoService2. In this way, DemoService2 is an alias for ProvidersDemoService.
+
+```javascript
+ providers: [
+    LoggerConsoleService, 
+    ProvidersDemoService,
+    { provide: DemoService2, useExisting: ProvidersDemoService },
+  ],
+```
+
+
+### useValue: Injecting an object
+
+To inject an object, configure the injector with the useValue option. The following provider object uses the useValue key to associate the variable with the DemoService token.
+
+```javascript
+ providers: [
+    { provide: DemoService, useValue: ObjectToBeInjected },
+     ...
+```
+
+### Using an InjectionToken object
+
+Define and use an InjectionToken object for choosing a provider token for non-class dependencies. In the `injection-token.ts`, we define a token `MY_INJECTION_TOKEN` of type string.
+
+
+```javascript
+export const MY_INJECTION_TOKEN = new InjectionToken<string>('MY_INJECTION_TOKEN');
+```
+
+In the providers of the DIUseValueComponent, we associante the `MY_INJECTION_TOKEN` with the current date in a ISO format. And in it's contructor we used the parameter decorator `@Inject` to inject the value stablished in the `providers` section.
+
+```javascript
+ providers: [
+  ...
+  { provide: MY_INJECTION_TOKEN, useValue: new Date().toISOString() }, 
+  ...
+ ]
+
+ ...
+
+ constructor(..., @Inject(MY_INJECTION_TOKEN) private valueInjected: string) {}
+```
+
+### useFactory: Using factory providers
+
+To create a changeable, dependent value based on information unavailable before run time, use a factory provider. In the MinutesAnalysisService, we want to show if the current minute is EVEN or ODD, an information that only be obtained during run time. In order to do it, we had to create the factory provider MinutesAnalysisServiceFactory, responsible to create an instance in runtime injecting the `isEven` boolean argument.
+
+```javascript
+const MinutesAnalysisServiceFactory = (
+  logger: LoggerConsoleService,
+  clockService: ClockService
+) => new MinutesAnalysisService(logger, clockService.getMinute() % 2 == 0);
+```
+
+After that, we define the MinutesAnalysisServiceProvider specifying MinuteAnalysisService as token, the  MinutesAnalysisServiceFactory as useFactory and in `deps` atribute the list of dependencies.
+
+```javascript
+export const MinutesAnalysisServiceProvider = {
+  provide: MinutesAnalysisService,
+  useFactory: MinutesAnalysisServiceFactory,
+  deps: [Logger, ClockService],
+};
+```
+
+Finally, in the DIUseFactoryComponent, we registered MinutesAnalysisServiceProvider in providers list:
+
+```javascript
+@Component({
+  selector: 'dapp-diuse-factory',
+  templateUrl: './diuse-factory.component.html',
+  styleUrls: ['./diuse-factory.component.css'],
+  providers: [MinutesAnalysisServiceProvider],
+})
+export class DIUseFactoryComponent implements OnInit {
+```
+
 
 # Sources
 
