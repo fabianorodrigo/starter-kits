@@ -25,6 +25,7 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
+              "src/app/dependency-injection/README.md",
               "src/app/flexbox/README.md",
               "src/app/product/README.md",
               "src/app/shared/README.md",

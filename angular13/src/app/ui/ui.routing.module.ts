@@ -39,6 +39,11 @@ const routes: Routes = [
         data: { url: 'app/product/README.md' },
       },
       {
+        path: 'home_di',
+        component: MarkdownComponent,
+        data: { url: 'app/dependency-injection/README.md' },
+      },
+      {
         path: 'home_flexbox',
         component: MarkdownComponent,
         data: { url: 'app/flexbox/README.md' },

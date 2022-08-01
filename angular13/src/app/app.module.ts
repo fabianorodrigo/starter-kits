@@ -11,6 +11,7 @@ import { MaterialModule } from './material/material.module';
 import { GlobalErrorHandlerService } from './services';
 import { SharedModule } from './shared/shared.module';
 import { UiModule } from './ui/ui.module';
+import { DependencyInjectionModule } from './dependency-injection/dependency-injection.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,6 +31,7 @@ import { UiModule } from './ui/ui.module';
     // The order of route configuration is important because the router accepts the first route that matches a
     // navigation request path. Each routing module augments the route configuration in the order of import
     AppRoutingModule,
+    DependencyInjectionModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptor, multi: true },

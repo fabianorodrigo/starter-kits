@@ -1,0 +1,9 @@
+<h1>@Inject</h1>
+<div class="container-column">
+  <div>
+    <dapp-show-di-demo *ngFor="let item of demos; let i = index" [demo]="item">
+    </dapp-show-di-demo>
+  </div>
+  <span>Local Storage['starter-kit-demo.angular13']:</span
+  ><span>{{ storage.getItem("starter-kit-demo.angular13") }}</span>
+</div>
