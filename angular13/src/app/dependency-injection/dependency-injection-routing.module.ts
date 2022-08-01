@@ -1,3 +1,4 @@
+import { DICustomInjectComponent } from './pages/dicustom-inject/dicustom-inject.component';
 import { DiUseExistingComponent as DIUseExistingComponent } from './pages/di-use-existing/di-use-existing.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'usevalue', component: DIUseValueComponent },
       { path: 'usefactory', component: DIUseFactoryComponent },
       { path: 'optional', component: DIOptionalDependencyComponent },
+      { path: 'inject', component: DICustomInjectComponent },
     ],
   },
 ];

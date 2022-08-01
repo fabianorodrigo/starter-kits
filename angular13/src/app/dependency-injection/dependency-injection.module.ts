@@ -15,6 +15,7 @@ import { ClockService } from './services/clock.service';
 import { Logger } from './services/logger';
 import { LoggerConsoleService } from './services/logger-console.service';
 import { DIOptionalDependencyComponent } from './pages/dioptional-dependency/dioptional-dependency.component';
+import { DICustomInjectComponent } from './pages/dicustom-inject/dicustom-inject.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DIOptionalDependencyComponent } from './pages/dioptional-dependency/dio
     DIUseValueComponent,
     DIUseFactoryComponent,
     DIOptionalDependencyComponent,
+    DICustomInjectComponent,
   ],
   imports: [
     CommonModule,
