@@ -1,8 +1,7 @@
-import { MinutesAnalysisServiceProvider } from './../../services/minutes-analysis.service.provider';
 import { Component, OnInit } from '@angular/core';
 import { IDemo } from '../../services/demo.interface';
-import { DemoService } from '../../services/demo.service';
 import { MinutesAnalysisService } from '../../services/minutes-analysis.service';
+import { MinutesAnalysisServiceProvider } from './../../services/minutes-analysis.service.provider';
 
 @Component({
   selector: 'dapp-diuse-factory',
