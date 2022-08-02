@@ -11,6 +11,13 @@ const routes: Routes = [
       import('./web3-ui/web3js/web3js.module').then((m) => m.Web3jsModule),
   },
   {
+    path: 'ethersjs',
+    loadChildren: () =>
+      import('./web3-ui/ethersjs/ethersjs.module').then(
+        (m) => m.EthersjsModule
+      ),
+  },
+  {
     path: 'product',
     loadChildren: () =>
       import('./product/product.module').then((m) => m.ProductModule),

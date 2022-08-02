@@ -1,0 +1,15 @@
+<div class="flexDirectionRow">
+  <div class="sideMenu">
+    <dapp-wallet></dapp-wallet>
+    <dapp-menu
+      [items]="[
+        { label: 'Ðapp Ethers.js Home', link: '/ethersjs', icon: 'home' },
+        { label: 'LINK Token', link: '/ethersjs/link', icon: 'sell' }
+      ]"
+    ></dapp-menu>
+  </div>
+  <div class="flexItemGrow4">
+    <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
