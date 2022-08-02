@@ -5,7 +5,7 @@ import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.comp
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { TransactionResult } from '../../model';
+import { TransactionResult } from '../../../shared/model';
 import { ERC20BaseContract } from '../../services/ERC20-base';
 
 @Component({

@@ -1,7 +1,7 @@
 import BN from 'bn.js';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import { CallbackFunction, TransactionResult } from '../model';
+import { CallbackFunction, TransactionResult } from '../../shared/model';
 import { BaseContract } from './contract-base';
 import { Web3Service } from './web3.service';
 

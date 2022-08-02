@@ -9,8 +9,8 @@ import {
   EventPastParameters,
   ProviderErrors,
   TransactionResult,
-} from '../model';
-import { Web3Subscription } from '../model/events/Subscription';
+} from '../../shared/model';
+import { Web3Subscription } from '../../shared/model/events/Subscription';
 import { Web3Service } from './web3.service';
 
 export abstract class BaseContract {

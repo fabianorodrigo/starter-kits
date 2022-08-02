@@ -16,7 +16,7 @@ export const environment = {
   tracing: false,
   //chainId: 31337, //set on backend-hardhat/package.json `ganache` script
   chainId: KOVAN_CHAINID,
-  chainName: 'Localhost',
+  chainName: 'KOVAN',
   chainCurrencyName: 'Ether',
   api: `/api`,
 

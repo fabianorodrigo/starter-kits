@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
 import { EventData } from 'web3-eth-contract';
-import { Web3Subscription } from '../../model/events/Subscription';
+import { Web3Subscription } from '../../../shared/model/events/Subscription';
 import { ERC20BaseContract } from '../../services/ERC20-base';
 import { Web3Service } from '../../services/web3.service';
 import { IApprovalEvent } from './approval-event.interface';

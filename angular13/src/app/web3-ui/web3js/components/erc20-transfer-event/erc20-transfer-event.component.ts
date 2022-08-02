@@ -3,7 +3,7 @@ import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interf
 import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { EventData } from 'web3-eth-contract';
-import { Web3Subscription } from '../../model/events/Subscription';
+import { Web3Subscription } from '../../../shared/model/events/Subscription';
 import { ERC20BaseContract } from '../../services/ERC20-base';
 import { Web3Service } from '../../services/web3.service';
 import { ITransferEvent } from './transfer-event.interface';
