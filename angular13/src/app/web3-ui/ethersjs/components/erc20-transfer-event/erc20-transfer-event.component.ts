@@ -79,7 +79,7 @@ export class ERC20TransferEventComponent implements OnInit {
       pastEvents[0],
       33084061, // BLOCK WHERE IS THE TRANSACTION
       pastEvents.filter((e) => {
-        return (e.args as string[])[0].indexOf('97') > -1;
+        return (e.args as string[])[0].indexOf('97b') > -1;
       })
     );
 
