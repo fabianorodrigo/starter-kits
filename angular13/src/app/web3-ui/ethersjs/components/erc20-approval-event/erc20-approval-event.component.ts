@@ -31,20 +31,20 @@ export class ERC20ApprovalEventComponent implements OnInit {
       //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
       // que tenha a conta `from` igual à conta conectada na Wallet
       if (_signer) {
-        // subscrição eventos últimos 10 blocos
+        // subscrição eventos últimos 1000 blocos
         this.fetchPastApprovalEvents(_signer);
         // subscrição eventos futuros
         await this.contractERC20.subscribeContractEvent({
           eventName: 'Approval',
-          args: [_signer],
-          listenerFunction: (event) => {
+          args: [await _signer.getAddress()],
+          listenerFunction: (owner, spender, value, event) => {
             this.eventList = [
               ...this.eventList,
               {
                 blockNumber: event.blockNumber,
-                owner: (<Result>event.args)['owner'],
-                spender: (<Result>event.args)['spender'],
-                value: (<Result>event.args)['value'],
+                owner,
+                spender,
+                value,
               },
             ];
           },
@@ -54,19 +54,12 @@ export class ERC20ApprovalEventComponent implements OnInit {
   }
 
   /**
-   * Fetches the past events on the blockchain since current block less 10 and feed the {pastEvents} array
+   * Fetches the past events on the blockchain since current block less 1000 and feed the {pastEvents} array
    *
    * @param signer Account address used to filter the events where 'owner' part equals it
    */
   private async fetchPastApprovalEvents(signer: Signer): Promise<void> {
     const currentBlock = await this._web3Service.getCurrentBlockNumber();
-    // subscrição eventos passados
-    // const pastEvents = await this.contractERC20.getContractsPastEvent({
-    //   eventName: 'Approval',
-    //   web3jsParameters: {
-    //     filter: { owner: accountAddress },
-    //   },
-    // });
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Approval',
       args: [await signer.getAddress()],
