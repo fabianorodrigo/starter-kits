@@ -1,3 +1,4 @@
+import { RINKEBY_CHAINID } from './rinkeby';
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
@@ -8,6 +9,7 @@ import {
   KOVAN_DATA_FEED_ETH_USD_ADDRESS,
   KOVAN_LINK_TOKEN,
 } from './kovan';
+import { RINKEBY_LINK_TOKEN } from './rinkeby';
 import { MUMBAI_DATA_FEED_ETH_USD_ADDRESS, MUMBAI_LINK_TOKEN } from './mumbai';
 
 export const environment = {
@@ -15,12 +17,12 @@ export const environment = {
   debugging: false,
   tracing: false,
   //chainId: 31337, //set on backend-hardhat/package.json `ganache` script
-  chainId: KOVAN_CHAINID,
-  chainName: 'KOVAN',
+  chainId: RINKEBY_CHAINID,
+  chainName: 'RINKEBY',
   chainCurrencyName: 'Ether',
   api: `/api`,
 
-  LINK_TOKEN: KOVAN_LINK_TOKEN,
+  LINK_TOKEN: RINKEBY_LINK_TOKEN,
 
   ABIS: {
     LINK_TOKEN: ABI.LINK_TOKEN,
