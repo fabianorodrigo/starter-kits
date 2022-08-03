@@ -1,6 +1,5 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
-import detectEthereumProvider from '@metamask/detect-provider';
-import { BigNumber, Contract, ContractInterface, ethers } from 'ethers';
+import { BigNumber, Contract, ContractInterface, ethers, Signer } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import {
@@ -27,8 +26,8 @@ export class EthersjsService {
   /**
    * Subject to handle the current user account address and it's changes
    */
-  private _userAccountAddressSubject = new BehaviorSubject<string | null>(null);
-  private _userAccountAddress!: string | null;
+  private _signerSubject = new BehaviorSubject<Signer | null>(null);
+  private _userAccountAddress!: string | undefined;
 
   constructor(
     private _loggingService: LoggingService,
@@ -50,14 +49,21 @@ export class EthersjsService {
   /**
    * @returns Observable to monitor changes in the user account address in the wallet
    */
-  getUserAccountAddressSubject() {
-    return this._userAccountAddressSubject.asObservable();
+  getSignerSubject() {
+    return this._signerSubject.asObservable();
+  }
+
+  /**
+   * @returns The current signer in the provider (wallet)
+   */
+  getSigner() {
+    return this._signerSubject.value;
   }
 
   /**
    * @returns The current user account address in the provider (wallet)
    */
-  getUserAccountAddress(): Promise<string | null> {
+  getUserAccountAddress(): Promise<string | undefined> {
     return new Promise((resolve) => {
       // se o atributo já está preenchido, retorna-o
       if (this._userAccountAddress) {
@@ -66,14 +72,13 @@ export class EthersjsService {
       // senão, subscreve ao subject e em seguida dispara o método de conexão.
       // quando conectado, recebe a notificação e resolve a Promise pra quem chamou
       else {
-        const subscription = this._userAccountAddressSubject.subscribe(
-          (_address) => {
-            resolve(_address);
-            if (subscription) {
-              subscription.unsubscribe();
-            }
+        const subscription = this._signerSubject.subscribe(async (_signer) => {
+          const _address = await _signer?.getAddress();
+          resolve(_address);
+          if (subscription) {
+            subscription.unsubscribe();
           }
-        );
+        });
         this.connect();
       }
     });
@@ -319,8 +324,10 @@ export class EthersjsService {
       _accounts
     );
     this._userAccountAddress =
-      _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : null;
-    this._userAccountAddressSubject.next(this._userAccountAddress);
+      _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : undefined;
+    this._signerSubject.next(
+      this._web3Provider.getSigner(this._userAccountAddress)
+    );
   }
 
   /**

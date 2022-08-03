@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BigNumber } from 'ethers';
+import { BigNumber, Signer } from 'ethers';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ProviderErrors } from 'src/app/web3-ui/shared/model';
@@ -12,7 +12,8 @@ import { EthersjsService } from '../../services/ethersjs.service';
 })
 export class WalletComponent implements OnInit {
   //@Input() userAccountAddress: string | null = null;
-  userAccountAddress: string | null = null;
+  signer: Signer | null = null;
+  signerAddress: string | null = null;
   balance: string = '0';
 
   constructor(
@@ -22,21 +23,16 @@ export class WalletComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this._ethersjsService
-      .getUserAccountAddressSubject()
-      .subscribe((_accountAddress) => {
-        this.userAccountAddress = _accountAddress;
-        if (this.userAccountAddress != null) {
-          this._ethersjsService
-            .balanceOf(this.userAccountAddress as string)
-            .subscribe((value) => {
-              this.balance = this._numberService.formatBigNumber(
-                BigNumber.from(value),
-                18
-              );
-            });
-        }
-      });
+    this._ethersjsService.getSignerSubject().subscribe(async (_signer) => {
+      this.signer = _signer;
+      this.signerAddress = _signer == null ? null : await _signer.getAddress();
+      if (this.signer != null) {
+        this.balance = this._numberService.formatBigNumber(
+          await this.signer.getBalance(),
+          18
+        );
+      }
+    });
   }
 
   /**

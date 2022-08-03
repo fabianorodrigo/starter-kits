@@ -1,5 +1,5 @@
 import BN from 'bn.js';
-import { BigNumber, Contract, ContractInterface } from 'ethers';
+import { BigNumber, Contract, ContractInterface, Signer } from 'ethers';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
@@ -17,7 +17,7 @@ export abstract class ContractBaseService {
   protected contract!: Contract;
   protected _eventListeners: { [event: string]: BehaviorSubject<any> } = {};
   private _owner!: string;
-  private _fromAccount!: string | null;
+  private _signer!: Signer | null;
   public address: string;
 
   constructor(
@@ -26,11 +26,9 @@ export abstract class ContractBaseService {
     _address: string
   ) {
     this.address = _address;
-    this._ethersjsService
-      .getUserAccountAddressSubject()
-      .subscribe((_account) => {
-        this._fromAccount = _account;
-      });
+    this._ethersjsService.getSignerSubject().subscribe((_account) => {
+      this._signer = _account;
+    });
   }
 
   protected async getContract(_abis: ContractInterface): Promise<Contract> {
@@ -164,12 +162,12 @@ export abstract class ContractBaseService {
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((subscriber) => {
       this.getContract(_abi).then(async (_contract) => {
-        const fromAccount = await this._ethersjsService.getUserAccountAddress();
-        if (fromAccount == null)
+        const fromSigner = this._ethersjsService.getSigner();
+        if (fromSigner == null)
           throw new Error(`Not possible to determine the origin account`);
         try {
           _contract
-            .connect(fromAccount)
+            .connect(fromSigner)
             [_functionName](..._args)
             .then((tx: TransactionResponse) => {
               // espera-se que o wait seja o cara que vai ser executado quando for confirmado
@@ -199,6 +197,7 @@ export abstract class ContractBaseService {
                   }
                   subscriber.next({ success: true, result: _successMessage });
                 });
+              subscriber.next({ success: true, result: _successMessage });
             });
         } catch (e: any) {
           const providerError = ProviderErrors[e.code];

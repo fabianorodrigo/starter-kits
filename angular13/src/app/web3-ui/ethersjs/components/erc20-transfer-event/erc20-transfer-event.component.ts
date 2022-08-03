@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Signer } from 'ethers';
 import { Result } from 'ethers/lib/utils';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
 
@@ -49,45 +50,43 @@ export class ERC20TransferEventComponent implements OnInit {
     //     console.log(`toma past da jureba`, events);
     //   });
     /////////
-    this._ethersjsService
-      .getUserAccountAddressSubject()
-      .subscribe(async (accountAddress) => {
-        //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Transfer`
-        // que tenha a conta `from` igual à conta conectada na Wallet
-        if (accountAddress) {
-          // subscrição eventos últimos 10 blocos
-          this.fetchPastTransferEvents(accountAddress);
-          // subscrição eventos futuros
-          await this.contractERC20.subscribeContractEvent({
-            eventName: 'Transfer',
-            args: [accountAddress],
-            listenerFunction: (event) => {
-              this.eventList = [
-                ...this.eventList,
-                {
-                  blockNumber: event.blockNumber,
-                  from: (<Result>event.args)['from'],
-                  to: (<Result>event.args)['to'],
-                  value: (<Result>event.args)['value'],
-                },
-              ];
-            },
-          });
-        }
-      });
+    this._ethersjsService.getSignerSubject().subscribe(async (_signer) => {
+      //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Transfer`
+      // que tenha a conta `from` igual à conta conectada na Wallet
+      if (_signer) {
+        // subscrição eventos últimos 10 blocos
+        this.fetchPastTransferEvents(_signer);
+        // subscrição eventos futuros
+        await this.contractERC20.subscribeContractEvent({
+          eventName: 'Transfer',
+          args: [_signer],
+          listenerFunction: (event) => {
+            this.eventList = [
+              ...this.eventList,
+              {
+                blockNumber: event.blockNumber,
+                from: (<Result>event.args)['from'],
+                to: (<Result>event.args)['to'],
+                value: (<Result>event.args)['value'],
+              },
+            ];
+          },
+        });
+      }
+    });
   }
 
   /**
    * Fetches the past events on the blockchain since current block less 10 and feed the {pastEvents} array
    *
-   * @param accountAddress Account address used to filter the events where 'from' part equals it
+   * @param signer Account address used to filter the events where 'from' part equals it
    */
-  private async fetchPastTransferEvents(accountAddress: string): Promise<void> {
+  private async fetchPastTransferEvents(signer: Signer): Promise<void> {
     const currentBlock = await this._ethersjsService.getCurrentBlockNumber();
     // subscrição eventos passados
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Transfer',
-      args: [accountAddress],
+      args: [await signer.getAddress()],
       fromBlock: currentBlock - 1000,
       toBlock: 'latest',
     });

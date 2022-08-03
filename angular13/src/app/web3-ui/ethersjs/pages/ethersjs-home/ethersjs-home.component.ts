@@ -30,16 +30,17 @@ export class EthersjsHomeComponent implements OnInit {
 
     await this._ethersjsService.connect();
 
-    this._ethersjsService
-      .getUserAccountAddressSubject()
-      .subscribe((address) => {
-        this._loggingService.debug(
-          EthersjsHomeComponent.name,
-          'getUserAccountAddressSubject.subscribe',
-          address
-        );
-        this.changeWalletAccount(address);
-      });
+    this._ethersjsService.getSignerSubject().subscribe(async (signer) => {
+      this._loggingService.debug(
+        EthersjsHomeComponent.name,
+        'getUserAccountAddressSubject.subscribe',
+        signer
+      );
+
+      this.changeWalletAccount(
+        signer == null ? null : await signer.getAddress()
+      );
+    });
   }
 
   changeWalletAccount(_address: string | null) {

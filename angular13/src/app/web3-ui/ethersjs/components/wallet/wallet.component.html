@@ -2,7 +2,7 @@
   mat-raised-button
   color="secondary"
   (click)="connect($event)"
-  *ngIf="!userAccountAddress; else connected"
+  *ngIf="!signerAddress; else connected"
 >
   Connect Wallet
 </button>
@@ -10,7 +10,7 @@
 <ng-template #connected>
   <div class="connected-account">
     <div class="label">Connected Account address:</div>
-    <div class="accountAddress">{{ userAccountAddress }}</div>
+    <div class="accountAddress">{{ signerAddress }}</div>
   </div>
   Balance: {{ balance }} ETH
 </ng-template>

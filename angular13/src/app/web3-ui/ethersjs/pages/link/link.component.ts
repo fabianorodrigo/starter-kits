@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Signer } from 'ethers';
 import { IMetadata } from '../../components/erc20-metadata/metadata.interface';
 import { EthersjsService } from '../../services/ethersjs.service';
 import { LinkTokenService } from '../../services/link-token.service';
@@ -10,7 +11,7 @@ import { LinkTokenService } from '../../services/link-token.service';
   providers: [LinkTokenService],
 })
 export class LinkComponent implements OnInit {
-  userAccountAddress: string | null = null;
+  signer!: Signer | null;
   formatedBalance: string = '0';
   formatedBalanceTooltip: string = '0';
   metadata: { [property: string]: any } = {};
@@ -22,11 +23,9 @@ export class LinkComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribing for account address changes in the provider
-    this._web3Service
-      .getUserAccountAddressSubject()
-      .subscribe(async (address) => {
-        this.userAccountAddress = address;
-      });
+    this._web3Service.getSignerSubject().subscribe(async (address) => {
+      this.signer = address;
+    });
   }
 
   onMetadataRead(event: IMetadata) {
