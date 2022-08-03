@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { BigNumber, Contract, ContractInterface, ethers } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -13,6 +13,11 @@ import {
 
 declare let window: any;
 
+export const METAMASK = new InjectionToken('Metamask', {
+  providedIn: null,
+  factory: () => window.ethereum,
+});
+
 @Injectable({
   providedIn: null,
 })
@@ -25,8 +30,12 @@ export class EthersjsService {
   private _userAccountAddressSubject = new BehaviorSubject<string | null>(null);
   private _userAccountAddress!: string | null;
 
-  constructor(private _loggingService: LoggingService) {
-    this.hasEthereumProvider();
+  constructor(
+    private _loggingService: LoggingService,
+    @Inject(METAMASK) provider: any
+  ) {
+    this._web3Provider = new ethers.providers.Web3Provider(provider);
+    this.handleEthereumProvider(provider);
   }
 
   /**
@@ -248,15 +257,11 @@ export class EthersjsService {
   }
 
   /**
-   * Detects Metamask Ethereum provider and makes the bindings of events: connect, disconnect, accountsChanged, message etc
+   * Handle a Web3 provider (Metamask Ethereum) and makes the bindings of events: connect, disconnect, accountsChanged, message etc
    * @returns TRUE if Wallet detected and bindings made successfully
    */
-  private async hasEthereumProvider(): Promise<boolean> {
-    // this returns the provider, or null if it wasn't detected
-    const provider = await detectEthereumProvider();
+  private async handleEthereumProvider(provider: any): Promise<boolean> {
     if (provider) {
-      this._web3Provider = new ethers.providers.Web3Provider(window.ethereum);
-      console.log('setou o provider', this._web3Provider);
       // If the provider returned by detectEthereumProvider is not the same as
       // window.ethereum, something is overwriting it, perhaps another wallet.
       if (provider !== window.ethereum) {
