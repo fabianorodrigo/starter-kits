@@ -31,43 +31,24 @@ export class ERC20TransferEventComponent implements OnInit {
   jureba: any;
 
   async ngOnInit(): Promise<void> {
-    // const web3 = new Web3(Web3.givenProvider);
-
-    // this.jureba = new web3.eth.Contract(
-    //   this.contractERC20.getContractABI(),
-    //   environment.KOVAN.LINK_TOKEN
-    // );
-    // this.jureba.events.Transfer().on('data', (ev: any) => {
-    //   console.log('toma evento', ev);
-    // });
-    // this.jureba
-    //   .getPastEvents('Transfer', {
-    //     fromBlock: (await web3.eth.getBlockNumber()) - 1000,
-    //     toBlock: 'latest',
-    //     filter: { from: '0x97b6183621504b18Ccb97D0422c33a5D3601b862' },
-    //   })
-    //   .then((events: EventData[]) => {
-    //     console.log(`toma past da jureba`, events);
-    //   });
-    /////////
     this._ethersjsService.getSignerSubject().subscribe(async (_signer) => {
       //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Transfer`
       // que tenha a conta `from` igual à conta conectada na Wallet
       if (_signer) {
-        // subscrição eventos últimos 10 blocos
+        // subscrição eventos últimos 1000 blocos
         this.fetchPastTransferEvents(_signer);
         // subscrição eventos futuros
         await this.contractERC20.subscribeContractEvent({
           eventName: 'Transfer',
-          args: [_signer],
-          listenerFunction: (event) => {
+          args: [await _signer.getAddress()],
+          listenerFunction: (from, to, value, event) => {
             this.eventList = [
               ...this.eventList,
               {
                 blockNumber: event.blockNumber,
-                from: (<Result>event.args)['from'],
-                to: (<Result>event.args)['to'],
-                value: (<Result>event.args)['value'],
+                from,
+                to,
+                value,
               },
             ];
           },
@@ -77,7 +58,7 @@ export class ERC20TransferEventComponent implements OnInit {
   }
 
   /**
-   * Fetches the past events on the blockchain since current block less 10 and feed the {pastEvents} array
+   * Fetches the past events on the blockchain since current block less 1000 and feed the {pastEvents} array
    *
    * @param signer Account address used to filter the events where 'from' part equals it
    */
@@ -86,10 +67,21 @@ export class ERC20TransferEventComponent implements OnInit {
     // subscrição eventos passados
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Transfer',
-      args: [await signer.getAddress()],
-      fromBlock: currentBlock - 1000,
+      args: [],
+      fromBlock: currentBlock - 10000,
       toBlock: 'latest',
     });
+    console.warn(
+      '#DEBUG',
+      pastEvents.length,
+      currentBlock,
+      pastEvents[pastEvents.length - 1],
+      pastEvents[0],
+      33084061, // BLOCK WHERE IS THE TRANSACTION
+      pastEvents.filter((e) => {
+        return (e.args as string[])[0].indexOf('97') > -1;
+      })
+    );
 
     const tempArray = [];
     for (const e of pastEvents) {
