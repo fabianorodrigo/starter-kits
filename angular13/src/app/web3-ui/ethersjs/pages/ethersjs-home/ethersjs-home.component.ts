@@ -34,7 +34,8 @@ export class EthersjsHomeComponent implements OnInit {
       this._loggingService.debug(
         EthersjsHomeComponent.name,
         'getUserAccountAddressSubject.subscribe',
-        signer
+        signer,
+        signer == null ? null : await signer.getAddress()
       );
 
       this.changeWalletAccount(

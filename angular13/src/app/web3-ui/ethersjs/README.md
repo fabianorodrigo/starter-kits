@@ -88,7 +88,7 @@ const routes: Routes = [
   {
     path: 'web3js',
     loadChildren: () =>
-      import('./web3-ui/web3js/web3js.module').then((m) => m.Web3jsModule),
+      import('./web3-ui/ethersjs/ethersjs.module').then((m) => m.Web3jsModule),
   },
   ...
 
@@ -112,8 +112,32 @@ export class ...
 @NgModule({
   declarations: [...  ],
   imports: [...],
-  providers: [Web3Service, LinkTokenService],
+  providers: [EthersjsService, LinkTokenService],
 })
-export class Web3jsModule {}
+export class EthersjsModule {}
 ```
-*web3js.module.ts*
+*ethersjs.module.ts*
+
+
+## APP_INITIALIZER
+
+The provided functions are injected at application/module startup and executed during app initialization. If any of these functions returns a Promise or an Observable, initialization does not complete until the Promise is resolved or the Observable is completed.
+
+```javascript
+@NgModule({
+  declarations: [...  ],
+  imports: [...],
+   providers: [
+    EthersjsService,
+    // Provider para detectar o provider do metamask ao carregar o módulo
+    // Quando o módulo for carregado, se o metamask já não estiver conectado ao
+    // site, a janelinha do Metamask será aberta para conexão
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => detectEthereumProvider(),
+      multi: true,
+    },
+})
+export class EthersjsModule {}
+```
+*ethersjs.module.ts*

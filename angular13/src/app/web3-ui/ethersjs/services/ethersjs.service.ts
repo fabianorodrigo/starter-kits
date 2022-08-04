@@ -73,7 +73,8 @@ export class EthersjsService {
       // quando conectado, recebe a notificação e resolve a Promise pra quem chamou
       else {
         const subscription = this._signerSubject.subscribe(async (_signer) => {
-          const _address = await _signer?.getAddress();
+          const _address =
+            _signer == null ? undefined : await _signer.getAddress();
           resolve(_address);
           if (subscription) {
             subscription.unsubscribe();
@@ -89,10 +90,15 @@ export class EthersjsService {
    */
   async connect(): Promise<string | null> {
     try {
-      const accounts = await this._web3Provider.listAccounts();
-      // await window.ethereum.request({
-      //   method: 'eth_requestAccounts',
-      // });
+      this._loggingService.debug(
+        EthersjsService.name,
+        'connect',
+        this._web3Provider
+      );
+      const accounts = await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+      //await this._web3Provider.listAccounts();
       this.handleOnAccountsChanged(accounts);
       return accounts[0];
     } catch (err: unknown) {
@@ -325,9 +331,13 @@ export class EthersjsService {
     );
     this._userAccountAddress =
       _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : undefined;
-    this._signerSubject.next(
-      this._web3Provider.getSigner(this._userAccountAddress)
-    );
+    if (_accounts.length > 0) {
+      this._signerSubject.next(
+        this._web3Provider.getSigner(this._userAccountAddress)
+      );
+    } else {
+      this._signerSubject.next(null);
+    }
   }
 
   /**

@@ -1,13 +1,16 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Signer } from 'ethers';
+import { ethers, Signer } from 'ethers';
 import { Result } from 'ethers/lib/utils';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
 
 import { EventData } from 'web3-eth-contract';
 import { Web3Subscription } from '../../../shared/model/events/Subscription';
+import { LINK_TOKEN_ABI } from '../../ABI';
 import { ERC20BaseContract } from '../../services/ERC20-base';
 import { EthersjsService } from '../../services/ethersjs.service';
 import { ITransferEvent } from './transfer-event.interface';
+
+declare let window: any;
 
 @Component({
   selector: 'dapp-erc20-transfer-event',
@@ -62,26 +65,49 @@ export class ERC20TransferEventComponent implements OnInit {
    *
    * @param signer Account address used to filter the events where 'from' part equals it
    */
-  private async fetchPastTransferEvents(signer: Signer): Promise<void> {
+  private async fetchPastTransferEvents(_signer: Signer): Promise<void> {
     const currentBlock = await this._ethersjsService.getCurrentBlockNumber();
     // subscrição eventos passados
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Transfer',
       args: [],
-      fromBlock: currentBlock - 10000,
+      fromBlock: currentBlock - 1000,
       toBlock: 'latest',
     });
-    console.warn(
-      '#DEBUG',
-      pastEvents.length,
-      currentBlock,
-      pastEvents[pastEvents.length - 1],
-      pastEvents[0],
-      33084061, // BLOCK WHERE IS THE TRANSACTION
-      pastEvents.filter((e) => {
-        return (e.args as string[])[0].indexOf('97b') > -1;
-      })
-    );
+
+    ////////////////////////////////
+
+    // const linkContract = new ethers.Contract(
+    //   '0x01BE23585060835E02B77ef475b0Cc51aA1e0709',
+    //   LINK_TOKEN_ABI,
+    //   new ethers.providers.Web3Provider(window.ethereum)
+    // );
+    // const filterTransfer = linkContract.filters['Transfer']();
+    // const transferEvents = await linkContract.queryFilter(
+    //   filterTransfer,
+    //   currentBlock - 50,
+    //   'latest'
+    // );
+    // console.log(
+    //   'Transfers____',
+    //   transferEvents.map((e) => {
+    //     return { transaction: e.transactionHash, block: e.blockNumber };
+    //   }),
+    //   transferEvents
+    // );
+
+    // console.warn(
+    //   '#DEBUG',
+    //   transferEvents.length,
+    //   currentBlock,
+    //   transferEvents[transferEvents.length - 1],
+    //   transferEvents[0],
+    //   //      33084061, // BLOCK WHERE IS THE TRANSACTION IN KOVAN
+    //   11138995, // BLOCK WHERE IS THE TRANSACTION IN RINKEBY
+    //   pastEvents.filter((e) => {
+    //     return e.transactionHash.startsWith('0x55c2dd6b760a');
+    //   })
+    // );
 
     const tempArray = [];
     for (const e of pastEvents) {

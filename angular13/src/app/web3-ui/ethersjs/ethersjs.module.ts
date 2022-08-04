@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EthersjsHomeComponent } from './pages/ethersjs-home/ethersjs-home.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -18,6 +18,7 @@ import { ERC20TransferEventComponent } from './components/erc20-transfer-event/e
 import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc20-transfer-from.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import detectEthereumProvider from '@metamask/detect-provider';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,23 @@ import { ReactiveFormsModule } from '@angular/forms';
     EthersjsRoutingModule,
     MaterialModule,
   ],
-  providers: [EthersjsService],
+  providers: [
+    EthersjsService,
+    // Provider para detectar o provider do metamask ao carregar o módulo
+    // Quando o módulo for carregado, se o metamask já não estiver conectado ao
+    // site, a janelinha do Metamask será aberta para conexão
+    //
+    // APP_INITIALIZER is a DI token that you can use to provide one or more
+    // initialization functions.  If any of these functions returns a Promise
+    // or an Observable, initialization does not complete until the Promise is
+    // resolved or the Observable is completed.
+    //  Angular suspends the module initialization until all the functions
+    // provided by the APP_INITIALIZER are run
+    {
+      provide: APP_INITIALIZER,
+      useFactory: () => detectEthereumProvider(),
+      multi: true,
+    },
+  ],
 })
 export class EthersjsModule {}

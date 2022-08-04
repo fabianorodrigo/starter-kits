@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BigNumber, Signer } from 'ethers';
+import { Signer } from 'ethers';
+import { LoggingService } from 'src/app/shared/services/logging.service';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ProviderErrors } from 'src/app/web3-ui/shared/model';
@@ -17,6 +18,7 @@ export class WalletComponent implements OnInit {
   balance: string = '0';
 
   constructor(
+    private _loggingService: LoggingService,
     private _ethersjsService: EthersjsService,
     private _numberService: NumbersService,
     private _messageService: MessageService
@@ -24,6 +26,11 @@ export class WalletComponent implements OnInit {
 
   ngOnInit() {
     this._ethersjsService.getSignerSubject().subscribe(async (_signer) => {
+      this._loggingService.debug(
+        WalletComponent.name,
+        'ngOnInit.getSignerSubject.subscribe',
+        _signer
+      );
       this.signer = _signer;
       this.signerAddress = _signer == null ? null : await _signer.getAddress();
       if (this.signer != null) {

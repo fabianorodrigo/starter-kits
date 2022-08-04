@@ -325,13 +325,8 @@ export abstract class ContractBaseService {
     return new Observable<TransactionResult<T>>((subscriber) => {
       this.getContract(_abi).then(async (_contract) => {
         let result;
-        const fromAccount = await this._ethersjsService.getUserAccountAddress();
-        if (fromAccount == null)
-          throw new Error(`Not possible to determine the origin account`);
         try {
-          result = await _contract
-            .connect(fromAccount)
-            [_functionName](..._args);
+          result = await _contract[_functionName](..._args);
           subscriber.next({
             success: true,
             result: transform(result),
