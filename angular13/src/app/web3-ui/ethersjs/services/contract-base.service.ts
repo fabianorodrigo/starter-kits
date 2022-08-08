@@ -1,19 +1,20 @@
-import BN from 'bn.js';
-import { BigNumber, Contract, ContractInterface, Signer } from 'ethers';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
+
+import { Event } from '@ethersproject/contracts';
+import { BigNumber, Contract, ContractInterface, Signer } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
+import { IContractEventMonitor } from '../../shared/contract-event-monitor.interface';
 import {
   CallbackFunction,
+  EventMonitoringParameters,
+  EventPastParameters,
   ProviderErrors,
   TransactionResult,
 } from '../../shared/model';
-import { EventMonitoringParameters } from '../model/EventMonitoringParameters';
-import { EventPastParameters } from '../model/EventPastParameters';
 import { EthersjsService } from './ethersjs.service';
-import { Event } from '@ethersproject/contracts';
 
-export abstract class ContractBaseService {
+export abstract class ContractBaseService implements IContractEventMonitor {
   protected contract!: Contract;
   protected _eventListeners: { [event: string]: BehaviorSubject<any> } = {};
   private _owner!: string;
@@ -272,7 +273,10 @@ export abstract class ContractBaseService {
    * Calls the GET function of the contract with the name {_propertyName}
    * @param _propertyName name of the property of type BN (BigNumber)
    */
-  protected getBN(_abi: ContractInterface, _propertyName: string): Promise<BN> {
+  protected getBN(
+    _abi: ContractInterface,
+    _propertyName: string
+  ): Promise<BigNumber> {
     return this.getProperty(_abi, _propertyName);
   }
 

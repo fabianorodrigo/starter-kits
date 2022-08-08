@@ -1,10 +1,8 @@
-import { Listener } from '@ethersproject/abstract-provider';
-
 export interface EventMonitoringParameters {
   // name of the event to be monitored
   eventName: string;
   // listener
-  listenerFunction: Listener;
+  listenerFunction: (...args: Array<any>) => void;
   //optional filters of events
   args?: any[];
 }

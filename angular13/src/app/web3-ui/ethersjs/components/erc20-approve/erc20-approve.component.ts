@@ -5,6 +5,8 @@ import { Result } from 'ethers/lib/utils';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
+import { IContractEventMonitor } from 'src/app/web3-ui/shared/contract-event-monitor.interface';
+import { IERC20 } from 'src/app/web3-ui/shared/erc20.interface';
 import { IApprovalEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../../shared/model';
@@ -17,7 +19,7 @@ import { EthersjsService } from '../../services/ethersjs.service';
   styleUrls: ['./erc20-approve.component.css'],
 })
 export class ERC20ApproveComponent extends BaseFormComponent implements OnInit {
-  @Input() contractERC20!: ERC20BaseContract;
+  @Input() contractERC20!: IERC20 & IContractEventMonitor;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
