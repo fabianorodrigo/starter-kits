@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Signer } from 'ethers';
-import { IMetadata } from '../../components/erc20-metadata/metadata.interface';
+import { IMetadata } from '../../../shared/model/interfaces/metadata.interface';
 import { EthersjsService } from '../../services/ethersjs.service';
 import { LinkTokenService } from '../../services/link-token.service';
 

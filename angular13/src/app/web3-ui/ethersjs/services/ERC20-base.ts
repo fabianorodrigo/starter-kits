@@ -2,13 +2,17 @@ import { BigNumber } from 'ethers';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import { CallbackFunction, TransactionResult } from '../../shared/model';
+import { IERC20 } from '../../shared/model/interfaces';
 import { ContractBaseService } from './contract-base.service';
 import { EthersjsService } from './ethersjs.service';
 
 /**
  * Base contract to interact with ERC-20 smart contracts
  */
-export abstract class ERC20BaseContract extends ContractBaseService {
+export abstract class ERC20BaseContract
+  extends ContractBaseService
+  implements IERC20
+{
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
 

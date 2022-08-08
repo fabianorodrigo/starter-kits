@@ -9,7 +9,6 @@ import { LinkTokenService } from './services/link-token.service';
 import { EthersjsRoutingModule } from './ethersjs.routing.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { LinkComponent } from './pages/link/link.component';
-import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metadata.component';
 import { ERC20BalanceComponent } from './components/erc20-balance/erc20-balance.component';
 import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
 import { ERC20ApprovalEventComponent } from './components/erc20-approval-event/erc20-approval-event.component';
@@ -19,12 +18,12 @@ import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import detectEthereumProvider from '@metamask/detect-provider';
+import { Web3sharedModule } from '../shared/web3shared.module';
 
 @NgModule({
   declarations: [
     EthersjsHomeComponent,
     WalletComponent,
-    ERC20MetadataComponent,
     ERC20BalanceComponent,
     ERC20AllowanceComponent,
     ERC20ApproveComponent,
@@ -41,6 +40,7 @@ import detectEthereumProvider from '@metamask/detect-provider';
     ReactiveFormsModule,
     EthersjsRoutingModule,
     MaterialModule,
+    Web3sharedModule,
   ],
   providers: [
     EthersjsService,

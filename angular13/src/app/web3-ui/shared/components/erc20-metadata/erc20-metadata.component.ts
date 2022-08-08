@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
-import { TransactionResult } from '../../../shared/model';
-import { ERC20BaseContract } from '../../services/ERC20-base';
-import { IMetadata } from './metadata.interface';
+import { IERC20 } from 'src/app/web3-ui/shared/model/interfaces';
+import { TransactionResult } from '../../model';
+import { IMetadata } from '../../model/interfaces/metadata.interface';
 
 @Component({
   selector: 'dapp-erc20-metadata',
@@ -10,7 +10,7 @@ import { IMetadata } from './metadata.interface';
   styleUrls: ['./erc20-metadata.component.css'],
 })
 export class ERC20MetadataComponent implements OnInit {
-  @Input() contractERC20!: ERC20BaseContract;
+  @Input() contractERC20!: IERC20;
 
   @Output() metadataRead = new EventEmitter<IMetadata>();
 
