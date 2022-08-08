@@ -8,7 +8,6 @@ import { Web3sharedModule } from '../shared/web3shared.module';
 import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
 import { ERC20ApprovalEventComponent } from './components/erc20-approval-event/erc20-approval-event.component';
 import { ERC20ApproveComponent } from './components/erc20-approve/erc20-approve.component';
-import { ERC20BalanceComponent } from './components/erc20-balance/erc20-balance.component';
 import { ERC20TransferEventComponent } from './components/erc20-transfer-event/erc20-transfer-event.component';
 import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc20-transfer-from.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
@@ -28,7 +27,6 @@ import { Web3JSRoutingModule } from './web3js.routing.module';
     Web3jsHomeComponent,
     LinkComponent,
     WalletComponent,
-    ERC20BalanceComponent,
     ERC20AllowanceComponent,
     ERC20ApproveComponent,
     ERC20TransferComponent,

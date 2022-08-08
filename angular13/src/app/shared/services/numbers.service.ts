@@ -102,8 +102,11 @@ export class NumbersService {
    * @param bn The bignumber to be formatted
    * @param decimals the number of decimals representantion in the {bn}
    */
-  formatBigNumber(bn: BigNumber, decimals: number): string {
+  formatBigNumber(bn: BigNumber | BN, decimals: number): string {
     if (!bn) return '?';
+    //If not a ethers.BigNumber, use the BN function
+    if (!BigNumber.isBigNumber(bn)) return this.formatBN(bn, decimals);
+
     let result = '';
     // como o bn.js não suporta decimais, foi feita a formatação com
     // 3 decimais a menos para possibilitar a representação de frações
@@ -145,7 +148,11 @@ export class NumbersService {
    * @param decimals the number of decimals representantion in the {bn}
    * @see: https://www.antidote.info/en/blog/reports/millions-billions-and-other-large-numbers
    */
-  formatBigNumberShortScale(bn: BigNumber, decimals: number): string {
+  formatBigNumberShortScale(bn: BigNumber | BN, decimals: number): string {
+    //If not a ethers.BigNumber, use the BN function
+    if (!BigNumber.isBigNumber(bn))
+      return this.formatBNShortScale(bn, decimals);
+
     let bnFormatted = this.formatBigNumber(bn, decimals);
     if (bnFormatted.indexOf(',') == -1) return bnFormatted;
     const parts = bnFormatted.split(',');
