@@ -1,11 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Signer } from 'ethers';
+import { Result } from 'ethers/lib/utils';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
+import { IApprovalEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../../shared/model';
 import { ERC20BaseContract } from '../../services/ERC20-base';
+import { EthersjsService } from '../../services/ethersjs.service';
 
 @Component({
   selector: 'dapp-erc20-approve',
@@ -18,11 +22,13 @@ export class ERC20ApproveComponent extends BaseFormComponent implements OnInit {
   @Input() decimals: number = 1;
 
   isLoading = false;
+  eventList: IApprovalEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
     private _messageService: MessageService,
-    private _numberService: NumbersService
+    private _numberService: NumbersService,
+    private _web3Service: EthersjsService
   ) {
     super();
   }
@@ -39,6 +45,32 @@ export class ERC20ApproveComponent extends BaseFormComponent implements OnInit {
         ],
       ],
       value: ['', [Validators.required, Validators.min(1)]],
+    });
+
+    // EVENTOS
+    this._web3Service.getSignerSubject().subscribe(async (_signer) => {
+      //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
+      // que tenha a conta `from` igual à conta conectada na Wallet
+      if (_signer) {
+        // subscrição eventos últimos 1000 blocos
+        this.fetchPastApprovalEvents(_signer);
+        // subscrição eventos futuros
+        await this.contractERC20.subscribeContractEvent({
+          eventName: 'Approval',
+          args: [await _signer.getAddress()],
+          listenerFunction: (owner, spender, value, event) => {
+            this.eventList = [
+              ...this.eventList,
+              {
+                blockNumber: event.blockNumber,
+                owner,
+                spender,
+                value,
+              },
+            ];
+          },
+        });
+      }
     });
   }
 
@@ -79,5 +111,31 @@ export class ERC20ApproveComponent extends BaseFormComponent implements OnInit {
         `The data filled in the form is not valid. Please, fill the form correctly before submit it`
       );
     }
+  }
+
+  /**
+   * Fetches the past events on the blockchain since current block less 1000 and feed the {pastEvents} array
+   *
+   * @param signer Account address used to filter the events where 'owner' part equals it
+   */
+  private async fetchPastApprovalEvents(signer: Signer): Promise<void> {
+    const currentBlock = await this._web3Service.getCurrentBlockNumber();
+    const pastEvents = await this.contractERC20.getContractsPastEvent({
+      eventName: 'Approval',
+      args: [await signer.getAddress()],
+      fromBlock: currentBlock - 1000,
+      toBlock: 'latest',
+    });
+
+    const tempArray = [];
+    for (const e of pastEvents) {
+      tempArray.push({
+        blockNumber: e.blockNumber,
+        owner: (<Result>e.args)['owner'],
+        spender: (<Result>e.args)['spender'],
+        value: (<Result>e.args)['value'],
+      });
+    }
+    this.eventList = [...this.eventList, ...tempArray];
   }
 }
