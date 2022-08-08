@@ -6,7 +6,6 @@ import detectEthereumProvider from '@metamask/detect-provider';
 import { MaterialModule } from 'src/app/material/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { Web3sharedModule } from '../shared/web3shared.module';
-import { ERC20ApproveComponent } from './components/erc20-approve/erc20-approve.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { WalletComponent } from './components/wallet/wallet.component';
 import { EthersjsRoutingModule } from './ethersjs.routing.module';
@@ -18,7 +17,6 @@ import { EthersjsService } from './services/ethersjs.service';
   declarations: [
     EthersjsHomeComponent,
     WalletComponent,
-    ERC20ApproveComponent,
     ERC20TransferComponent,
     LinkComponent,
   ],

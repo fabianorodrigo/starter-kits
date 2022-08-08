@@ -3,8 +3,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import { Contract, EventData } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
+import { IContractEventMonitor } from '../../shared/contract-event-monitor.interface';
 import {
   CallbackFunction,
+  EventMonitoringParameters as X,
+  EventPastParameters as Y,
   ProviderErrors,
   TransactionResult,
 } from '../../shared/model';
@@ -13,7 +16,7 @@ import { EventMonitoringParameters } from '../model/EventMonitoringParameters';
 import { EventPastParameters } from '../model/EventPastParameters';
 import { Web3Service } from './web3.service';
 
-export abstract class BaseContract {
+export abstract class BaseContract implements IContractEventMonitor {
   protected contract!: Contract;
   protected _eventListeners: { [event: string]: BehaviorSubject<any> } = {};
   private _owner!: string;
@@ -29,6 +32,16 @@ export abstract class BaseContract {
     this._web3Service.getUserAccountAddressSubject().subscribe((_account) => {
       this._fromAccount = _account;
     });
+  }
+  getContractsPastEvent(
+    _monitorParameter: EventPastParameters
+  ): Promise<any[]> {
+    throw new Error('Method not implemented.');
+  }
+  subscribeContractEvent(
+    _monitorParameter: EventMonitoringParameters
+  ): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
   protected async getContract(_abis: AbiItem[]): Promise<Contract> {

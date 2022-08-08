@@ -12,6 +12,7 @@ import { LinkTokenService } from '../../services/link-token.service';
 })
 export class LinkComponent implements OnInit {
   signer!: Signer | null;
+  currentAccount!: string | null;
   formatedBalance: string = '0';
   formatedBalanceTooltip: string = '0';
   metadata: { [property: string]: any } = {};
@@ -23,8 +24,10 @@ export class LinkComponent implements OnInit {
 
   ngOnInit(): void {
     // Subscribing for account address changes in the provider
-    this._web3Service.getSignerSubject().subscribe(async (address) => {
-      this.signer = address;
+    this._web3Service.getSignerSubject().subscribe(async (_signer) => {
+      this.signer = _signer;
+      this.currentAccount = _signer == null ? null : await _signer.getAddress();
+      console.log('#DEBUG', 'ngOnInit', this.currentAccount);
     });
   }
 
