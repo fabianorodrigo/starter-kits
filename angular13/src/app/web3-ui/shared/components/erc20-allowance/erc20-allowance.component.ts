@@ -1,3 +1,4 @@
+import { TransactionResult } from './../../model/transaction-result.interface';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BigNumber } from 'ethers';
@@ -5,7 +6,7 @@ import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.comp
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { ERC20BaseContract } from '../../services/ERC20-base';
+import { IERC20 } from '../../model/interfaces';
 
 @Component({
   selector: 'dapp-erc20-allowance',
@@ -16,7 +17,7 @@ export class ERC20AllowanceComponent
   extends BaseFormComponent
   implements OnInit
 {
-  @Input() contractERC20!: ERC20BaseContract;
+  @Input() contractERC20!: IERC20;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
@@ -67,7 +68,7 @@ export class ERC20AllowanceComponent
             (this.form.get('ownerAddress') as FormControl).value,
             (this.form.get('spenderAddress') as FormControl).value
           )
-          .subscribe((result) => {
+          .subscribe((result: TransactionResult<any>) => {
             if (result.success == false) {
               this._messageService.show(
                 `It was not possible to get the ${this.symbol} allowance from ${this.form.controls['ownerAddress'].value} to  ${this.form.controls['spenderAddress'].value}`
