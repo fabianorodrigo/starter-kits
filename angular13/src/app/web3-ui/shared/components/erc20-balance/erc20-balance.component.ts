@@ -5,7 +5,7 @@ import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.comp
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { ERC20BaseContract } from '../../services/ERC20-base';
+import { IERC20 } from 'src/app/web3-ui/shared/model/interfaces';
 
 @Component({
   selector: 'dapp-erc20-balance',
@@ -13,7 +13,7 @@ import { ERC20BaseContract } from '../../services/ERC20-base';
   styleUrls: ['./erc20-balance.component.css'],
 })
 export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
-  @Input() contractERC20!: ERC20BaseContract;
+  @Input() contractERC20!: IERC20;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
