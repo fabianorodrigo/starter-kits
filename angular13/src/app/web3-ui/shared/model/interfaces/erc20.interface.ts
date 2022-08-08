@@ -53,7 +53,7 @@ export interface IERC20 {
    */
   transfer(
     _to: string,
-    _value: BigNumber,
+    _value: BigNumber | BN,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>>;
 
@@ -68,7 +68,7 @@ export interface IERC20 {
   transferFrom(
     _from: string,
     _to: string,
-    _value: BigNumber,
+    _value: BigNumber | BN,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>>;
   /**
@@ -82,7 +82,7 @@ export interface IERC20 {
    */
   approve(
     _spender: string,
-    _value: BigNumber,
+    _value: BigNumber | BN,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>>;
 }

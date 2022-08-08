@@ -1,3 +1,4 @@
+import { IERC20 } from './../../shared/model/interfaces/erc20.interface';
 import BN from 'bn.js';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
@@ -8,7 +9,7 @@ import { Web3Service } from './web3.service';
 /**
  * Base contract to interact with ERC-20 smart contracts
  */
-export abstract class ERC20BaseContract extends BaseContract {
+export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
 
