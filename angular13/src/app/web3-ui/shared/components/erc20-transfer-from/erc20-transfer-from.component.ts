@@ -2,10 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../../shared/model';
-import { ERC20BaseContract } from '../../services/ERC20-base';
+import { IERC20 } from '../../erc20.interface';
 
 @Component({
   selector: 'dapp-erc20-transfer-from',
@@ -16,7 +15,7 @@ export class ERC20TransferFromComponent
   extends BaseFormComponent
   implements OnInit
 {
-  @Input() contractERC20!: ERC20BaseContract;
+  @Input() contractERC20!: IERC20;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 

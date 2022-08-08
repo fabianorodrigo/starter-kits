@@ -1,3 +1,4 @@
+import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc20-transfer-from.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -16,6 +17,7 @@ import { ERC20TransferEventComponent } from './components/erc20-transfer-event/e
     ERC20AllowanceComponent,
     ERC20TransferEventComponent,
     ERC20ApprovalEventComponent,
+    ERC20TransferFromComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, SharedModule, MaterialModule],
   exports: [
@@ -24,6 +26,7 @@ import { ERC20TransferEventComponent } from './components/erc20-transfer-event/e
     ERC20AllowanceComponent,
     ERC20TransferEventComponent,
     ERC20ApprovalEventComponent,
+    ERC20TransferFromComponent,
   ],
 })
 export class Web3sharedModule {}

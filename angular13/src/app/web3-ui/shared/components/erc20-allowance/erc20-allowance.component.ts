@@ -6,7 +6,7 @@ import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.comp
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { IERC20 } from '../../model/interfaces';
+import { IERC20 } from '../../erc20.interface';
 
 @Component({
   selector: 'dapp-erc20-allowance',

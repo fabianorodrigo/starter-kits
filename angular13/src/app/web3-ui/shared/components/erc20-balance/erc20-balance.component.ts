@@ -5,7 +5,9 @@ import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.comp
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { IERC20 } from 'src/app/web3-ui/shared/model/interfaces';
+import { TransactionResult } from '../../model';
+import BN from 'bn.js';
+import { IERC20 } from '../../erc20.interface';
 
 @Component({
   selector: 'dapp-erc20-balance',
@@ -53,7 +55,7 @@ export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
       try {
         this.contractERC20
           .balanceOf((this.form.get('accountAddress') as FormControl).value)
-          .subscribe((result) => {
+          .subscribe((result: TransactionResult<BigNumber | BN>) => {
             if (result.success == false) {
               this._messageService.show(
                 `It was not possible to get ${this.form.controls['accountAddress'].value} ${this.symbol} balance`

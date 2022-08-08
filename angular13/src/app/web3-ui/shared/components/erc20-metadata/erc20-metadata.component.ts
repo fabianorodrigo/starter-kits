@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
-import { IERC20 } from 'src/app/web3-ui/shared/model/interfaces';
+import { IERC20 } from '../../erc20.interface';
 import { TransactionResult } from '../../model';
 import { IMetadata } from '../../model/interfaces/metadata.interface';
 
@@ -27,25 +27,31 @@ export class ERC20MetadataComponent implements OnInit {
   ngOnInit(): void {
     // name
     this.isLoading++;
-    this.contractERC20.name().subscribe((result) => {
+    this.contractERC20.name().subscribe((result: TransactionResult<string>) => {
       this.addMetadata('name', result);
     });
 
     //symbol
     this.isLoading++;
-    this.contractERC20.symbol().subscribe((result) => {
-      this.addMetadata('symbol', result);
-    });
+    this.contractERC20
+      .symbol()
+      .subscribe((result: TransactionResult<string>) => {
+        this.addMetadata('symbol', result);
+      });
     //decimals
     this.isLoading++;
-    this.contractERC20.decimals().subscribe((result) => {
-      this.addMetadata('decimals', result);
-    });
+    this.contractERC20
+      .decimals()
+      .subscribe((result: TransactionResult<string>) => {
+        this.addMetadata('decimals', result);
+      });
     //totalSupply
     this.isLoading++;
-    this.contractERC20.totalSupply().subscribe((result) => {
-      this.addMetadata('totalSuppy', result);
-    });
+    this.contractERC20
+      .totalSupply()
+      .subscribe((result: TransactionResult<string>) => {
+        this.addMetadata('totalSuppy', result);
+      });
   }
 
   /**

@@ -1,8 +1,8 @@
 import BN from 'bn.js';
 import { BigNumber } from 'ethers';
 import { Observable } from 'rxjs';
-import { CallbackFunction } from '../CallbackFunction';
-import { TransactionResult } from '../transaction-result.interface';
+import { CallbackFunction } from './model/CallbackFunction';
+import { TransactionResult } from './model/transaction-result.interface';
 
 export interface IERC20 {
   /**

@@ -1,8 +1,8 @@
 import { BigNumber } from 'ethers';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
+import { IERC20 } from '../../shared/erc20.interface';
 import { CallbackFunction, TransactionResult } from '../../shared/model';
-import { IERC20 } from '../../shared/model/interfaces';
 import { ContractBaseService } from './contract-base.service';
 import { EthersjsService } from './ethersjs.service';
 
