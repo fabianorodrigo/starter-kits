@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ERC20ApproveComponent } from './erc20-approve.component';
+import { ERC20ApproveDeprectaedComponent } from './erc20-approve.component';
 
 describe('ERC20ApproveComponent', () => {
-  let component: ERC20ApproveComponent;
-  let fixture: ComponentFixture<ERC20ApproveComponent>;
+  let component: ERC20ApproveDeprectaedComponent;
+  let fixture: ComponentFixture<ERC20ApproveDeprectaedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ERC20ApproveComponent],
+      declarations: [ERC20ApproveDeprectaedComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ERC20ApproveComponent);
+    fixture = TestBed.createComponent(ERC20ApproveDeprectaedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

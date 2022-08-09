@@ -12,11 +12,11 @@ import { ERC20BaseContract } from '../../services/ERC20-base';
 import { Web3Service } from '../../services/web3.service';
 
 @Component({
-  selector: 'dapp-erc20-approve',
+  selector: 'dapp-erc20-approvedepre',
   templateUrl: './erc20-approve.component.html',
   styleUrls: ['./erc20-approve.component.css'],
 })
-export class ERC20ApproveComponent
+export class ERC20ApproveDeprectaedComponent
   extends BaseFormComponent
   implements OnInit, OnDestroy
 {
@@ -66,29 +66,37 @@ export class ERC20ApproveComponent
           // subscrição eventos últimos 10 blocos
           this.fetchPastApprovalEvents(accountAddress);
           // subscrição eventos futuros
-          this.eventSubscription =
-            await this.contractERC20.getWeb3EventSubscription({
-              eventName: 'Approval',
-              web3jsParameters: {
-                filter: { owner: accountAddress },
-              },
-            });
+          await this.contractERC20.subscribeContractEvent({
+            eventName: 'Approval',
+            args: { from: accountAddress },
+            listenerFunction: (owner, spender, value, event) => {
+              this.eventList = [
+                ...this.eventList,
+                {
+                  blockNumber: event.blockNumber,
+                  owner,
+                  spender,
+                  value,
+                },
+              ];
+            },
+          });
 
-          this.eventSubscription.on('data', (event: EventData) => {
-            console.log('subscr evento approval', event.returnValues);
-            this.eventList = [
-              ...this.eventList,
-              {
-                blockNumber: event.blockNumber,
-                owner: event.returnValues['owner'],
-                spender: event.returnValues['spender'],
-                value: event.returnValues['value'],
-              },
-            ];
-          });
-          this.eventSubscription.on('error', (error) => {
-            alert(error);
-          });
+          // this.eventSubscription.on('data', (event: EventData) => {
+          //   console.log('subscr evento approval', event);
+          //   this.eventList = [
+          //     ...this.eventList,
+          //     {
+          //       blockNumber: event.blockNumber,
+          //       owner: event.returnValues['owner'],
+          //       spender: event.returnValues['spender'],
+          //       value: event.returnValues['value'],
+          //     },
+          //   ];
+          // });
+          // this.eventSubscription.on('error', (error) => {
+          //   alert(error);
+          // });
         }
       });
   }
@@ -146,13 +154,11 @@ export class ERC20ApproveComponent
   private async fetchPastApprovalEvents(accountAddress: string): Promise<void> {
     const currentBlock = await this._web3Service.getCurrentBlockNumber();
     // subscrição eventos passados
-    const pastEvents = await this.contractERC20.getWeb3PastEventSubscription({
+    const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Approval',
-      web3jsParameters: {
-        filter: { owner: accountAddress },
-        fromBlock: currentBlock - 1000,
-        toBlock: 'latest',
-      },
+      args: { owner: accountAddress },
+      fromBlock: currentBlock - 1000,
+      toBlock: 'latest',
     });
 
     const tempArray = [];

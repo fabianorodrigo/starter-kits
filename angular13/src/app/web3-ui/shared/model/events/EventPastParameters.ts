@@ -1,8 +1,30 @@
+import BN from 'bn.js';
+import { BigNumber } from 'ethers';
+import { Filter } from 'web3-eth-contract';
+
+// web3js
+export type BlockNumber =
+  | string
+  | number
+  | BN
+  | BigNumber
+  | 'latest'
+  | 'pending'
+  | 'earliest'
+  | 'genesis';
+
+export interface Web3JSFilter {
+  [key: string]: number | string | string[] | number[];
+}
+
+interface teste {
+  x: Filter;
+}
 export interface EventPastParameters {
   // name of the event to be monitored
   eventName: string;
   //optional filters of events
-  args?: any[];
-  fromBlock?: number | string;
-  toBlock?: number | string;
+  args?: any[] | Web3JSFilter;
+  fromBlock?: BlockNumber | string | number;
+  toBlock?: BlockNumber | string | number;
 }

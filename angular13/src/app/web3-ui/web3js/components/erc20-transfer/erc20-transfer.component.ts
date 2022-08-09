@@ -67,29 +67,37 @@ export class ERC20TransferComponent
           // subscrição eventos últimos 10 blocos
           this.fetchPastTransferEvents(accountAddress);
           // subscrição eventos futuros
-          this.eventSubscription =
-            await this.contractERC20.getWeb3EventSubscription({
-              eventName: 'Transfer',
-              web3jsParameters: {
-                filter: { from: accountAddress },
-              },
-            });
+          await this.contractERC20.subscribeContractEvent({
+            eventName: 'Transfer',
+            args: { from: accountAddress },
+            listenerFunction: (from, to, value, event) => {
+              this.eventList = [
+                ...this.eventList,
+                {
+                  blockNumber: event.blockNumber,
+                  from,
+                  to,
+                  value,
+                },
+              ];
+            },
+          });
 
-          this.eventSubscription.on('data', (event: EventData) => {
-            console.log('subscr evento Transfer', event.returnValues);
-            this.eventList = [
-              ...this.eventList,
-              {
-                blockNumber: event.blockNumber,
-                from: event.returnValues['from'],
-                to: event.returnValues['to'],
-                value: event.returnValues['value'],
-              },
-            ];
-          });
-          this.eventSubscription.on('error', (error) => {
-            alert(error);
-          });
+          // this.eventSubscription.on('data', (event: EventData) => {
+          //   console.log('subscr evento Transfer', event.returnValues);
+          //   this.eventList = [
+          //     ...this.eventList,
+          //     {
+          //       blockNumber: event.blockNumber,
+          //       from: event.returnValues['from'],
+          //       to: event.returnValues['to'],
+          //       value: event.returnValues['value'],
+          //     },
+          //   ];
+          // });
+          // this.eventSubscription.on('error', (error) => {
+          //   alert(error);
+          // });
         }
       });
   }
@@ -147,13 +155,11 @@ export class ERC20TransferComponent
   private async fetchPastTransferEvents(accountAddress: string): Promise<void> {
     const currentBlock = await this._web3Service.getCurrentBlockNumber();
     // subscrição eventos passados
-    const pastEvents = await this.contractERC20.getWeb3PastEventSubscription({
+    const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Transfer',
-      web3jsParameters: {
-        filter: { from: accountAddress },
-        fromBlock: currentBlock - 1000,
-        toBlock: 'latest',
-      },
+      args: { from: accountAddress },
+      fromBlock: currentBlock - 1000,
+      toBlock: 'latest',
     });
 
     const tempArray = [];

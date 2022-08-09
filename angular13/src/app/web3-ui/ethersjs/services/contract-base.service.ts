@@ -121,8 +121,8 @@ export abstract class ContractBaseService implements IContractEventMonitor {
 
     return _contract.queryFilter(
       filter,
-      _monitorParameter.fromBlock,
-      _monitorParameter.toBlock
+      _monitorParameter.fromBlock as string,
+      _monitorParameter.toBlock as string
     );
   }
 
