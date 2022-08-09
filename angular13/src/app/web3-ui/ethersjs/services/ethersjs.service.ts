@@ -1,11 +1,7 @@
-import { Injectable, Optional } from '@angular/core';
-import detectEthereumProvider from '@metamask/detect-provider';
-import * as BN from 'bn.js';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { BigNumber, Contract, ContractInterface, ethers, Signer } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
-import { AbiItem } from 'web3-utils';
 import {
   CallbackFunction,
   ProviderErrors,
@@ -16,43 +12,58 @@ import {
 
 declare let window: any;
 
-@Injectable({ providedIn: null })
-export class Web3Service {
-  private _web3: Web3;
+export const METAMASK = new InjectionToken('Metamask', {
+  providedIn: null,
+  factory: () => window.ethereum,
+});
+
+@Injectable({
+  providedIn: null,
+})
+export class EthersjsService {
+  //the Ethersjs web3 provider
+  private _web3Provider!: ethers.providers.Web3Provider;
   /**
    * Subject to handle the current user account address and it's changes
    */
-  private _userAccountAddressSubject = new BehaviorSubject<string | null>(null);
-  private _userAccountAddress!: string | null;
+  private _signerSubject = new BehaviorSubject<Signer | null>(null);
+  private _userAccountAddress!: string | undefined;
 
-  constructor(@Optional() private _loggingService: LoggingService) {
-    // givenProvider: When using web3.js in an Ethereum compatible browser,
-    // it will set with the current native provider by that browser.
-    // Will return the given provider by the (browser) environment, otherwise null.
-    this._web3 = new Web3(Web3.givenProvider);
-    this.hasEthereumProvider();
+  constructor(
+    private _loggingService: LoggingService,
+    @Inject(METAMASK) provider: any
+  ) {
+    this._web3Provider = new ethers.providers.Web3Provider(provider);
+    this.handleEthereumProvider(provider);
   }
 
   /**
-   * @returns ID of the current chain Metamask is connected with
+   * Gets data about the current Ethereum network including name, chainId and ensAdress
+   *
+   * @returns data about the current network Metamask is connected with
    */
-  getCurrentChainId(): Promise<number> {
-    return window.ethereum.request({
-      method: 'eth_chainId',
-    });
+  getCurrentNetwork(): Promise<ethers.providers.Network> {
+    return this._web3Provider.getNetwork();
   }
 
   /**
    * @returns Observable to monitor changes in the user account address in the wallet
    */
-  getUserAccountAddressSubject() {
-    return this._userAccountAddressSubject.asObservable();
+  getSignerSubject() {
+    return this._signerSubject.asObservable();
+  }
+
+  /**
+   * @returns The current signer in the provider (wallet)
+   */
+  getSigner() {
+    return this._signerSubject.value;
   }
 
   /**
    * @returns The current user account address in the provider (wallet)
    */
-  getUserAccountAddress(): Promise<string | null> {
+  getUserAccountAddress(): Promise<string | undefined> {
     return new Promise((resolve) => {
       // se o atributo já está preenchido, retorna-o
       if (this._userAccountAddress) {
@@ -61,14 +72,14 @@ export class Web3Service {
       // senão, subscreve ao subject e em seguida dispara o método de conexão.
       // quando conectado, recebe a notificação e resolve a Promise pra quem chamou
       else {
-        const subscription = this._userAccountAddressSubject.subscribe(
-          (_address) => {
-            resolve(_address);
-            if (subscription) {
-              subscription.unsubscribe();
-            }
+        const subscription = this._signerSubject.subscribe(async (_signer) => {
+          const _address =
+            _signer == null ? undefined : await _signer.getAddress();
+          resolve(_address);
+          if (subscription) {
+            subscription.unsubscribe();
           }
-        );
+        });
         this.connect();
       }
     });
@@ -79,9 +90,15 @@ export class Web3Service {
    */
   async connect(): Promise<string | null> {
     try {
+      this._loggingService.debug(
+        EthersjsService.name,
+        'connect',
+        this._web3Provider
+      );
       const accounts = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
+      //await this._web3Provider.listAccounts();
       this.handleOnAccountsChanged(accounts);
       return accounts[0];
     } catch (err: unknown) {
@@ -100,22 +117,19 @@ export class Web3Service {
    * Gets the balance of the {_accountAddress} in the official currency of chain in use (ex. Ether in case of Ethereum)
    *
    * @param _accountAddress The account address which balance is wanted
-   * @returns The string value in Wei
+   * @returns The BigNumber value in Wei
    */
-  chainCurrencyBalanceOf(_accountAddress: string): Observable<string> {
-    return new Observable<string>((_subscriber) => {
-      if (_accountAddress == null) {
-        _subscriber.next('');
-      } else {
-        this._web3.eth
-          .getBalance(_accountAddress)
-          .then((_balance: string | undefined) => {
-            _subscriber.next(_balance);
-          })
-          .catch((e: Error) => {
-            console.warn(`web3Service`, e);
-          });
-      }
+  balanceOf(_accountAddress: string): Observable<BigNumber> {
+    if (_accountAddress == null) throw new Error(`Account address is null`);
+    return new Observable<BigNumber>((_subscriber) => {
+      this._web3Provider
+        .getBalance(_accountAddress)
+        .then((_balance: BigNumber) => {
+          _subscriber.next(_balance);
+        })
+        .catch((e: Error) => {
+          console.warn(`web3Service`, e);
+        });
     });
   }
 
@@ -131,44 +145,46 @@ export class Web3Service {
   sendWei(
     _addressFrom: string,
     _addressTo: string,
-    _valueInWei: BN,
+    _valueInWei: BigNumber,
     _successMessage: string,
     _callback?: CallbackFunction,
     _confirmationMessage?: string
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((_subscriber) => {
       if (window.ethereum) {
-        const weiAmmountHEX = this._web3.utils.toHex(_valueInWei);
-        this._web3.eth
-          .sendTransaction({
-            from: _addressFrom,
-            to: _addressTo,
-            value: weiAmmountHEX,
-          })
-          .once(`transactionHash`, (hash: string) => {
-            _subscriber.next({ success: true, result: _successMessage });
-          })
-          .once(`confirmation`, (confNumber: any) => {
-            if (_callback)
-              _callback({
-                success: true,
-                result: _confirmationMessage || ``,
+        try {
+          this._web3Provider
+            .getSigner(_addressFrom)
+            .sendTransaction({
+              to: _addressTo,
+              value: _valueInWei,
+            })
+            .then((tx) => {
+              // espera-se que o wait seja o cara que vai ser executado quando for confirmado (equivalente ao 'once('confirmation') no web3js)
+              tx.wait().then((_receipt) => {
+                if (_callback) {
+                  _callback({
+                    success: true,
+                    result: _confirmationMessage || ``,
+                  });
+                }
               });
-          })
-          .once(`error`, (e: any) => {
-            const providerError = ProviderErrors[e.code];
-            let message = `We had some problem. The transaction wasn't sent.`;
-            if (providerError) {
-              message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
-            }
-            console.warn(e);
-            if (_callback) {
-              _callback({
-                success: false,
-                result: message,
-              });
-            }
-          });
+              _subscriber.next({ success: true, result: _successMessage });
+            });
+        } catch (e: any) {
+          const providerError = ProviderErrors[e.code];
+          let message = `We had some problem. The transaction wasn't sent.`;
+          if (providerError) {
+            message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+          }
+          console.warn(e);
+          if (_callback) {
+            _callback({
+              success: false,
+              result: message,
+            });
+          }
+        }
       } else {
         _subscriber.next({
           success: false,
@@ -206,23 +222,32 @@ export class Web3Service {
   }
 
   /**
-   * Instance a Web3js contrat based on ABIs and address informed
+   * Instance a ethersjs contrat based on ABIs and address informed
    *
    * @param _abis Abis of contract
    * @param _address Address of contract
    * @returns instance of Contract
    */
   async getContract(
-    _abis: AbiItem[],
+    _abis: ContractInterface,
     _address: string
   ): Promise<Contract | null> {
-    if ((await this._web3.eth.getCode(_address)) === '0x') {
-      console.error(
-        `Address ${_address} is not a contract at the connected chain`
-      );
+    try {
+      if ((await this._web3Provider.getCode(_address)) === '0x') {
+        console.error(
+          `Address ${_address} is not a contract at the connected chain`
+        );
+        return null;
+      }
+    } catch (e) {
+      console.warn(e);
       return null;
     }
-    return new this._web3.eth.Contract(_abis, _address);
+    return new ethers.Contract(
+      _address,
+      _abis,
+      this._web3Provider.getSigner(_address)
+    );
   }
 
   /**
@@ -232,23 +257,21 @@ export class Web3Service {
    * @return {string} The HEX address with checksum
    */
   toCheckSumAddress(_address: string): string {
-    return this._web3.utils.toChecksumAddress(_address);
+    return ethers.utils.getAddress(_address);
   }
 
   /**
    * @returns Lastest block in the current connected chain
    */
   getCurrentBlockNumber(): Promise<number> {
-    return this._web3.eth.getBlockNumber();
+    return this._web3Provider.getBlockNumber();
   }
 
   /**
-   * Detects Metamask Ethereum provider and makes the bindings of events: connect, disconnect, accountsChanged, message etc
+   * Handle a Web3 provider (Metamask Ethereum) and makes the bindings of events: connect, disconnect, accountsChanged, message etc
    * @returns TRUE if Wallet detected and bindings made successfully
    */
-  private async hasEthereumProvider(): Promise<boolean> {
-    // this returns the provider, or null if it wasn't detected
-    const provider = await detectEthereumProvider();
+  private async handleEthereumProvider(provider: any): Promise<boolean> {
     if (provider) {
       // If the provider returned by detectEthereumProvider is not the same as
       // window.ethereum, something is overwriting it, perhaps another wallet.
@@ -302,13 +325,19 @@ export class Web3Service {
    */
   private handleOnAccountsChanged(_accounts: string[]) {
     this._loggingService.debug(
-      Web3Service.name,
+      EthersjsService.name,
       'handleOnAccountsChanged',
       _accounts
     );
     this._userAccountAddress =
-      _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : null;
-    this._userAccountAddressSubject.next(this._userAccountAddress);
+      _accounts.length > 0 ? this.toCheckSumAddress(_accounts[0]) : undefined;
+    if (_accounts.length > 0) {
+      this._signerSubject.next(
+        this._web3Provider.getSigner(this._userAccountAddress)
+      );
+    } else {
+      this._signerSubject.next(null);
+    }
   }
 
   /**

@@ -1,8 +1,10 @@
-import BN from 'bn.js';
+import { EventFilter } from './../../shared/model/events/EventPastParameters';
+import { TransactionResponse } from '@ethersproject/abstract-provider';
+
+import { Event } from '@ethersproject/contracts';
+import { BigNumber, Contract, ContractInterface, Signer } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import { Contract, EventData, PastEventOptions } from 'web3-eth-contract';
-import { AbiItem } from 'web3-utils';
 import { IContractEventMonitor } from '../../shared/contract-event-monitor.interface';
 import {
   CallbackFunction,
@@ -10,94 +12,32 @@ import {
   EventPastParameters,
   ProviderErrors,
   TransactionResult,
-  EventFilter,
 } from '../../shared/model';
-import { BlockNumber } from './../../shared/model/events/EventPastParameters';
-import { Web3Service } from './web3.service';
+import { EthersjsService } from './ethersjs.service';
 
-export abstract class BaseContract implements IContractEventMonitor {
+export abstract class ContractBaseService implements IContractEventMonitor {
   protected contract!: Contract;
   protected _eventListeners: { [event: string]: BehaviorSubject<any> } = {};
   private _owner!: string;
-  private _fromAccount!: string | null;
+  private _signer!: Signer | null;
   public address: string;
 
   constructor(
     private _loggingService: LoggingService,
-    protected _web3Service: Web3Service,
+    protected _ethersjsService: EthersjsService,
     _address: string
   ) {
     this.address = _address;
-    this._web3Service.getUserAccountAddressSubject().subscribe((_account) => {
-      this._fromAccount = _account;
+    this._ethersjsService.getSignerSubject().subscribe((_account) => {
+      this._signer = _account;
     });
   }
 
-  /**
-   * @returns Lastest block in the current connected chain
-   */
-  getCurrentBlockNumber(): Promise<number> {
-    return this._web3Service.getCurrentBlockNumber();
-  }
-
-  /**
-   * Gets list of past events with the parameters requested
-   *
-   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event;
-   * an optional filter and the initial and final block of search
-   *
-   * @returns Events array
-   */
-  async getContractsPastEvent(
-    _monitorParameter: EventPastParameters
-  ): Promise<any[]> {
-    const _contract = await this.getContract(this.getContractABI());
-    return _contract.getPastEvents(_monitorParameter.eventName, {
-      filter: _monitorParameter.filter as EventFilter,
-      fromBlock: _monitorParameter.fromBlock as BlockNumber,
-      toBlock: _monitorParameter.toBlock as BlockNumber,
-    } as PastEventOptions);
-  }
-
-  /**
-   * Subscribe to a contract's event  with optional filter parameters registering a listener function
-   *
-   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event,
-   * the listener function and optional filter arguments
-   *
-   */
-  async subscribeContractEvent(
-    _monitorParameter: EventMonitoringParameters
-  ): Promise<void> {
-    const _contract = await this.getContract(this.getContractABI());
-    const eventSubscription = _contract.events[_monitorParameter.eventName]({
-      filter: _monitorParameter.args,
-    });
-    eventSubscription.on('data', (event: EventData) => {
-      _monitorParameter.listenerFunction(
-        ...Object.values(event.returnValues),
-        event
-      );
-      // this.eventList = [
-      //   ...this.eventList,
-      //   {
-      //     blockNumber: event.blockNumber,
-      //     owner: event.returnValues['owner'],
-      //     spender: event.returnValues['spender'],
-      //     value: event.returnValues['value'],
-      //   },
-      // ];
-    });
-    eventSubscription.on('error', (error: any) => {
-      alert(error);
-    });
-  }
-
-  protected async getContract(_abis: AbiItem[]): Promise<Contract> {
+  protected async getContract(_abis: ContractInterface): Promise<Contract> {
     if (this.contract != null) {
       return this.contract;
-    } else if (this._web3Service) {
-      const _contract = await this._web3Service.getContract(
+    } else if (this._ethersjsService) {
+      const _contract = await this._ethersjsService.getContract(
         _abis,
         this.address
       );
@@ -115,7 +55,7 @@ export abstract class BaseContract implements IContractEventMonitor {
   /**
    * Returns the contract ABI
    */
-  abstract getContractABI(): AbiItem[];
+  abstract getContractABI(): ContractInterface;
 
   /**
    * @returns The owner of contract
@@ -138,49 +78,61 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @returns returns TRUE if the wallet address is equal to the contract owner
    */
   isOwner(): Observable<boolean> {
-    this._loggingService.debug(BaseContract.name, 'isOwner', 'CALLED');
     return new Observable<boolean>((_subscriber) => {
       this.owner().subscribe(async (_ownerAddress) => {
-        const _userAddress = await this._web3Service.getUserAccountAddress();
+        const _userAddress =
+          await this._ethersjsService.getUserAccountAddress();
         _subscriber.next(_ownerAddress === _userAddress);
       });
     });
   }
 
   /**
-   * Gets a instance of WEB3.JS Subscription of an event with the parameters requested
-   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event
-   * and an optional filter and an optional  parameter that indicates,
-   * if is a historical search, from which block
-   *
-   * @returns WEB3.JS Subscription
+   * @returns Lastest block in the current connected chain
    */
-  // async getWeb3EventSubscription(
-  //   _monitorParameter: EventMonitoringParameters
-  // ): Promise<Web3Subscription> {
-  //   const _contract = await this.getContract(this.getContractABI());
-  //   return _contract.events[_monitorParameter.eventName](
-  //     _monitorParameter.web3jsParameters
-  //   );
-  // }
+  getCurrentBlockNumber(): Promise<number> {
+    return this._ethersjsService.getCurrentBlockNumber();
+  }
 
   /**
-   * Gets a instance of WEB3.JS Subscription of past events with the parameters requested
-   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event;
-   * an optional filter and, for historical search, the initial and final block of search
+   * Subscribe to a contract's event  with optional filter parameters registering a listener function
    *
-   * @returns WEB3.JS Subscription
+   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event,
+   * the listener function and optional filter arguments
+   *
    */
-  // async getWeb3PastEventSubscription(
-  //   _monitorParameter: EventPastParameters
-  // ): Promise<EventData[]> {
-  //   const _contract = await this.getContract(this.getContractABI());
+  async subscribeContractEvent(
+    _monitorParameter: EventMonitoringParameters
+  ): Promise<void> {
+    const _contract = await this.getContract(this.getContractABI());
+    const filter = _contract.filters[_monitorParameter.eventName](
+      _monitorParameter.args
+    );
+    _contract.on(filter, _monitorParameter.listenerFunction);
+  }
 
-  //   return _contract.getPastEvents(
-  //     _monitorParameter.eventName,
-  //     _monitorParameter.web3jsParameters
-  //   );
-  // }
+  /**
+   * Gets list of past events with the parameters requested
+   *
+   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event;
+   * an optional filter and the initial and final block of search
+   *
+   * @returns Events array
+   */
+  async getContractsPastEvent(
+    _monitorParameter: EventPastParameters
+  ): Promise<Event[]> {
+    const _contract = await this.getContract(this.getContractABI());
+    const filter = _contract.filters[_monitorParameter.eventName](
+      Object.values(_monitorParameter.filter as EventFilter)
+    );
+
+    return _contract.queryFilter(
+      filter,
+      _monitorParameter.fromBlock as string,
+      _monitorParameter.toBlock as string
+    );
+  }
 
   /**
    * Execute a CALL (DOEST NOT change state) to a function  from the currentAccount selected on the wallet provider
@@ -191,35 +143,11 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @returns Observable<TransactionResult<T>>
    */
   protected call<T>(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _functionName: string,
     ..._args: any
   ): Observable<TransactionResult<T>> {
     return this.callPrivate(_abi, _functionName, this.justReturnV, ..._args);
-  }
-
-  /**
-   * Execute a CALL (DOEST NOT change state) to a function  from the currentAccount selected on the wallet provider
-   * This function makes the same as call<T> and converts the result to type {BN}, since the provider returns string
-   *
-   * @param _abi  Contract's ABI
-   * @param _functionName Name of contract's function to be invoked
-   * @param _args Contract`s function arguments
-   * @returns Observable<TransactionResult<T>>
-   */
-  protected callBN(
-    _abi: AbiItem[],
-    _functionName: string,
-    ..._args: any
-  ): Observable<TransactionResult<BN>> {
-    return this.callPrivate(
-      _abi,
-      _functionName,
-      (v: any) => {
-        return new BN(v);
-      },
-      ..._args
-    );
   }
 
   /**
@@ -234,7 +162,7 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @returns Observable<TransactionResult>
    */
   protected send(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _functionName: string,
     _successMessage: string,
     _callback?: CallbackFunction,
@@ -242,41 +170,43 @@ export abstract class BaseContract implements IContractEventMonitor {
     ..._args: any
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((subscriber) => {
-      this.getContract(_abi as AbiItem[]).then(async (_contract) => {
-        const fromAccount = await this._web3Service.getUserAccountAddress();
+      this.getContract(_abi).then(async (_contract) => {
+        const fromSigner = this._ethersjsService.getSigner();
+        if (fromSigner == null)
+          throw new Error(`Not possible to determine the origin account`);
         try {
-          await _contract.methods[_functionName](..._args)
-            .send({
-              from: fromAccount,
-            })
-            .once(`transactionHash`, (hash: string) => {
-              subscriber.next({ success: true, result: _successMessage });
-            })
-            .once(
-              `confirmation`,
-              (confNumber: number, receipt: any, latestBlockHash: string) => {
-                if (_callback) {
-                  _callback({
-                    success: true,
-                    result: _confirmationMessage || ``,
-                  });
-                }
-              }
-            )
-            .once('error', (e: any) => {
-              console.error(e);
-              if (_callback) {
-                let msg = `Transaction has been reverted by the blockchain network`;
-                if (e.code && ProviderErrors[e.code]) {
-                  msg = `${ProviderErrors[e.code].title}: ${
-                    ProviderErrors[e.code].message
-                  }`;
-                }
-                _callback({
-                  success: false,
-                  result: msg,
+          _contract
+            .connect(fromSigner)
+            [_functionName](..._args)
+            .then((tx: TransactionResponse) => {
+              // espera-se que o wait seja o cara que vai ser executado quando for confirmado
+              // (equivalente ao 'once('confirmation') no web3js)
+              tx.wait()
+                .then((_receipt) => {
+                  if (_callback) {
+                    _callback({
+                      success: true,
+                      result: _confirmationMessage || ``,
+                    });
+                  }
+                })
+                .catch((e) => {
+                  console.error(e);
+                  if (_callback) {
+                    let msg = `Transaction has been reverted by the blockchain network`;
+                    if (e.code && ProviderErrors[e.code]) {
+                      msg = `${ProviderErrors[e.code].title}: ${
+                        ProviderErrors[e.code].message
+                      }`;
+                    }
+                    _callback({
+                      success: false,
+                      result: msg,
+                    });
+                  }
+                  subscriber.next({ success: true, result: _successMessage });
                 });
-              }
+              subscriber.next({ success: true, result: _successMessage });
             });
         } catch (e: any) {
           const providerError = ProviderErrors[e.code];
@@ -305,7 +235,10 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @param _abi Contract's ABI
    * @param _propertyName name of the property of type string
    */
-  protected getString(_abi: AbiItem[], _propertyName: string): Promise<string> {
+  protected getString(
+    _abi: ContractInterface,
+    _propertyName: string
+  ): Promise<string> {
     return this.getProperty(_abi, _propertyName);
   }
 
@@ -315,7 +248,7 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @param _propertyName name of the property of type string[]
    */
   protected getStringArray(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _propertyName: string
   ): Promise<string[]> {
     return this.getProperty(_abi, _propertyName);
@@ -327,7 +260,7 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @param _propertyName name of the property of type boolean
    */
   protected async getBoolean(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _propertyName: string
   ): Promise<boolean> {
     return this.getProperty(_abi, _propertyName);
@@ -337,7 +270,10 @@ export abstract class BaseContract implements IContractEventMonitor {
    * Calls the GET function of the contract with the name {_propertyName}
    * @param _propertyName name of the property of type number
    */
-  protected getNumber(_abi: AbiItem[], _propertyName: string): Promise<number> {
+  protected getNumber(
+    _abi: ContractInterface,
+    _propertyName: string
+  ): Promise<number> {
     return this.getProperty(_abi, _propertyName);
   }
 
@@ -345,7 +281,10 @@ export abstract class BaseContract implements IContractEventMonitor {
    * Calls the GET function of the contract with the name {_propertyName}
    * @param _propertyName name of the property of type BN (BigNumber)
    */
-  protected getBN(_abi: AbiItem[], _propertyName: string): Promise<BN> {
+  protected getBN(
+    _abi: ContractInterface,
+    _propertyName: string
+  ): Promise<BigNumber> {
     return this.getProperty(_abi, _propertyName);
   }
 
@@ -357,7 +296,7 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @param _subscriber Instance of the subscriber that will receive the result
    */
   protected async getProperty(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _propertyName: string
   ): Promise<any> {
     try {
@@ -365,9 +304,7 @@ export abstract class BaseContract implements IContractEventMonitor {
       // If not passing 'from', the msg.sender is 0x0 at the contract's function
       // This was detected when testing the 'canClose()' function, a kind of getter
       // where we needed to validate the msg.sender
-      const _result = await _contract.methods[_propertyName]().call({
-        from: this._fromAccount,
-      });
+      const _result = await _contract[_propertyName]();
       return _result;
     } catch (e: any) {
       console.error(e);
@@ -392,19 +329,16 @@ export abstract class BaseContract implements IContractEventMonitor {
    * @returns Observable<TransactionResult<T>>
    */
   private callPrivate<T>(
-    _abi: AbiItem[],
+    _abi: ContractInterface,
     _functionName: string,
     transform: Function = this.justReturnV,
     ..._args: any
   ): Observable<TransactionResult<T>> {
     return new Observable<TransactionResult<T>>((subscriber) => {
-      this.getContract(_abi as AbiItem[]).then(async (_contract) => {
+      this.getContract(_abi).then(async (_contract) => {
         let result;
-        const fromAccount = await this._web3Service.getUserAccountAddress();
         try {
-          result = await _contract.methods[_functionName](..._args).call({
-            from: fromAccount,
-          });
+          result = await _contract[_functionName](..._args);
           subscriber.next({
             success: true,
             result: transform(result),

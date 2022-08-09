@@ -1,24 +1,27 @@
-import BN from 'bn.js';
+import { BigNumber } from 'ethers';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import { IERC20 } from '../../shared/erc20.interface';
 import { CallbackFunction, TransactionResult } from '../../shared/model';
-import { BaseContract } from './contract-base';
-import { Web3Service } from './web3.service';
+import { ContractBaseService } from './contract-base.service';
+import { EthersjsService } from './ethersjs.service';
 
 /**
  * Base contract to interact with ERC-20 smart contracts
  */
-export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
+export abstract class ERC20BaseContract
+  extends ContractBaseService
+  implements IERC20
+{
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
 
   constructor(
     _loggingService: LoggingService,
-    _web3Service: Web3Service,
+    _ethersjsService: EthersjsService,
     _address: string
   ) {
-    super(_loggingService, _web3Service, _address);
+    super(_loggingService, _ethersjsService, _address);
     // Quando instanciar um serviço para interagir com um ERC-20,
     // já faz uma chamada ao método  `symbol()` para buscar
     // esse informação e armazenar em _symbol
@@ -83,8 +86,8 @@ export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
    * @param _owner account address which balance is asked
    * @returns _owners balance
    */
-  balanceOf(_owner: string): Observable<TransactionResult<BN>> {
-    return this.callBN(this.getContractABI(), `balanceOf`, _owner);
+  balanceOf(_owner: string): Observable<TransactionResult<BigNumber>> {
+    return this.call(this.getContractABI(), `balanceOf`, _owner);
   }
 
   /**
@@ -97,8 +100,8 @@ export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
   allowance(
     _owner: string,
     _spender: string
-  ): Observable<TransactionResult<BN>> {
-    return this.callBN(this.getContractABI(), `allowance`, _owner, _spender);
+  ): Observable<TransactionResult<BigNumber>> {
+    return this.call(this.getContractABI(), `allowance`, _owner, _spender);
   }
 
   /**
@@ -111,7 +114,7 @@ export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
    */
   transfer(
     _to: string,
-    _value: BN,
+    _value: BigNumber,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>> {
     const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
@@ -142,7 +145,7 @@ export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
   transferFrom(
     _from: string,
     _to: string,
-    _value: BN,
+    _value: BigNumber,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>> {
     const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
@@ -174,7 +177,7 @@ export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
    */
   approve(
     _spender: string,
-    _value: BN,
+    _value: BigNumber,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>> {
     return this.send(

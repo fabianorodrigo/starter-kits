@@ -4,8 +4,7 @@ Web 3.0 UI - Web3.js
 User interface module to interact with Blockchains using the [Web3 Javascript library](https://www.npmjs.com/package/web3). Besides Web3JS features, It is also applyed a set of Angular concepts to this project, the most relevant among them are described bellow.
 
 
-
-# Web3Module
+# Services
 
 ## Web3Service
 

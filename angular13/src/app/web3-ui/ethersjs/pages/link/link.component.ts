@@ -1,31 +1,33 @@
-import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
-import { IMetadata } from 'src/app/web3-ui/shared/model/interfaces/metadata.interface';
+import { Component, OnInit } from '@angular/core';
+import { Signer } from 'ethers';
+import { IMetadata } from '../../../shared/model/interfaces/metadata.interface';
+import { EthersjsService } from '../../services/ethersjs.service';
 import { LinkTokenService } from '../../services/link-token.service';
-import { Web3Service } from '../../services/web3.service';
 
 @Component({
   selector: 'dapp-link',
   templateUrl: './link.component.html',
   styleUrls: ['./link.component.css'],
+  providers: [LinkTokenService],
 })
 export class LinkComponent implements OnInit {
-  userAccountAddress: string | null = null;
+  signer!: Signer | null;
+  currentAccount!: string | null;
   formatedBalance: string = '0';
   formatedBalanceTooltip: string = '0';
   metadata: { [property: string]: any } = {};
 
   constructor(
-    private _web3Service: Web3Service,
+    private _web3Service: EthersjsService,
     public readonly linkTokenService: LinkTokenService
   ) {}
 
   ngOnInit(): void {
     // Subscribing for account address changes in the provider
-    this._web3Service
-      .getUserAccountAddressSubject()
-      .subscribe(async (address) => {
-        this.userAccountAddress = address;
-      });
+    this._web3Service.getSignerSubject().subscribe(async (_signer) => {
+      this.signer = _signer;
+      this.currentAccount = _signer == null ? null : await _signer.getAddress();
+    });
   }
 
   onMetadataRead(event: IMetadata) {
