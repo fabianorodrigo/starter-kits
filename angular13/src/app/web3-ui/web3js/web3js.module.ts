@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from '../../material/material.module';
 import { Web3sharedModule } from '../shared/web3shared.module';
-import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { WalletComponent } from './components/wallet/wallet.component';
 import { LinkComponent } from './pages/link/link.component';
 import { Web3jsHomeComponent } from './pages/web3js-home/web3js-home.component';
@@ -18,12 +17,7 @@ import { Web3JSRoutingModule } from './web3js.routing.module';
 // When the router navigates to Web3js route, it uses the loadChildren to
 // dynamically load the Web3jsModule.
 @NgModule({
-  declarations: [
-    Web3jsHomeComponent,
-    LinkComponent,
-    WalletComponent,
-    ERC20TransferComponent,
-  ],
+  declarations: [Web3jsHomeComponent, LinkComponent, WalletComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -10,6 +10,7 @@ import { ERC20BalanceComponent } from './components/erc20-balance/erc20-balance.
 import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metadata.component';
 import { ERC20TransferEventComponent } from './components/erc20-transfer-event/erc20-transfer-event.component';
 import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc20-transfer-from.component';
+import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc
     ERC20ApprovalEventComponent,
     ERC20TransferFromComponent,
     ERC20ApproveComponent,
+    ERC20TransferComponent,
   ],
   imports: [CommonModule, ReactiveFormsModule, SharedModule, MaterialModule],
   exports: [
@@ -30,6 +32,7 @@ import { ERC20TransferFromComponent } from './components/erc20-transfer-from/erc
     ERC20ApprovalEventComponent,
     ERC20TransferFromComponent,
     ERC20ApproveComponent,
+    ERC20TransferComponent,
   ],
 })
 export class Web3sharedModule {}
