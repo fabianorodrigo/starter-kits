@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MaterialModule } from '../../material/material.module';
 import { Web3sharedModule } from '../shared/web3shared.module';
-import { ERC20ApproveDeprectaedComponent } from './components/erc20-approve/erc20-approve.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { WalletComponent } from './components/wallet/wallet.component';
 import { LinkComponent } from './pages/link/link.component';
@@ -23,7 +22,6 @@ import { Web3JSRoutingModule } from './web3js.routing.module';
     Web3jsHomeComponent,
     LinkComponent,
     WalletComponent,
-    ERC20ApproveDeprectaedComponent,
     ERC20TransferComponent,
   ],
   imports: [

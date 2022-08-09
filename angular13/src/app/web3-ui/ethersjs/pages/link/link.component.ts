@@ -27,7 +27,6 @@ export class LinkComponent implements OnInit {
     this._web3Service.getSignerSubject().subscribe(async (_signer) => {
       this.signer = _signer;
       this.currentAccount = _signer == null ? null : await _signer.getAddress();
-      console.log('#DEBUG', 'ngOnInit', this.currentAccount);
     });
   }
 

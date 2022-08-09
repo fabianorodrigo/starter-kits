@@ -13,7 +13,7 @@ export type BlockNumber =
   | 'earliest'
   | 'genesis';
 
-export interface Web3JSFilter {
+export interface EventFilter {
   [key: string]: number | string | string[] | number[];
 }
 
@@ -24,7 +24,7 @@ export interface EventPastParameters {
   // name of the event to be monitored
   eventName: string;
   //optional filters of events
-  args?: any[] | Web3JSFilter;
+  filter?: EventFilter;
   fromBlock?: BlockNumber | string | number;
   toBlock?: BlockNumber | string | number;
 }

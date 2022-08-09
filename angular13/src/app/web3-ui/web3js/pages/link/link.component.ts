@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
 import { IMetadata } from 'src/app/web3-ui/shared/model/interfaces/metadata.interface';
 import { LinkTokenService } from '../../services/link-token.service';
 import { Web3Service } from '../../services/web3.service';

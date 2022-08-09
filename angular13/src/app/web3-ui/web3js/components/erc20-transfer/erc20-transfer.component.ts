@@ -157,7 +157,7 @@ export class ERC20TransferComponent
     // subscrição eventos passados
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Transfer',
-      args: { from: accountAddress },
+      filter: { from: accountAddress },
       fromBlock: currentBlock - 1000,
       toBlock: 'latest',
     });

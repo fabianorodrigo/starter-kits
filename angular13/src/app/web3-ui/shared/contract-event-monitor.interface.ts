@@ -21,4 +21,9 @@ export interface IContractEventMonitor {
   subscribeContractEvent(
     _monitorParameter: EventMonitoringParameters
   ): Promise<void>;
+
+  /**
+   * @returns Lastest block in the current connected chain
+   */
+  getCurrentBlockNumber(): Promise<number>;
 }

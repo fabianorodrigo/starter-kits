@@ -1,4 +1,3 @@
-import { BlockNumber } from './../../shared/model/events/EventPastParameters';
 import BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
@@ -11,9 +10,9 @@ import {
   EventPastParameters,
   ProviderErrors,
   TransactionResult,
-  Web3JSFilter,
+  EventFilter,
 } from '../../shared/model';
-import { Web3Subscription } from '../../shared/model/events/Subscription';
+import { BlockNumber } from './../../shared/model/events/EventPastParameters';
 import { Web3Service } from './web3.service';
 
 export abstract class BaseContract implements IContractEventMonitor {
@@ -35,6 +34,13 @@ export abstract class BaseContract implements IContractEventMonitor {
   }
 
   /**
+   * @returns Lastest block in the current connected chain
+   */
+  getCurrentBlockNumber(): Promise<number> {
+    return this._web3Service.getCurrentBlockNumber();
+  }
+
+  /**
    * Gets list of past events with the parameters requested
    *
    * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event;
@@ -46,13 +52,20 @@ export abstract class BaseContract implements IContractEventMonitor {
     _monitorParameter: EventPastParameters
   ): Promise<any[]> {
     const _contract = await this.getContract(this.getContractABI());
-
     return _contract.getPastEvents(_monitorParameter.eventName, {
-      filter: _monitorParameter.args as Web3JSFilter,
+      filter: _monitorParameter.filter as EventFilter,
       fromBlock: _monitorParameter.fromBlock as BlockNumber,
       toBlock: _monitorParameter.toBlock as BlockNumber,
     } as PastEventOptions);
   }
+
+  /**
+   * Subscribe to a contract's event  with optional filter parameters registering a listener function
+   *
+   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event,
+   * the listener function and optional filter arguments
+   *
+   */
   async subscribeContractEvent(
     _monitorParameter: EventMonitoringParameters
   ): Promise<void> {

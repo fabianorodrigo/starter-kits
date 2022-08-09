@@ -1,3 +1,4 @@
+import { EventFilter } from './../../shared/model/events/EventPastParameters';
 import { TransactionResponse } from '@ethersproject/abstract-provider';
 
 import { Event } from '@ethersproject/contracts';
@@ -87,6 +88,13 @@ export abstract class ContractBaseService implements IContractEventMonitor {
   }
 
   /**
+   * @returns Lastest block in the current connected chain
+   */
+  getCurrentBlockNumber(): Promise<number> {
+    return this._ethersjsService.getCurrentBlockNumber();
+  }
+
+  /**
    * Subscribe to a contract's event  with optional filter parameters registering a listener function
    *
    * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event,
@@ -116,7 +124,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
   ): Promise<Event[]> {
     const _contract = await this.getContract(this.getContractABI());
     const filter = _contract.filters[_monitorParameter.eventName](
-      _monitorParameter.args
+      Object.values(_monitorParameter.filter as EventFilter)
     );
 
     return _contract.queryFilter(

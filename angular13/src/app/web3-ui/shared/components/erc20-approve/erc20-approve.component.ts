@@ -31,7 +31,6 @@ export class ERC20ApproveComponent
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
   @Input() currentAccount!: string | null;
-  @Input() currentBlockNumber: number = 0;
 
   isLoading = false;
   eventList: IApprovalEvent[] = [];
@@ -138,15 +137,18 @@ export class ERC20ApproveComponent
   private async fetchPastApprovalEvents(
     _accountAddress: string
   ): Promise<void> {
+    const currentBlockNumber = await this.contractERC20.getCurrentBlockNumber();
     const pastEvents = await this.contractERC20.getContractsPastEvent({
       eventName: 'Approval',
-      args: [_accountAddress],
-      fromBlock: this.currentBlockNumber - 1000,
+      filter: { owner: _accountAddress },
+      fromBlock: currentBlockNumber - 1000,
       toBlock: 'latest',
     });
 
     const tempArray = [];
     for (const e of pastEvents) {
+      //web3js answer has 'returnValues' property and ethers has 'args' property
+      if (e.returnValues) e.args = e.returnValues;
       tempArray.push({
         blockNumber: e.blockNumber,
         owner: (<Result>e.args)['owner'],

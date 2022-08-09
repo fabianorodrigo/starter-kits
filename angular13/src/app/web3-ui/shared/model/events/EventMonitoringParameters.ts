@@ -1,4 +1,4 @@
-import { Web3JSFilter } from './EventPastParameters';
+import { EventFilter } from './EventPastParameters';
 
 export interface EventMonitoringParameters {
   // name of the event to be monitored
@@ -6,5 +6,5 @@ export interface EventMonitoringParameters {
   // listener
   listenerFunction: (...args: Array<any>) => void;
   //optional filters of events
-  args?: any[] | Web3JSFilter;
+  args?: any[] | EventFilter;
 }
