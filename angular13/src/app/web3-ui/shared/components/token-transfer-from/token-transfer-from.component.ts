@@ -3,19 +3,23 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { TransactionResult } from '../../../shared/model';
+import { TransactionResult } from '../../model';
 import { IERC20 } from '../../services/erc20.interface';
+import { IERC721 } from '../../services/erc721.interface';
 
+/**
+ * Component to transfer an amount of ERC20 or a specific NFT of a ERC721 from one address to another.
+ */
 @Component({
-  selector: 'dapp-erc20-transfer-from',
-  templateUrl: './erc20-transfer-from.component.html',
-  styleUrls: ['./erc20-transfer-from.component.css'],
+  selector: 'dapp-token-transfer-from',
+  templateUrl: './token-transfer-from.component.html',
+  styleUrls: ['./token-transfer-from.component.css'],
 })
-export class ERC20TransferFromComponent
+export class TokenTransferFromComponent
   extends BaseFormComponent
   implements OnInit
 {
-  @Input() contractERC20!: IERC20;
+  @Input() contract!: IERC20 | IERC721;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
@@ -58,7 +62,7 @@ export class ERC20TransferFromComponent
       this.isLoading = true;
 
       try {
-        this.contractERC20
+        this.contract
           .transferFrom(
             (this.form.get('fromAddress') as FormControl).value,
             (this.form.get('toAddress') as FormControl).value,

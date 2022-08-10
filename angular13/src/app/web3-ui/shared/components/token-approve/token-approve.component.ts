@@ -1,6 +1,4 @@
 import {
-  AfterViewChecked,
-  AfterViewInit,
   Component,
   Input,
   OnChanges,
@@ -12,24 +10,27 @@ import { Result } from 'ethers/lib/utils';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';
+import { IApprovalEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { IContractEventMonitor } from 'src/app/web3-ui/shared/services/contract-event-monitor.interface';
 import { IERC20 } from 'src/app/web3-ui/shared/services/erc20.interface';
-import { IApprovalEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
-import { TransactionResult } from '../../../shared/model';
+import { TransactionResult } from '../../model';
+import { IERC721 } from '../../services/erc721.interface';
 
+/**
+ * Component to a owner approve operations by another address of a specific amount of ERC20 or a specific NFT of a ERC721.
+ */
 @Component({
-  selector: 'dapp-erc20-approve',
-  templateUrl: './erc20-approve.component.html',
-  styleUrls: ['./erc20-approve.component.css'],
+  selector: 'dapp-token-approve',
+  templateUrl: './token-approve.component.html',
+  styleUrls: ['./token-approve.component.css'],
 })
-export class ERC20ApproveComponent
+export class TokenApproveComponent
   extends BaseFormComponent
   implements OnInit, OnChanges
 {
-  @Input() contractERC20!: IERC20 & IContractEventMonitor;
+  @Input() contract!: (IERC20 | IERC721) & IContractEventMonitor;
   @Input() symbol: string = '';
-  @Input() decimals: number = 1;
   @Input() currentAccount!: string | null;
 
   isLoading = false;
@@ -72,7 +73,7 @@ export class ERC20ApproveComponent
       // subscrição eventos últimos 1000 blocos
       this.fetchPastApprovalEvents(this.currentAccount);
       // subscrição eventos futuros
-      await this.contractERC20.subscribeContractEvent({
+      await this.contract.subscribeContractEvent({
         eventName: 'Approval',
         args: [this.currentAccount],
         listenerFunction: (owner, spender, value, event) => {
@@ -97,7 +98,7 @@ export class ERC20ApproveComponent
       this.isLoading = true;
 
       try {
-        this.contractERC20
+        this.contract
           .approve(
             (this.form.get('spenderAddress') as FormControl).value,
             (this.form.get('value') as FormControl).value,
@@ -137,8 +138,8 @@ export class ERC20ApproveComponent
   private async fetchPastApprovalEvents(
     _accountAddress: string
   ): Promise<void> {
-    const currentBlockNumber = await this.contractERC20.getCurrentBlockNumber();
-    const pastEvents = await this.contractERC20.getContractsPastEvent({
+    const currentBlockNumber = await this.contract.getCurrentBlockNumber();
+    const pastEvents = await this.contract.getContractsPastEvent({
       eventName: 'Approval',
       filter: { owner: _accountAddress },
       fromBlock: currentBlockNumber - 1000,
