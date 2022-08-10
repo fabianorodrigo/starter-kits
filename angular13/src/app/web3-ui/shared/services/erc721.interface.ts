@@ -4,13 +4,10 @@ import { Observable } from 'rxjs';
 import { CallbackFunction } from '../model/CallbackFunction';
 import { TransactionResult } from '../model/transaction-result.interface';
 import { IERC165 } from './erc165.interface';
+import { IERC721Enumerable } from './erc721Enumerable.interface';
+import { IERC721Metadata } from './erc721Metadata.interface';
 
-export interface IERC721 extends IERC165 {
-  /**
-   * @returns Returns the name of the token
-   */
-  name(): Observable<TransactionResult<string>>;
-
+export interface IERC721 extends IERC165, IERC721Metadata, IERC721Enumerable {
   /**
    * Count all NFTs assigned to an owner
    *
@@ -42,22 +39,6 @@ export interface IERC721 extends IERC165 {
     _to: string,
     _tokenId: BigNumber | BN,
     data: Bytes,
-    _callback?: CallbackFunction
-  ): Observable<TransactionResult<string>>;
-
-  /**
-   * Transfers the ownership of an NFT from one address to another address
-   *
-   * @param _from The current owner of the NFT
-   * @param _to The new owner
-   * @param _tokenId  The NFT to transfer
-   * @param _callback  Function to be called when the transaction is confirmed
-   * @returns
-   */
-  safeTransferFrom(
-    _from: string,
-    _to: string,
-    _tokenId: BigNumber | BN,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>>;
 
@@ -100,7 +81,6 @@ export interface IERC721 extends IERC165 {
    * @param _operator Address to add to the set of authorized operators
    * @param _approved True if the operator is approved, false to revoke approval
    * @param _callback  Function to be called when the transaction is confirmed
-   * @returns
    */
   setApprovalForAll(
     _operator: string,

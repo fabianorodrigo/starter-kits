@@ -2,9 +2,8 @@ import BN from 'bn.js';
 import { BigNumber } from 'ethers';
 import { Observable } from 'rxjs';
 import { TransactionResult } from '../model/transaction-result.interface';
-import { IERC721 } from './erc721.interface';
 
-export interface IERC721Enumerable extends IERC721 {
+export interface IERC721Enumerable {
   /**
    * Count NFTs tracked by this contract
    *
@@ -18,7 +17,9 @@ export interface IERC721Enumerable extends IERC721 {
    * @param _index _index A counter less than `totalSupply()`
    * @returns The token identifier for the `_index`th NFT
    */
-  tokenByIndex(_index: string): Observable<TransactionResult<BigNumber | BN>>;
+  tokenByIndex(
+    _index: BigNumber | BN
+  ): Observable<TransactionResult<BigNumber | BN>>;
 
   /**
    * Enumerate NFTs assigned to an owner.  Throws if `_index` >= `balanceOf(_owner)` or
@@ -30,6 +31,6 @@ export interface IERC721Enumerable extends IERC721 {
    */
   tokenOfOwnerByIndex(
     _owner: string,
-    _index: string
+    _index: BigNumber | BN
   ): Observable<TransactionResult<BigNumber | BN>>;
 }
