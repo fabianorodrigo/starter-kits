@@ -40,23 +40,24 @@ export class NumbersService {
   /**
    * Return the {bn} formatted with thousands separator
    *
-   * @param bn The bignumber to be formatted
-   * @param decimals the number of decimals representantion in the {bn}
+   * @param _bn The bignumber to be formatted
+   * @param _decimals the number of decimals representantion in the {bn}
    */
-  formatBN(bn: BN, decimals: number): string {
-    if (!bn) return '?';
+  formatBN(_bn: BN, _decimals: number): string {
+    if (!_bn) return '?';
     let result = '';
+    const decimals = _decimals ? _decimals : 0;
     // como o bn.js não suporta decimais, foi feita a formatação com
     // 3 decimais a menos para possibilitar a representação de frações
     const decimalsLess3 = decimals > 3 ? decimals - 3 : decimals;
     try {
-      const bnDivByDecimalsLess3 = bn.div(
+      const bnDivByDecimalsLess3 = _bn.div(
         new BN(Math.pow(10, decimalsLess3).toString())
       );
       // Se o valor de {bn} for menor que os decimais menos 3 casas decimais, resultando
       // em zero na divisão, será retornado simplesmente o valor dividido por {decimals}
-      if (bnDivByDecimalsLess3.isZero() && !bn.isZero()) {
-        return (bn.toNumber() / Math.pow(10, decimals)).toString();
+      if (bnDivByDecimalsLess3.isZero() && !_bn.isZero()) {
+        return (_bn.toNumber() / Math.pow(10, decimals)).toString();
       }
       // Se o resultado for menor que 1000, a lógica do FOR abaixo não vai funcionar.
       // Neste caso, dividimos este resultado por 1000 (refente às 3 casas decimais retirada acima)
@@ -76,7 +77,7 @@ export class NumbersService {
         new BN(Math.pow(10, decimalsLess3).toString()),
         e
       );
-      result = bn.toString();
+      result = _bn.toString();
     }
     return result;
   }
@@ -99,26 +100,26 @@ export class NumbersService {
   /**
    * Return the {bn} formatted with thousands separator
    *
-   * @param bn The bignumber to be formatted
-   * @param decimals the number of decimals representantion in the {bn}
+   * @param _bn The bignumber to be formatted
+   * @param _decimals the number of decimals representantion in the {bn}
    */
-  formatBigNumber(bn: BigNumber | BN, decimals: number): string {
-    if (!bn) return '?';
+  formatBigNumber(_bn: BigNumber | BN, _decimals: number): string {
+    if (!_bn) return '?';
     //If not a ethers.BigNumber, use the BN function
-    if (!BigNumber.isBigNumber(bn)) return this.formatBN(bn, decimals);
-
+    if (!BigNumber.isBigNumber(_bn)) return this.formatBN(_bn, _decimals);
+    const decimals = _decimals ? _decimals : 0;
     let result = '';
     // como o bn.js não suporta decimais, foi feita a formatação com
     // 3 decimais a menos para possibilitar a representação de frações
     const decimalsLess3 = decimals > 3 ? decimals - 3 : decimals;
     try {
-      const bnDivByDecimalsLess3 = bn.div(
+      const bnDivByDecimalsLess3 = _bn.div(
         BigNumber.from(Math.pow(10, decimalsLess3).toString())
       );
       // Se o valor de {bn} for menor que os decimais menos 3 casas decimais, resultando
       // em zero na divisão, será retornado simplesmente o valor dividido por {decimals}
-      if (bnDivByDecimalsLess3.isZero() && !bn.isZero()) {
-        return (bn.toNumber() / Math.pow(10, decimals)).toString();
+      if (bnDivByDecimalsLess3.isZero() && !_bn.isZero()) {
+        return (_bn.toNumber() / Math.pow(10, decimals)).toString();
       }
       // Se o resultado for menor que 1000, a lógica do FOR abaixo não vai funcionar.
       // Neste caso, dividimos este resultado por 1000 (refente às 3 casas decimais retirada acima)
@@ -138,7 +139,7 @@ export class NumbersService {
         BigNumber.from(Math.pow(10, decimalsLess3).toString()),
         e
       );
-      result = bn.toString();
+      result = _bn.toString();
     }
     return result;
   }
