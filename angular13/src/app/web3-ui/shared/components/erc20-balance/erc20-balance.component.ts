@@ -7,7 +7,7 @@ import { NumbersService } from 'src/app/shared/services/numbers.service';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../model';
 import BN from 'bn.js';
-import { IERC20 } from '../../erc20.interface';
+import { IERC20 } from '../../services/erc20.interface';
 
 @Component({
   selector: 'dapp-erc20-balance',

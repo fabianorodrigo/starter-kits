@@ -9,12 +9,12 @@ import { EthersjsService } from './ethersjs.service';
 @Injectable({
   providedIn: null,
 })
-export class LinkTokenService extends ERC20BaseContract {
+export class AaveTokenService extends ERC20BaseContract {
   getContractABI(): ContractInterface {
     return LINK_TOKEN_ABI;
   }
 
   constructor(_loggingService: LoggingService, _web3Service: EthersjsService) {
-    super(_loggingService, _web3Service, environment.LINK_TOKEN_ADDRESS);
+    super(_loggingService, _web3Service, environment.AAVE_TOKEN_ADDRESS);
   }
 }

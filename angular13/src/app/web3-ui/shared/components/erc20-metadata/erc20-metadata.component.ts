@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
-import { IERC20 } from '../../erc20.interface';
+import { IERC20 } from '../../services/erc20.interface';
 import { TransactionResult } from '../../model';
 import { IMetadata } from '../../model/interfaces/metadata.interface';
 

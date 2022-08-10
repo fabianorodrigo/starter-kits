@@ -1,3 +1,4 @@
+import { AaveComponent } from './pages/aave/aave.component';
 import { CommonModule } from '@angular/common';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +14,12 @@ import { LinkComponent } from './pages/link/link.component';
 import { EthersjsService } from './services/ethersjs.service';
 
 @NgModule({
-  declarations: [EthersjsHomeComponent, WalletComponent, LinkComponent],
+  declarations: [
+    EthersjsHomeComponent,
+    WalletComponent,
+    LinkComponent,
+    AaveComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,

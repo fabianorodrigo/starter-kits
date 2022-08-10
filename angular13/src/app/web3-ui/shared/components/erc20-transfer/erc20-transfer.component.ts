@@ -7,8 +7,8 @@ import { MessageService } from 'src/app/shared/services/message.service';
 import { ITransferEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../../shared/model';
-import { IContractEventMonitor } from '../../contract-event-monitor.interface';
-import { IERC20 } from '../../erc20.interface';
+import { IContractEventMonitor } from '../../services/contract-event-monitor.interface';
+import { IERC20 } from '../../services/erc20.interface';
 
 @Component({
   selector: 'dapp-erc20-transfer',

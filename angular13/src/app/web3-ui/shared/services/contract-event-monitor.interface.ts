@@ -1,4 +1,4 @@
-import { EventMonitoringParameters, EventPastParameters } from './model';
+import { EventMonitoringParameters, EventPastParameters } from '../model';
 
 export interface IContractEventMonitor {
   /**

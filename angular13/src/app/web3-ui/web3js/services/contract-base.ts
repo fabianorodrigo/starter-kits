@@ -3,7 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import { Contract, EventData, PastEventOptions } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { IContractEventMonitor } from '../../shared/contract-event-monitor.interface';
+import { IContractEventMonitor } from '../../shared/services/contract-event-monitor.interface';
 import {
   CallbackFunction,
   EventMonitoringParameters,

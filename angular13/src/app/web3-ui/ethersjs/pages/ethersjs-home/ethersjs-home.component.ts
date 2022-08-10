@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { LoggingService } from 'src/app/shared/services/logging.service';
 import { MessageService } from 'src/app/shared/services/message.service';
+import { CHAINS_NAME } from 'src/app/web3-ui/shared/services/chains';
 import { environment } from 'src/environments/environment';
 import { EthersjsService } from '../../services/ethersjs.service';
 
@@ -12,6 +13,11 @@ import { EthersjsService } from '../../services/ethersjs.service';
 export class EthersjsHomeComponent implements OnInit {
   userAccountAddress: string | null = null;
 
+  readonly LINK_CHAIN_ID =
+    CHAINS_NAME[environment.LINK_TOKEN_CHAINID].name.toLowerCase();
+  readonly AAVE_CHAIN_ID =
+    CHAINS_NAME[environment.AAVE_TOKEN_CHAINID].name.toLowerCase();
+
   constructor(
     private _changeDetectorRefs: ChangeDetectorRef,
     private _loggingService: LoggingService,
@@ -22,11 +28,6 @@ export class EthersjsHomeComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const network = await this._ethersjsService.getCurrentNetwork();
     this._loggingService.debug(EthersjsHomeComponent.name, 'network', network);
-    if (network.chainId != environment.chainId) {
-      const msg = `Unexpected chain: Change network to ${environment.chainName}`;
-      this._messageService.show(msg);
-      throw new Error(msg);
-    }
 
     await this._ethersjsService.connect();
 

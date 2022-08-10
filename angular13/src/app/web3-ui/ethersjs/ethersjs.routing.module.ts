@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MarkdownComponent } from 'src/app/shared/pages/markdown/markdown.component';
+import { AaveComponent } from './pages/aave/aave.component';
 
 // Components
 import { EthersjsHomeComponent } from './pages/ethersjs-home/ethersjs-home.component';
@@ -21,6 +22,7 @@ const routes: Routes = [
         data: { url: 'app/web3-ui/ethersjs/README.md' },
       },
       { path: 'link', component: LinkComponent },
+      { path: 'aave', component: AaveComponent },
     ],
   },
 ];

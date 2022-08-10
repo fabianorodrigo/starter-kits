@@ -4,7 +4,16 @@
     <dapp-menu
       [items]="[
         { label: 'Ðapp Ethers.js Home', link: '/ethersjs', icon: 'home' },
-        { label: 'LINK Token', link: '/ethersjs/link', icon: 'sell' }
+        {
+          label: 'aEthAAVE Token (' + AAVE_CHAIN_ID + ')',
+          link: '/ethersjs/aave',
+          icon: 'sell'
+        },
+        {
+          label: 'LINK Token (' + LINK_CHAIN_ID + ')',
+          link: '/ethersjs/link',
+          icon: 'sell'
+        }
       ]"
     ></dapp-menu>
   </div>

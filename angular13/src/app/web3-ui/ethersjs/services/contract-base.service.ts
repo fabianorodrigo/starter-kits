@@ -5,7 +5,7 @@ import { Event } from '@ethersproject/contracts';
 import { BigNumber, Contract, ContractInterface, Signer } from 'ethers';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import { IContractEventMonitor } from '../../shared/contract-event-monitor.interface';
+import { IContractEventMonitor } from '../../shared/services/contract-event-monitor.interface';
 import {
   CallbackFunction,
   EventMonitoringParameters,
