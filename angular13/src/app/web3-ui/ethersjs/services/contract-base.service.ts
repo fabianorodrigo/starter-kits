@@ -43,7 +43,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
       );
       if (_contract == null) {
         throw new Error(
-          `Contract not found. Confirm that your wallet is connected on the right chain`
+          `Contract ${this.address} not found. Confirm that your wallet is connected on the right chain`
         );
       } else {
         return _contract;

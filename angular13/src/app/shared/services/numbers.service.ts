@@ -135,7 +135,7 @@ export class NumbersService {
     } catch (e) {
       console.error(
         decimalsLess3,
-        new BN(Math.pow(10, decimalsLess3).toString()),
+        BigNumber.from(Math.pow(10, decimalsLess3).toString()),
         e
       );
       result = bn.toString();

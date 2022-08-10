@@ -1,0 +1,55 @@
+<mat-tab-group>
+  <mat-tab label="Metadata">
+    <div class="container">
+      Presents the metadata of NFT contract CHAIN BATTLES
+      <dapp-erc721-metadata
+        [contractERC721]="NFTService"
+        (metadataRead)="onMetadataRead($event)"
+      ></dapp-erc721-metadata>
+    </div>
+  </mat-tab>
+  <mat-tab label="Balance">
+    <div class="container">
+      Request the LINK balance of a specific address
+      <dapp-token-balance
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-token-balance></div
+  ></mat-tab>
+  <mat-tab label="Transfer"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} from the current account
+      connected at the wallet to another account
+      <dapp-erc721-safe-transfer
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      ></dapp-erc721-safe-transfer>
+    </div>
+  </mat-tab>
+  <mat-tab label="Transfer From"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} an informed account to
+      another account. The account connect at the wallet must be the owner of
+      the contract in order to run successfully
+      <dapp-token-transfer-from
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-token-transfer-from>
+    </div>
+  </mat-tab>
+  <mat-tab label="Approve">
+    <div class="container">
+      Execute a transaction which the current account connected at the wallet
+      (owner) allow another address to operate an specific NFT in
+      {{ metadata["symbol"] }}
+      on its behalf.
+      <dapp-token-approve
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-token-approve>
+    </div>
+  </mat-tab>
+</mat-tab-group>
