@@ -21,7 +21,6 @@ export class TokenTransferFromComponent
 {
   @Input() contract!: IERC20 | IERC721;
   @Input() symbol: string = '';
-  @Input() decimals: number = 1;
 
   isLoading = false;
 
