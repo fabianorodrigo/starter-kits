@@ -23,6 +23,7 @@ export class ERC721GetApprovedComponent
   @Input() symbol: string = '';
 
   showApproved = false;
+  ownerAddress!: string;
   approvedAddress!: string;
 
   constructor(
@@ -46,10 +47,30 @@ export class ERC721GetApprovedComponent
       this.showApproved = true;
       try {
         const owner$ = this.contract
-          .getApproved((this.form.get('tokenId') as FormControl).value)
+          .ownerOf((this.form.get('tokenId') as FormControl).value)
           .pipe(catchError(this.handleBackendError.bind(this)));
 
         owner$.subscribe({
+          next: (result: TransactionResult<string>) => {
+            if (result.success == false) {
+              this._messageService.show(
+                `It was not possible to get ${this.form.controls['tokenId'].value} ${this.symbol} owner address`
+              );
+              this.showApproved = false;
+              this.isLoading = false;
+              return;
+            }
+            this.ownerAddress = result.result;
+            this.isLoading = false;
+          },
+          error: this.handleBackendError.bind(this),
+        });
+
+        const approved$ = this.contract
+          .getApproved((this.form.get('tokenId') as FormControl).value)
+          .pipe(catchError(this.handleBackendError.bind(this)));
+
+        approved$.subscribe({
           next: (result: TransactionResult<string>) => {
             if (result.success == false) {
               this._messageService.show(

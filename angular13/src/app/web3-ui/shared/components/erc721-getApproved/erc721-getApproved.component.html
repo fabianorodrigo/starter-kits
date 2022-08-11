@@ -18,10 +18,15 @@
 </form>
 
 <div class="value-container" *ngIf="showApproved">
-  <label class="value-label">Approved:</label>
+  <label class="value-label">Owner</label>
   <mat-spinner diameter="50" *ngIf="isLoading; else owner"></mat-spinner>
+  <label class="value-label">Approved</label>
+  <mat-spinner diameter="50" *ngIf="isLoading; else approved"></mat-spinner>
 </div>
 
 <ng-template #owner>
+  <div class="address">{{ ownerAddress }}</div>
+</ng-template>
+<ng-template #approved>
   <div class="address">{{ approvedAddress }}</div>
 </ng-template>
