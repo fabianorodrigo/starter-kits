@@ -5,13 +5,13 @@ import { CHAINS_NAME } from 'src/app/web3-ui/shared/services/chains';
 import { environment } from 'src/environments/environment';
 import { IMetadata } from '../../../shared/model/interfaces/metadata.interface';
 import { EthersjsService } from '../../services/ethersjs.service';
-import { ChainBattlesERC721Service } from '../../services/chain-battles-ERC721.service';
+import { TweetTokenERC721Service } from '../../services/tweettoken-ERC721.service';
 
 @Component({
   selector: 'dapp-chain-battles',
   templateUrl: './tweetoken.component.html',
   styleUrls: ['./tweetoken.component.css'],
-  providers: [ChainBattlesERC721Service],
+  providers: [TweetTokenERC721Service],
 })
 export class TweetokenERC721Component implements OnInit {
   signer!: Signer | null;
@@ -23,7 +23,7 @@ export class TweetokenERC721Component implements OnInit {
   constructor(
     private _messageService: MessageService,
     private _ethersjsService: EthersjsService,
-    public readonly NFTService: ChainBattlesERC721Service
+    public readonly NFTService: TweetTokenERC721Service
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -34,9 +34,9 @@ export class TweetokenERC721Component implements OnInit {
     });
 
     const network = await this._ethersjsService.getCurrentNetwork();
-    if (network.chainId != environment.CHAIN_BATTLES_CHAINID) {
+    if (network.chainId != environment.TWEETTOKEN_CHAINID) {
       const msg = `Unexpected chain: Change network to ${
-        CHAINS_NAME[environment.CHAIN_BATTLES_CHAINID].name
+        CHAINS_NAME[environment.TWEETTOKEN_CHAINID].name
       }`;
       this._messageService.show(msg);
       throw new Error(msg);

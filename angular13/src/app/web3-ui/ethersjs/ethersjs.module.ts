@@ -12,7 +12,7 @@ import { EthersjsRoutingModule } from './ethersjs.routing.module';
 import { EthersjsHomeComponent } from './pages/ethersjs-home/ethersjs-home.component';
 import { LinkComponent } from './pages/link/link.component';
 import { EthersjsService } from './services/ethersjs.service';
-import { ChainBattlesERC721Component } from './pages/chain-battles-erc721/chain-battles.component';
+import { TweetokenERC721Component } from './pages/tweetoken-erc721/tweetoken.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { ChainBattlesERC721Component } from './pages/chain-battles-erc721/chain-
     WalletComponent,
     LinkComponent,
     AaveComponent,
-    ChainBattlesERC721Component,
+    TweetokenERC721Component,
   ],
   imports: [
     CommonModule,

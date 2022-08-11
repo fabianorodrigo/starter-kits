@@ -1,7 +1,7 @@
 import { GOERLI_AAVE_TOKEN } from './goerli';
 import { RINKEBY_LINK_TOKEN } from './rinkeby';
 import { CHAINS } from 'src/app/web3-ui/shared/services/chains';
-import { MUMBAI_CHAIN_BATTLES_NFT_ADDRESS } from './mumbai';
+import { MUMBAI_TWEETTOKEN_NFT_ADDRESS } from './mumbai';
 
 export const environment = {
   production: false,
@@ -17,8 +17,8 @@ export const environment = {
   AAVE_TOKEN_CHAINID: CHAINS.GOERLI,
   AAVE_TOKEN_ADDRESS: GOERLI_AAVE_TOKEN,
   // CHAIN BATTLES (ERC-721)
-  CHAIN_BATTLES_CHAINID: CHAINS.MUMBAI,
-  CHAIN_BATTLES_NFT_ADDRESS: MUMBAI_CHAIN_BATTLES_NFT_ADDRESS,
+  TWEETTOKEN_CHAINID: CHAINS.MUMBAI,
+  TWEETTOKEN_NFT_ADDRESS: MUMBAI_TWEETTOKEN_NFT_ADDRESS,
 };
 
 /*
