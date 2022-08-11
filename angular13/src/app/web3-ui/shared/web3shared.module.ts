@@ -1,3 +1,4 @@
+import { ERC721OwnerOfComponent } from './components/erc721-ownerOf/erc721-ownerOf.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +24,7 @@ import { TokenTransferFromComponent } from './components/token-transfer-from/tok
     ERC20TransferComponent,
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,
+    ERC721OwnerOfComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
@@ -36,6 +38,7 @@ import { TokenTransferFromComponent } from './components/token-transfer-from/tok
     ERC20TransferComponent,
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,
+    ERC721OwnerOfComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,

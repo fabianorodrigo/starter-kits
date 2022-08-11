@@ -10,33 +10,41 @@
   </mat-tab>
   <mat-tab label="Balance">
     <div class="container">
-      Request the LINK balance of a specific address
+      Request the TTT balance of a specific address
       <dapp-token-balance
         [contract]="NFTService"
         [symbol]="metadata['symbol']"
         [decimals]="0"
-      ></dapp-token-balance></div
+      ></dapp-token-balance>
+      <dapp-erc721-ownerOf
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      >
+      </dapp-erc721-ownerOf></div
   ></mat-tab>
-  <mat-tab label="Transfer"
+  <mat-tab label="Transfer From"
     ><div class="container">
-      Tranfer an amount of {{ metadata["symbol"] }} from the current account
-      connected at the wallet to another account
+      Transfers a NFT {{ metadata["symbol"] }} from one account to another. The
+      caller is responsible to confirm that the recipient is capable of
+      receiving the NFT or it may be permanently lost
+      <dapp-token-transfer-from
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      ></dapp-token-transfer-from>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Safe Transfer From"
+    ><div class="container">
+      Makes a Safe Tranfer of a NFT {{ metadata["symbol"] }} from one account to
+      another. By "Safe" it means that the recipient is a smart contract that is
+      capable of receiving NFTs. This is confirmed by calling the
+      `onERC721Received` function on the recipient and the returned value has to
+      be `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`.
       <dapp-erc721-safe-transfer
         [contract]="NFTService"
         [symbol]="metadata['symbol']"
       ></dapp-erc721-safe-transfer>
-    </div>
-  </mat-tab>
-  <mat-tab label="Transfer From"
-    ><div class="container">
-      Tranfer an amount of {{ metadata["symbol"] }} an informed account to
-      another account. The account connect at the wallet must be the owner of
-      the contract in order to run successfully
-      <dapp-token-transfer-from
-        [contract]="NFTService"
-        [symbol]="metadata['symbol']"
-        [decimals]="metadata['decimals']"
-      ></dapp-token-transfer-from>
     </div>
   </mat-tab>
   <mat-tab label="Approve">
