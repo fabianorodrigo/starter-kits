@@ -8,7 +8,7 @@
       ></dapp-erc721-metadata>
     </div>
   </mat-tab>
-  <mat-tab label="Balance">
+  <mat-tab label="Balance & Owner">
     <div class="container">
       Request the TTT balance of a specific address
       <dapp-token-balance
@@ -16,6 +16,10 @@
         [symbol]="metadata['symbol']"
         [decimals]="0"
       ></dapp-token-balance>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="container">
+      Request the owner of a specic TTT NFT
       <dapp-erc721-ownerOf
         [contract]="NFTService"
         [symbol]="metadata['symbol']"
