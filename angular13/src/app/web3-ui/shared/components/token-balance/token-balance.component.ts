@@ -75,6 +75,7 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
                 `It was not possible to get ${this.form.controls['accountAddress'].value} ${this.symbol} balance`
               );
               this.showBalance = false;
+              this.isLoading = false;
               return;
             }
             this.formatedBalance =
