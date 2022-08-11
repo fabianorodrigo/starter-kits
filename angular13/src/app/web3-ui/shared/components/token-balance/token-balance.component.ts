@@ -63,6 +63,7 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
           .pipe(
             catchError((err) => {
               this._messageService.show(err.message);
+              this.isLoading = false;
               return of({ success: false, result: err.message });
             })
           );
@@ -91,6 +92,7 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
           // deve tratar as falhas de conexão com o backend
           error: (err) => {
             this._messageService.show(err.message);
+            this.isLoading = false;
           },
         });
       } catch (e: unknown) {
