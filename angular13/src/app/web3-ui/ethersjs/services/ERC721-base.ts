@@ -270,55 +270,27 @@ export abstract class ERC721BaseContract
   }
 
   /**
-   * Transfers {_value} amount of tokens to address {_to}
+   * Transfer ownership of an NFT -- THE CALLER IS RESPONSIBLE TO CONFIRM THAT `_to`
+   * IS CAPABLE OF RECEIVING NFTS OR ELSE THEY MAY BE PERMANENTLY LOST
    *
-   * @param _to destination account
-   * @param _value quantity of tokens to be transfered
-   * @param _callback  Function to be called when the transaction is confirmed
-   * @returns
-   */
-  transfer(
-    _to: string,
-    _value: BigNumber,
-    _callback?: CallbackFunction
-  ): Observable<TransactionResult<string>> {
-    const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
-      this._symbol
-    }  to ${_to} was sent successfully`;
-    const successConfirmationMessage = `Transaction to tranfer ${_value.toString()} ${
-      this._symbol
-    }  to ${_to} was confirmed`;
-    return this.send(
-      this.getContractABI(),
-      'transfer',
-      successSentMessage,
-      _callback,
-      successConfirmationMessage,
-      _to,
-      _value
-    );
-  }
-
-  /**
-   * Transfers {_value} amount of tokens  from address {_from} to address {_to}
-   *
-   * @param _to destination account
-   * @param _value quantity of tokens to be transfered
+   * @param _from The current owner of the NFT
+   * @param _to The new owner
+   * @param _tokenId The NFT to transfer
    * @param _callback  Function to be called when the transaction is confirmed
    * @returns
    */
   transferFrom(
     _from: string,
     _to: string,
-    _value: BigNumber,
+    _tokenId: BigNumber,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>> {
-    const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
+    const successSentMessage = `Transaction to tranfer ${
       this._symbol
-    } from ${_from} to ${_to} was sent successfully`;
-    const successConfirmationMessage = `Transaction to tranfer ${_value.toString()} ${
+    } NFT ${_tokenId.toString()} to ${_to} was sent successfully`;
+    const successConfirmationMessage = `Transaction to tranfer ${
       this._symbol
-    }  from ${_from} to ${_to} was confirmed`;
+    } NFT ${_tokenId.toString()} to ${_to} was confirmed`;
     return this.send(
       this.getContractABI(),
       'transferFrom',
@@ -327,7 +299,7 @@ export abstract class ERC721BaseContract
       successConfirmationMessage,
       _from,
       _to,
-      _value
+      _tokenId
     );
   }
 
