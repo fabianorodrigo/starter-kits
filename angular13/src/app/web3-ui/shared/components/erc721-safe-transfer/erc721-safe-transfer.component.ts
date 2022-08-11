@@ -35,6 +35,14 @@ export class ERC721SafeTransferComponent
   ngOnInit(): void {
     //o minLength é para prevenir o "Short address/parameter Attack"
     this.form = this._formBuilder.group({
+      fromAddress: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(42),
+          ethereumAddressValidator,
+        ],
+      ],
       toAddress: [
         '',
         [
@@ -89,7 +97,7 @@ export class ERC721SafeTransferComponent
       try {
         this.contract
           .safeTransferFrom(
-            this.currentAccount as string,
+            (this.form.get('fromAddress') as FormControl).value,
             (this.form.get('toAddress') as FormControl).value,
             (this.form.get('value') as FormControl).value,
             [],
