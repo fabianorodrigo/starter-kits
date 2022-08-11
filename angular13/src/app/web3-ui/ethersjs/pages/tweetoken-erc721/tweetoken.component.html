@@ -64,4 +64,14 @@
       ></dapp-token-approve>
     </div>
   </mat-tab>
+  <mat-tab label="Get Approved">
+    <div class="container">
+      Request the approved address foa a specic TTT NFT
+      <dapp-erc721-getApproved
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      >
+      </dapp-erc721-getApproved>
+    </div>
+  </mat-tab>
 </mat-tab-group>

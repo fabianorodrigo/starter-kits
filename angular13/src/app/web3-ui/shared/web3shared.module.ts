@@ -14,6 +14,7 @@ import { ERC721SafeTransferComponent } from './components/erc721-safe-transfer/e
 import { TokenApproveComponent } from './components/token-approve/token-approve.component';
 import { TokenBalanceComponent } from './components/token-balance/token-balance.component';
 import { TokenTransferFromComponent } from './components/token-transfer-from/token-transfer-from.component';
+import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc721-getApproved.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TokenTransferFromComponent } from './components/token-transfer-from/tok
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,
     ERC721OwnerOfComponent,
+    ERC721GetApprovedComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
@@ -39,6 +41,7 @@ import { TokenTransferFromComponent } from './components/token-transfer-from/tok
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,
     ERC721OwnerOfComponent,
+    ERC721GetApprovedComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
