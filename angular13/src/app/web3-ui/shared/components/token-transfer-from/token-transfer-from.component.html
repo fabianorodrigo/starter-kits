@@ -34,7 +34,7 @@
     }}</mat-error>
   </mat-form-field>
   <mat-form-field class="input_40characters" appearance="outline">
-    <mat-label>Value</mat-label>
+    <mat-label>{{ contract.isERC(721) ? "Token ID" : "Value" }}</mat-label>
     <input
       type="text"
       [disableControl]="isLoading"
