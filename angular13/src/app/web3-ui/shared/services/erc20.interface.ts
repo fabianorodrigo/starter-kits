@@ -3,8 +3,9 @@ import { BigNumber } from 'ethers';
 import { Observable } from 'rxjs';
 import { CallbackFunction } from '../model/CallbackFunction';
 import { TransactionResult } from '../model/transaction-result.interface';
+import { IERC } from './erc.interface';
 
-export interface IERC20 {
+export interface IERC20 extends IERC {
   /**
    * @returns Returns the name of the token
    */

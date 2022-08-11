@@ -37,6 +37,14 @@ export abstract class ERC721BaseContract
   }
 
   /**
+   * @returns Returns TRUE if the current interface is
+   * compatible with the erc number passed as parameter
+   */
+  isERC(erc: number): boolean {
+    return [721].includes(erc);
+  }
+
+  /**
    * @returns Returns descriptive name for a collection of NFTs in this contract
    */
   name(): Observable<TransactionResult<string>> {

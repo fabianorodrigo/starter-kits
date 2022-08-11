@@ -31,6 +31,14 @@ export abstract class ERC20BaseContract
   }
 
   /**
+   * @returns Returns TRUE if the current interface is
+   * compatible with the erc number passed as parameter
+   */
+  isERC(erc: number): boolean {
+    return [20].includes(erc);
+  }
+
+  /**
    * @returns Returns the name of the token
    */
   name(): Observable<TransactionResult<string>> {

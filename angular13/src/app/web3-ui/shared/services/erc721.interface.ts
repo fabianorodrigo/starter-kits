@@ -3,11 +3,16 @@ import { BigNumber, Bytes } from 'ethers';
 import { Observable } from 'rxjs';
 import { CallbackFunction } from '../model/CallbackFunction';
 import { TransactionResult } from '../model/transaction-result.interface';
+import { IERC } from './erc.interface';
 import { IERC165 } from './erc165.interface';
 import { IERC721Enumerable } from './erc721Enumerable.interface';
 import { IERC721Metadata } from './erc721Metadata.interface';
 
-export interface IERC721 extends IERC165, IERC721Metadata, IERC721Enumerable {
+export interface IERC721
+  extends IERC,
+    IERC165,
+    IERC721Metadata,
+    IERC721Enumerable {
   /**
    * Count all NFTs assigned to an owner
    *
