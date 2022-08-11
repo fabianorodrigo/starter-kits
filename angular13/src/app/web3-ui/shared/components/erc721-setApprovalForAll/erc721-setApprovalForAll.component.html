@@ -1,0 +1,55 @@
+<div class="container">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="setApprovalForAll($event)"
+    class="form-container"
+  >
+    <mat-form-field class="input_40characters" appearance="outline">
+      <mat-label>Operator Address</mat-label>
+      <input
+        type="text"
+        [disableControl]="isLoading"
+        matInput
+        placeholder="Operator address"
+        formControlName="operatorAddress"
+        maxlength="42"
+        minlength="40"
+      />
+      <mat-hint
+        >Inform the 42 characters long operator's account address</mat-hint
+      >
+      <mat-error *ngIf="getErrorMessage('operatorAddress')">{{
+        getErrorMessage("operatorAddress")
+      }}</mat-error>
+    </mat-form-field>
+
+    <mat-radio-group formControlName="approved" aria-label="Select an option">
+      <div class="radio-container">
+        <mat-radio-button [value]="true">Approve</mat-radio-button>
+        <mat-radio-button [value]="false">Revoke</mat-radio-button>
+      </div>
+    </mat-radio-group>
+    <mat-error *ngIf="getErrorMessage('approved')">{{
+      getErrorMessage("approved")
+    }}</mat-error>
+    <button
+      class="input_40characters"
+      [disabled]="isLoading"
+      [class.spinner]="isLoading"
+      mat-raised-button
+      color="primary"
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+  <mat-divider></mat-divider>
+  <div>
+    <h2>Latest Approval Events</h2>
+    <dapp-erc20-approval-event
+      [eventList]="eventList"
+      ngClass="events-container"
+    >
+    </dapp-erc20-approval-event>
+  </div>
+</div>

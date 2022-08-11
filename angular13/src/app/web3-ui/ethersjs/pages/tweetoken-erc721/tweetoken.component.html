@@ -74,4 +74,15 @@
       </dapp-erc721-getApproved>
     </div>
   </mat-tab>
+  <mat-tab label="Set Approval for All">
+    <div class="container">
+      Enable or disable approval for a third party ("operator") to manage all of
+      current account {{ metadata["symbol"] }} assets on its behalf.
+      <dapp-erc721-setApprovalForAll
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-erc721-setApprovalForAll>
+    </div>
+  </mat-tab>
 </mat-tab-group>
