@@ -43,7 +43,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
       );
       if (_contract == null) {
         throw new Error(
-          `Contract not found. Confirm that your wallet is connected on the right chain`
+          `Contract ${this.address} not found. Confirm that your wallet is connected on the right chain`
         );
       } else {
         return _contract;
@@ -170,63 +170,71 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     ..._args: any
   ): Observable<TransactionResult<string>> {
     return new Observable<TransactionResult<string>>((subscriber) => {
-      this.getContract(_abi).then(async (_contract) => {
-        const fromSigner = this._ethersjsService.getSigner();
-        if (fromSigner == null)
-          throw new Error(`Not possible to determine the origin account`);
-        try {
-          _contract
-            .connect(fromSigner)
-            [_functionName](..._args)
-            .then((tx: TransactionResponse) => {
-              // espera-se que o wait seja o cara que vai ser executado quando for confirmado
-              // (equivalente ao 'once('confirmation') no web3js)
-              tx.wait()
-                .then((_receipt) => {
-                  if (_callback) {
-                    _callback({
-                      success: true,
-                      result: _confirmationMessage || ``,
-                    });
-                  }
-                })
-                .catch((e) => {
-                  console.error(e);
-                  if (_callback) {
-                    let msg = `Transaction has been reverted by the blockchain network`;
-                    if (e.code && ProviderErrors[e.code]) {
-                      msg = `${ProviderErrors[e.code].title}: ${
-                        ProviderErrors[e.code].message
-                      }`;
+      this.getContract(_abi)
+        .then(async (_contract) => {
+          const fromSigner = this._ethersjsService.getSigner();
+          if (fromSigner == null)
+            throw new Error(`Not possible to determine the origin account`);
+          try {
+            _contract
+              .connect(fromSigner)
+              [_functionName](..._args)
+              .then((tx: TransactionResponse) => {
+                // espera-se que o wait seja o cara que vai ser executado quando for confirmado
+                // (equivalente ao 'once('confirmation') no web3js)
+                tx.wait()
+                  .then((_receipt) => {
+                    if (_callback) {
+                      _callback({
+                        success: true,
+                        result: _confirmationMessage || ``,
+                      });
                     }
-                    _callback({
-                      success: false,
-                      result: msg,
-                    });
-                  }
-                  subscriber.next({ success: true, result: _successMessage });
-                });
-              subscriber.next({ success: true, result: _successMessage });
-            });
-        } catch (e: any) {
-          const providerError = ProviderErrors[e.code];
-          let message = `We had some problem. The transaction wasn't sent.`;
-          if (providerError) {
-            message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+                  })
+                  .catch((e) => {
+                    console.error(e);
+                    if (_callback) {
+                      let msg = `Transaction has been reverted by the blockchain network`;
+                      if (e.code && ProviderErrors[e.code]) {
+                        msg = `${ProviderErrors[e.code].title}: ${
+                          ProviderErrors[e.code].message
+                        }`;
+                      }
+                      _callback({
+                        success: false,
+                        result: msg,
+                      });
+                    }
+                    subscriber.next({ success: true, result: _successMessage });
+                  });
+                subscriber.next({ success: true, result: _successMessage });
+              });
+          } catch (e: any) {
+            const providerError = ProviderErrors[e.code];
+            let message = `We had some problem. The transaction wasn't sent.`;
+            if (providerError) {
+              message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+            }
+            if (_callback) {
+              _callback({
+                success: false,
+                result: message,
+              });
+            } else {
+              subscriber.next({
+                success: false,
+                result: message,
+              });
+            }
           }
-          if (_callback) {
-            _callback({
-              success: false,
-              result: message,
-            });
-          } else {
-            subscriber.next({
-              success: false,
-              result: message,
-            });
-          }
-        }
-      });
+        })
+        .catch((e: any) => {
+          console.error(e);
+          subscriber.next({
+            success: false,
+            result: `Failed to bind the contract ${this.address}`,
+          });
+        });
     });
   }
 
@@ -335,27 +343,35 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     ..._args: any
   ): Observable<TransactionResult<T>> {
     return new Observable<TransactionResult<T>>((subscriber) => {
-      this.getContract(_abi).then(async (_contract) => {
-        let result;
-        try {
-          result = await _contract[_functionName](..._args);
-          subscriber.next({
-            success: true,
-            result: transform(result),
-          });
-        } catch (e: any) {
-          const providerError = ProviderErrors[e.code];
-          let message = `We had some problem. The transaction wasn't sent.`;
-          if (providerError) {
-            message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+      this.getContract(_abi)
+        .then(async (_contract) => {
+          let result;
+          try {
+            result = await _contract[_functionName](..._args);
+            subscriber.next({
+              success: true,
+              result: transform(result),
+            });
+          } catch (e: any) {
+            const providerError = ProviderErrors[e.code];
+            let message = `We had some problem. The transaction wasn't sent.`;
+            if (providerError) {
+              message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
+            }
+            console.warn(e);
+            subscriber.next({
+              success: false,
+              result: message,
+            });
           }
-          console.warn(e);
+        })
+        .catch((e: any) => {
+          console.error(e);
           subscriber.next({
             success: false,
-            result: message,
+            result: `Failed to bind the contract ${this.address}`,
           });
-        }
-      });
+        });
     });
   }
 }

@@ -8,14 +8,19 @@ import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethe
 import { TransactionResult } from '../../model';
 import BN from 'bn.js';
 import { IERC20 } from '../../services/erc20.interface';
+import { IERC721 } from '../../services/erc721.interface';
+import { catchError, of } from 'rxjs';
 
+/**
+ * Component to show the balance of an ERC20 or ERC721 token.
+ */
 @Component({
-  selector: 'dapp-erc20-balance',
-  templateUrl: './erc20-balance.component.html',
-  styleUrls: ['./erc20-balance.component.css'],
+  selector: 'dapp-token-balance',
+  templateUrl: './token-balance.component.html',
+  styleUrls: ['./token-balance.component.css'],
 })
-export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
-  @Input() contractERC20!: IERC20;
+export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
+  @Input() contract!: IERC20 | IERC721;
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
@@ -53,9 +58,17 @@ export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
       this.isLoading = true;
       this.showBalance = true;
       try {
-        this.contractERC20
+        const balance$ = this.contract
           .balanceOf((this.form.get('accountAddress') as FormControl).value)
-          .subscribe((result: TransactionResult<BigNumber | BN>) => {
+          .pipe(
+            catchError((err) => {
+              this._messageService.show(err.message);
+              return of({ success: false, result: err.message });
+            })
+          );
+
+        balance$.subscribe({
+          next: (result: TransactionResult<BigNumber | BN>) => {
             if (result.success == false) {
               this._messageService.show(
                 `It was not possible to get ${this.form.controls['accountAddress'].value} ${this.symbol} balance`
@@ -73,8 +86,15 @@ export class ERC20BalanceComponent extends BaseFormComponent implements OnInit {
               this.decimals
             );
             this.isLoading = false;
-          });
+          },
+          // Esse tratamento encerra o observable, portanto, o catchError do `pipe`
+          // deve tratar as falhas de conexão com o backend
+          error: (err) => {
+            this._messageService.show(err.message);
+          },
+        });
       } catch (e: unknown) {
+        console.warn(e);
         this.isLoading = false;
         this._messageService.show((<Error>e).message);
       }
