@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Bytes, Result } from 'ethers/lib/utils';
@@ -22,14 +23,13 @@ export class ERC721SafeTransferComponent
   @Input() symbol: string = '';
   @Input() currentAccount!: string | null;
 
-  isLoading = false;
   eventList: ITransferEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -95,7 +95,7 @@ export class ERC721SafeTransferComponent
       this.isLoading = true;
 
       try {
-        this.contract
+        const transaction$ = this.contract
           .safeTransferFrom(
             (this.form.get('fromAddress') as FormControl).value,
             (this.form.get('toAddress') as FormControl).value,
@@ -106,21 +106,14 @@ export class ERC721SafeTransferComponent
               this._messageService.show(result.result);
             }
           )
-          .subscribe((result) => {
-            if (result.success == false) {
-              this._messageService.show(
-                `It was not possible to send the transaction: ${result.result}`
-              );
-              return;
-            } else {
-              this._messageService.show(result.result);
-            }
+          .pipe(catchError(this.handleBackendError.bind(this)));
 
-            this.isLoading = false;
-          });
+        transaction$.subscribe({
+          next: this.handleTransactionResult.bind(this),
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this._messageService.show(

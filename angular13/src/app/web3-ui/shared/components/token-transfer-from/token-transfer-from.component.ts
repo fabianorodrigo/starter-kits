@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
@@ -22,13 +23,11 @@ export class TokenTransferFromComponent
   @Input() contract!: IERC20 | IERC721;
   @Input() symbol: string = '';
 
-  isLoading = false;
-
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -61,7 +60,7 @@ export class TokenTransferFromComponent
       this.isLoading = true;
 
       try {
-        this.contract
+        const transaction$ = this.contract
           .transferFrom(
             (this.form.get('fromAddress') as FormControl).value,
             (this.form.get('toAddress') as FormControl).value,
@@ -71,21 +70,16 @@ export class TokenTransferFromComponent
               this._messageService.show(result.result);
             }
           )
-          .subscribe((result) => {
-            if (result.success == false) {
-              this._messageService.show(
-                `It was not possible to send the transaction: ${result.result}`
-              );
-              return;
-            } else {
-              this._messageService.show(result.result);
-            }
+          .pipe(catchError(this.handleBackendError));
 
-            this.isLoading = false;
-          });
+        transaction$.subscribe({
+          next: this.handleTransactionResult.bind(this),
+          // Esse tratamento encerra o observable, portanto, o catchError do `pipe`
+          // deve tratar as falhas de conexão com o backend
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(this);
       }
     } else {
       this._messageService.show(

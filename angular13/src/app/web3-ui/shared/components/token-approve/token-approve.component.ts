@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import {
   Component,
   Input,
@@ -33,15 +34,14 @@ export class TokenApproveComponent
   @Input() symbol: string = '';
   @Input() currentAccount!: string | null;
 
-  isLoading = false;
   eventList: IApprovalEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService,
-    private _numberService: NumbersService
+    private _numberService: NumbersService,
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -98,7 +98,7 @@ export class TokenApproveComponent
       this.isLoading = true;
 
       try {
-        this.contract
+        const transaction$ = this.contract
           .approve(
             (this.form.get('spenderAddress') as FormControl).value,
             (this.form.get('value') as FormControl).value,
@@ -107,21 +107,14 @@ export class TokenApproveComponent
               this._messageService.show(result.result);
             }
           )
-          .subscribe((result) => {
-            if (result.success == false) {
-              this._messageService.show(
-                `It was not possible to send the transaction: ${result.result}`
-              );
-              return;
-            } else {
-              this._messageService.show(result.result);
-            }
+          .pipe(catchError(this.handleBackendError.bind(this)));
 
-            this.isLoading = false;
-          });
+        transaction$.subscribe({
+          next: this.handleTransactionResult.bind(this),
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this._messageService.show(

@@ -21,15 +21,14 @@ export class ERC721OwnerOfComponent
   @Input() contract!: IERC721;
   @Input() symbol: string = '';
 
-  isLoading = false;
   showOwner = false;
   ownerAddress!: string;
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -47,13 +46,7 @@ export class ERC721OwnerOfComponent
       try {
         const owner$ = this.contract
           .ownerOf((this.form.get('tokenId') as FormControl).value)
-          .pipe(
-            catchError((err) => {
-              this._messageService.show(err.message);
-              this.isLoading = false;
-              return of({ success: false, result: err.message });
-            })
-          );
+          .pipe(catchError(this.handleBackendError.bind(this)));
 
         owner$.subscribe({
           next: (result: TransactionResult<string>) => {
@@ -70,15 +63,10 @@ export class ERC721OwnerOfComponent
           },
           // Esse tratamento encerra o observable, portanto, o catchError do `pipe`
           // deve tratar as falhas de conexão com o backend
-          error: (err) => {
-            this._messageService.show(err.message);
-            this.isLoading = false;
-          },
+          error: this.handleUnexpectedError.bind(this),
         });
       } catch (e: unknown) {
-        console.warn(e);
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this.showOwner = false;

@@ -24,17 +24,16 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
-  isLoading = false;
   showBalance = false;
   formatedBalance: string = '0';
   formatedBalanceTooltip: string = '0';
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService,
-    private _numberService: NumbersService
+    private _numberService: NumbersService,
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -60,16 +59,10 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
       try {
         const balance$ = this.contract
           .balanceOf((this.form.get('accountAddress') as FormControl).value)
-          .pipe(
-            catchError((err) => {
-              this._messageService.show(err.message);
-              this.isLoading = false;
-              return of({ success: false, result: err.message });
-            })
-          );
+          .pipe(catchError(this.handleBackendError));
 
         balance$.subscribe({
-          next: (result: TransactionResult<BigNumber | BN>) => {
+          next: (result: TransactionResult<any>) => {
             if (result.success == false) {
               this._messageService.show(
                 `It was not possible to get ${this.form.controls['accountAddress'].value} ${this.symbol} balance`
@@ -91,15 +84,10 @@ export class TokenBalanceComponent extends BaseFormComponent implements OnInit {
           },
           // Esse tratamento encerra o observable, portanto, o catchError do `pipe`
           // deve tratar as falhas de conexão com o backend
-          error: (err) => {
-            this._messageService.show(err.message);
-            this.isLoading = false;
-          },
+          error: this.handleUnexpectedError.bind(this),
         });
       } catch (e: unknown) {
-        console.warn(e);
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError.bind(this);
       }
     } else {
       this.showBalance = false;
