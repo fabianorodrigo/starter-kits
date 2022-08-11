@@ -39,7 +39,6 @@ export class AaveComponent implements OnInit {
         CHAINS_NAME[environment.AAVE_TOKEN_CHAINID].name
       }`;
       this._messageService.show(msg);
-      throw new Error(msg);
     }
   }
 
