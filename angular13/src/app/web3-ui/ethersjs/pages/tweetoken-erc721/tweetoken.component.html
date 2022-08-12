@@ -85,4 +85,15 @@
       ></dapp-erc721-setApprovalForAll>
     </div>
   </mat-tab>
+  <mat-tab label="Is Approved for All">
+    <div class="container">
+      Query if an address is an authorized operator all
+      {{ metadata["symbol"] }} assets for another address.
+      <dapp-erc721-isApprovedForAll
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-erc721-isApprovedForAll>
+    </div>
+  </mat-tab>
 </mat-tab-group>

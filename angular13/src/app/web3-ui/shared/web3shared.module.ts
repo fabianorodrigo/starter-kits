@@ -1,3 +1,4 @@
+import { ERC721IsApprovedForAllComponent } from './components/erc721-isApprovedForAll/erc721-isApprovedForAll.component';
 import { ERC721SetApprovalForAllComponent } from './components/erc721-setApprovalForAll/erc721-setApprovalForAll.component';
 import { ERC721OwnerOfComponent } from './components/erc721-ownerOf/erc721-ownerOf.component';
 import { CommonModule } from '@angular/common';
@@ -29,6 +30,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC721OwnerOfComponent,
     ERC721GetApprovedComponent,
     ERC721SetApprovalForAllComponent,
+    ERC721IsApprovedForAllComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
@@ -45,6 +47,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC721OwnerOfComponent,
     ERC721GetApprovedComponent,
     ERC721SetApprovalForAllComponent,
+    ERC721IsApprovedForAllComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
