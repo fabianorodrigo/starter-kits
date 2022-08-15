@@ -1,21 +1,13 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Result } from 'ethers/lib/utils';
-import { catchError, of } from 'rxjs';
+import { catchError } from 'rxjs';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
-import { NumbersService } from 'src/app/shared/services/numbers.service';
-import { IApprovalEvent } from 'src/app/web3-ui/shared/model/interfaces';
 import { IContractEventMonitor } from 'src/app/web3-ui/shared/services/contract-event-monitor.interface';
-import { IERC20 } from 'src/app/web3-ui/shared/services/erc20.interface';
 import { ethereumAddressValidator } from 'src/app/web3-ui/shared/validators/ethereumAddress.validator';
 import { TransactionResult } from '../../model';
+import { IApprovalForAllEvent } from '../../model/interfaces/approvalForAll-event.interface';
 import { IERC721 } from '../../services/erc721.interface';
 
 /**
@@ -34,7 +26,7 @@ export class ERC721SetApprovalForAllComponent
   @Input() symbol: string = '';
   @Input() currentAccount!: string | null;
 
-  eventList: IApprovalEvent[] = [];
+  eventList: IApprovalForAllEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -58,37 +50,37 @@ export class ERC721SetApprovalForAllComponent
     });
   }
 
-  // async ngOnChanges(changes: SimpleChanges): Promise<void> {
-  //   // EVENTOS
-  //   //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
-  //   // que tenha a conta `from` igual à conta conectada na Wallet
-  //   if (
-  //     this.currentAccount &&
-  //     changes['currentAccount'] &&
-  //     changes['currentAccount'].currentValue !=
-  //       changes['currentAccount'].previousValue
-  //   ) {
-  //     this.eventList = [];
-  //     // subscrição eventos últimos 1000 blocos
-  //     this.fetchPastApprovalEvents(this.currentAccount);
-  //     // subscrição eventos futuros
-  //     await this.contract.subscribeContractEvent({
-  //       eventName: 'Approval',
-  //       args: [this.currentAccount],
-  //       listenerFunction: (owner, spender, value, event) => {
-  //         this.eventList = [
-  //           ...this.eventList,
-  //           {
-  //             blockNumber: event.blockNumber,
-  //             owner,
-  //             spender,
-  //             value,
-  //           },
-  //         ];
-  //       },
-  //     });
-  //   }
-  // }
+  async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    // EVENTOS
+    //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
+    // que tenha a conta `from` igual à conta conectada na Wallet
+    if (
+      this.currentAccount &&
+      changes['currentAccount'] &&
+      changes['currentAccount'].currentValue !=
+        changes['currentAccount'].previousValue
+    ) {
+      this.eventList = [];
+      // subscrição eventos últimos 1000 blocos
+      this.fetchPastApprovalEvents(this.currentAccount);
+      // subscrição eventos futuros
+      await this.contract.subscribeContractEvent({
+        eventName: 'ApprovalForAll',
+        args: [this.currentAccount],
+        listenerFunction: (owner, operator, approved, event) => {
+          this.eventList = [
+            ...this.eventList,
+            {
+              blockNumber: event.blockNumber,
+              owner,
+              operator,
+              action: approved ? 'Approval' : 'Revoke',
+            },
+          ];
+        },
+      });
+    }
+  }
 
   setApprovalForAll(event: Event) {
     this.submitted = true;
@@ -134,7 +126,7 @@ export class ERC721SetApprovalForAllComponent
   ): Promise<void> {
     const currentBlockNumber = await this.contract.getCurrentBlockNumber();
     const pastEvents = await this.contract.getContractsPastEvent({
-      eventName: 'Approval',
+      eventName: 'ApprovalForAll',
       filter: { owner: _accountAddress },
       fromBlock: currentBlockNumber - 1000,
       toBlock: 'latest',
@@ -147,8 +139,8 @@ export class ERC721SetApprovalForAllComponent
       tempArray.push({
         blockNumber: e.blockNumber,
         owner: (<Result>e.args)['owner'],
-        spender: (<Result>e.args)['spender'],
-        value: (<Result>e.args)['value'],
+        operator: (<Result>e.args)['operator'],
+        action: (<Result>e.args)['approved'] ? 'Approval' : 'Revoke',
       });
     }
     this.eventList = [...this.eventList, ...tempArray];

@@ -46,6 +46,11 @@
   <mat-divider></mat-divider>
   <div>
     <h2>Latest Approval Events</h2>
-    TO DO
+    <dapp-erc721-approvalForAll-event
+      [contract]="contract"
+      [eventList]="eventList"
+      ngClass="events-container"
+    >
+    </dapp-erc721-approvalForAll-event>
   </div>
 </div>

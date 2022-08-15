@@ -1,3 +1,4 @@
+import { ERC721ApprovalForAllEventComponent } from './components/erc721-approvalForAll-event/erc721-approvalForAll-event.component';
 import { ERC721TokenURIComponent } from './components/erc721-tokenURI/erc721-tokenURI.component';
 import { ERC721IsApprovedForAllComponent } from './components/erc721-isApprovedForAll/erc721-isApprovedForAll.component';
 import { ERC721SetApprovalForAllComponent } from './components/erc721-setApprovalForAll/erc721-setApprovalForAll.component';
@@ -33,6 +34,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC721GetApprovedComponent,
     ERC721SetApprovalForAllComponent,
     ERC721IsApprovedForAllComponent,
+    ERC721ApprovalForAllEventComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
@@ -51,6 +53,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC721GetApprovedComponent,
     ERC721SetApprovalForAllComponent,
     ERC721IsApprovedForAllComponent,
+    ERC721ApprovalForAllEventComponent,
     TokenBalanceComponent,
     TokenTransferFromComponent,
     TokenApproveComponent,
