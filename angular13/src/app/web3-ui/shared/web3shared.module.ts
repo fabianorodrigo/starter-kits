@@ -10,7 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
 import { ERC20ApprovalEventComponent } from './components/erc20-approval-event/erc20-approval-event.component';
 import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metadata.component';
-import { ERC20TransferEventComponent } from './components/erc20-transfer-event/erc20-transfer-event.component';
+import { TokenTransferEventComponent } from './components/token-transfer-event/token-transfer-event.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
 import { ERC721MetadataComponent } from './components/erc721-metadata/erc721-metadata.component';
 import { ERC721SafeTransferComponent } from './components/erc721-safe-transfer/erc721-safe-transfer.component';
@@ -23,7 +23,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
   declarations: [
     ERC20MetadataComponent,
     ERC20AllowanceComponent,
-    ERC20TransferEventComponent,
+    TokenTransferEventComponent,
     ERC20ApprovalEventComponent,
     ERC20TransferComponent,
     ERC721MetadataComponent,
@@ -41,7 +41,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
   exports: [
     ERC20MetadataComponent,
     ERC20AllowanceComponent,
-    ERC20TransferEventComponent,
+    TokenTransferEventComponent,
     ERC20ApprovalEventComponent,
     ERC20TransferComponent,
     ERC721MetadataComponent,

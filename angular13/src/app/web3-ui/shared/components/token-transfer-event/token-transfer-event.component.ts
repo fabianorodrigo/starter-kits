@@ -1,14 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { ITableColumn } from 'src/app/shared/components/table/tableColumn.interface';
 
-import { ITransferEvent } from '../../../shared/model/interfaces/transfer-event.interface';
+import { ITransferEvent } from '../../model/interfaces/transfer-event.interface';
 
 @Component({
-  selector: 'dapp-erc20-transfer-event',
-  templateUrl: './erc20-transfer-event.component.html',
-  styleUrls: ['./erc20-transfer-event.component.css'],
+  selector: 'dapp-token-transfer-event',
+  templateUrl: './token-transfer-event.component.html',
+  styleUrls: ['./token-transfer-event.component.css'],
 })
-export class ERC20TransferEventComponent {
+export class TokenTransferEventComponent {
   @Input() eventList: ITransferEvent[] = [];
 
   displayedColumns: ITableColumn[] = [
