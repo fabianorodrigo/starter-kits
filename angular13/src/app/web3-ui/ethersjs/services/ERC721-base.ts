@@ -17,7 +17,6 @@ export abstract class ERC721BaseContract
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
   protected _tokenURI!: string;
-  private _subscriptionTokenURI: Subscription;
 
   constructor(
     _loggingService: LoggingService,
@@ -26,13 +25,10 @@ export abstract class ERC721BaseContract
   ) {
     super(_loggingService, _ethersjsService, _address);
     // Quando instanciar um serviço para interagir com um ERC-721,
-    // já faz uma chamada ao método  `symbol()` e `tokenURI()` para
+    // já faz uma chamada ao método  `symbol()` para
     // buscar esse informação e armazenar na classe
     this._subscriptionSymbol = this.symbol().subscribe((result) => {
       this._subscriptionSymbol.unsubscribe();
-    });
-    this._subscriptionTokenURI = this.tokenURI().subscribe((result) => {
-      this._subscriptionTokenURI.unsubscribe();
     });
   }
 
