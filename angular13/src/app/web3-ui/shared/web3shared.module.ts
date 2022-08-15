@@ -8,7 +8,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from 'src/app/material/material.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ERC20AllowanceComponent } from './components/erc20-allowance/erc20-allowance.component';
-import { ERC20ApprovalEventComponent } from './components/erc20-approval-event/erc20-approval-event.component';
+import { TokenApprovalEventComponent } from './components/token-approval-event/token-approval-event.component';
 import { ERC20MetadataComponent } from './components/erc20-metadata/erc20-metadata.component';
 import { TokenTransferEventComponent } from './components/token-transfer-event/token-transfer-event.component';
 import { ERC20TransferComponent } from './components/erc20-transfer/erc20-transfer.component';
@@ -24,7 +24,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC20MetadataComponent,
     ERC20AllowanceComponent,
     TokenTransferEventComponent,
-    ERC20ApprovalEventComponent,
+    TokenApprovalEventComponent,
     ERC20TransferComponent,
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,
@@ -42,7 +42,7 @@ import { ERC721GetApprovedComponent } from './components/erc721-getApproved/erc7
     ERC20MetadataComponent,
     ERC20AllowanceComponent,
     TokenTransferEventComponent,
-    ERC20ApprovalEventComponent,
+    TokenApprovalEventComponent,
     ERC20TransferComponent,
     ERC721MetadataComponent,
     ERC721SafeTransferComponent,

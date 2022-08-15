@@ -146,8 +146,12 @@ export class TokenApproveComponent
       tempArray.push({
         blockNumber: e.blockNumber,
         owner: (<Result>e.args)['owner'],
-        spender: (<Result>e.args)['spender'],
-        value: (<Result>e.args)['value'],
+        spender: this.contract.isERC(721)
+          ? (<Result>e.args)['approved']
+          : (<Result>e.args)['spender'],
+        value: this.contract.isERC(721)
+          ? (<Result>e.args)['tokenId']
+          : (<Result>e.args)['value'],
       });
     }
     this.eventList = [...this.eventList, ...tempArray];

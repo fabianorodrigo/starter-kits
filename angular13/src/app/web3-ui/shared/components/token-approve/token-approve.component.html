@@ -59,10 +59,11 @@
   <mat-divider></mat-divider>
   <div>
     <h2>Latest Approval Events</h2>
-    <dapp-erc20-approval-event
+    <dapp-token-approval-event
+      [contract]="contract"
       [eventList]="eventList"
       ngClass="events-container"
     >
-    </dapp-erc20-approval-event>
+    </dapp-token-approval-event>
   </div>
 </div>
