@@ -78,10 +78,13 @@ export abstract class ERC721BaseContract
   }
 
   /**
-   * @returns Returns A distinct Uniform Resource Identifier (URI) for a given asset.
-   * The URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
+   * Fetch a distinct Uniform Resource Identifier (URI) for a given asset.
+   *
+   * @param _tokenId The identifier for an NFT
+   *
+   * @returns the URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
    */
-  tokenURI(): Observable<TransactionResult<string>> {
+  tokenURI(_tokenId: number): Observable<TransactionResult<string>> {
     if (this._tokenURI) {
       return new Observable<TransactionResult<string>>((subscriber) => {
         subscriber.next({ success: true, result: this._tokenURI });
@@ -94,7 +97,7 @@ export abstract class ERC721BaseContract
       //
       // Com esse Subject, subscreve-se no Observable retornado pelo `this.call`.
       const subject = new Subject<TransactionResult<unknown>>();
-      this.call(this.getContractABI(), `tokenURI`).subscribe(subject);
+      this.call(this.getContractABI(), `tokenURI`, _tokenId).subscribe(subject);
       // subscreve uma função neste mesmo subject (já Subjects também são Observables) para
       // atualizar o valor da propriedade `_tokenURI`
       const subscription = subject.subscribe((result) => {

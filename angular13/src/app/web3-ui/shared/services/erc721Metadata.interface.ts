@@ -13,8 +13,11 @@ export interface IERC721Metadata {
   symbol(): Observable<TransactionResult<string>>;
 
   /**
-   * @returns Returns A distinct Uniform Resource Identifier (URI) for a given asset.
-   * The URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
+   * Fetch a distinct Uniform Resource Identifier (URI) for a given asset.
+   *
+   * @param _tokenId The identifier for an NFT
+   *
+   * @returns the URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
    */
-  tokenURI(): Observable<TransactionResult<string>>;
+  tokenURI(_tokenId: number): Observable<TransactionResult<string>>;
 }
