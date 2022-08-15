@@ -55,39 +55,6 @@ export class ERC721SafeTransferComponent
     });
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    // EVENTOS
-    //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
-    // que tenha a conta `from` igual à conta conectada na Wallet
-    if (
-      this.currentAccount &&
-      changes['currentAccount'] &&
-      changes['currentAccount'].currentValue !=
-        changes['currentAccount'].previousValue
-    ) {
-      this.eventList = [];
-      // EVENTOS
-      // subscrição eventos últimos 1000 blocos
-      this.fetchPastTransferEvents(this.currentAccount);
-      // subscrição eventos futuros
-      await this.contract.subscribeContractEvent({
-        eventName: 'Transfer',
-        args: [this.currentAccount],
-        listenerFunction: (from, to, value, event) => {
-          this.eventList = [
-            ...this.eventList,
-            {
-              blockNumber: event.blockNumber,
-              from,
-              to,
-              value,
-            },
-          ];
-        },
-      });
-    }
-  }
-
   transfer(event: Event) {
     this.submitted = true;
     event.preventDefault();
@@ -120,34 +87,5 @@ export class ERC721SafeTransferComponent
         `The data filled in the form is not valid. Please, fill the form correctly before submit it`
       );
     }
-  }
-
-  /**
-   * Fetches the past events on the blockchain since current block less 1000 and feed the {pastEvents} array
-   *
-   * @param @param _accountAddress Account address used to filter the events where 'from' part equals it
-   */
-  private async fetchPastTransferEvents(
-    _accountAddress: string
-  ): Promise<void> {
-    const currentBlockNumber = await this.contract.getCurrentBlockNumber();
-    // subscrição eventos passados
-    const pastEvents = await this.contract.getContractsPastEvent({
-      eventName: 'Transfer',
-      filter: { from: _accountAddress },
-      fromBlock: currentBlockNumber - 1000,
-      toBlock: 'latest',
-    });
-
-    const tempArray = [];
-    for (const e of pastEvents) {
-      tempArray.push({
-        blockNumber: e.blockNumber,
-        from: (<Result>e.args)['from'],
-        to: (<Result>e.args)['to'],
-        value: (<Result>e.args)['value'],
-      });
-    }
-    this.eventList = [...this.eventList, ...tempArray];
   }
 }

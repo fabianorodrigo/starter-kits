@@ -202,14 +202,14 @@ export abstract class ContractBaseService implements IContractEventMonitor {
             });
             return;
           }
+          if (!_contract[_functionName]) {
+            subscriber.next({
+              success: false,
+              result: `Function ${_functionName} not found on contract ${this.address}`,
+            });
+            return;
+          }
           try {
-            if (!_contract[_functionName]) {
-              subscriber.next({
-                success: false,
-                result: `Function ${_functionName} not found on contract ${this.address}`,
-              });
-              return;
-            }
             _contract
               .connect(fromSigner)
               [_functionName](..._args)
@@ -226,7 +226,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
                     }
                   })
                   .catch((e) => {
-                    console.error(e);
+                    console.warn('catch wait()', e);
                     if (_callback) {
                       let msg = `Transaction has been reverted by the blockchain network`;
                       if (e.code && ProviderErrors[e.code]) {
@@ -242,6 +242,12 @@ export abstract class ContractBaseService implements IContractEventMonitor {
                     subscriber.next({ success: true, result: _successMessage });
                   });
                 subscriber.next({ success: true, result: _successMessage });
+              })
+              .catch((e: any) => {
+                subscriber.next({
+                  success: false,
+                  result: e.reason || e.message,
+                });
               });
           } catch (e: any) {
             const providerError = ProviderErrors[e.code];

@@ -1,8 +1,15 @@
 .container{
   display: flex;
   flex-direction: column;
+  padding-top:5px;
+  gap:20px;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
   padding-top:5px
 }
+
 
 .input_40characters{
   width: 45ch;
@@ -24,4 +31,7 @@
 .value{
   color: #3f51b5;
   font-size: x-large;
+}
+h2{
+  margin-bottom: 5px;
 }
