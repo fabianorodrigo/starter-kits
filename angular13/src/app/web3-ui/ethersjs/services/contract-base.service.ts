@@ -408,7 +408,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
             if (providerError) {
               message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
             }
-            console.warn(_functionName, _args, e);
+            console.warn(e);
             subscriber.next({
               success: false,
               result: message,
