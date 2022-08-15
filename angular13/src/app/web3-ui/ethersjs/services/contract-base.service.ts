@@ -203,6 +203,13 @@ export abstract class ContractBaseService implements IContractEventMonitor {
             return;
           }
           try {
+            if (!_contract[_functionName]) {
+              subscriber.next({
+                success: false,
+                result: `Function ${_functionName} not found on contract ${this.address}`,
+              });
+              return;
+            }
             _contract
               .connect(fromSigner)
               [_functionName](..._args)
@@ -380,6 +387,14 @@ export abstract class ContractBaseService implements IContractEventMonitor {
             });
             return;
           }
+          // If contract does not implement the function, fails
+          if (!_contract[_functionName]) {
+            subscriber.next({
+              success: false,
+              result: `Function ${_functionName} not found on contract ${this.address}`,
+            });
+            return;
+          }
           let result;
           try {
             result = await _contract[_functionName](..._args);
@@ -393,7 +408,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
             if (providerError) {
               message = `${providerError.title}: ${providerError.message}. The transaction wasn't sent.`;
             }
-            console.warn(e);
+            console.warn(_functionName, _args, e);
             subscriber.next({
               success: false,
               result: message,
