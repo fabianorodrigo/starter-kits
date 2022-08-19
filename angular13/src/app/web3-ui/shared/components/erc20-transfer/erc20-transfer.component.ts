@@ -2,6 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Signer } from 'ethers';
 import { Result } from 'ethers/lib/utils';
+import { catchError } from 'rxjs';
 import { BaseFormComponent } from 'src/app/shared/pages/base-form/base-form.component';
 import { MessageService } from 'src/app/shared/services/message.service';
 import { ITransferEvent } from 'src/app/web3-ui/shared/model/interfaces';
@@ -24,14 +25,13 @@ export class ERC20TransferComponent
   @Input() decimals: number = 1;
   @Input() currentAccount!: string | null;
 
-  isLoading = false;
   eventList: ITransferEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -89,7 +89,7 @@ export class ERC20TransferComponent
       this.isLoading = true;
 
       try {
-        this.contractERC20
+        const transaction$ = this.contractERC20
           .transfer(
             (this.form.get('toAddress') as FormControl).value,
             (this.form.get('value') as FormControl).value,
@@ -98,21 +98,14 @@ export class ERC20TransferComponent
               this._messageService.show(result.result);
             }
           )
-          .subscribe((result) => {
-            if (result.success == false) {
-              this._messageService.show(
-                `It was not possible to send the transaction: ${result.result}`
-              );
-              return;
-            } else {
-              this._messageService.show(result.result);
-            }
+          .pipe(catchError(this.handleBackendError.bind(this)));
 
-            this.isLoading = false;
-          });
+        transaction$.subscribe({
+          next: this.handleTransactionResult.bind(this),
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this._messageService.show(

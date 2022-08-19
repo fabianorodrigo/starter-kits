@@ -39,7 +39,6 @@ export class LinkComponent implements OnInit {
         CHAINS_NAME[environment.LINK_TOKEN_CHAINID].name
       }`;
       this._messageService.show(msg);
-      throw new Error(msg);
     }
   }
 

@@ -17,8 +17,8 @@ export class EthersjsHomeComponent implements OnInit {
     CHAINS_NAME[environment.LINK_TOKEN_CHAINID].name.toLowerCase();
   readonly AAVE_CHAIN_ID =
     CHAINS_NAME[environment.AAVE_TOKEN_CHAINID].name.toLowerCase();
-  readonly CHAIN_BATTLES_CHAIN_ID =
-    CHAINS_NAME[environment.CHAIN_BATTLES_CHAINID].name.toLowerCase();
+  readonly TWEETTOKEN_CHAIN_ID =
+    CHAINS_NAME[environment.TWEETTOKEN_CHAINID].name.toLowerCase();
 
   constructor(
     private _changeDetectorRefs: ChangeDetectorRef,

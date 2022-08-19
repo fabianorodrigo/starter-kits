@@ -17,7 +17,6 @@ export abstract class ERC721BaseContract
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
   protected _tokenURI!: string;
-  private _subscriptionTokenURI: Subscription;
 
   constructor(
     _loggingService: LoggingService,
@@ -26,14 +25,19 @@ export abstract class ERC721BaseContract
   ) {
     super(_loggingService, _ethersjsService, _address);
     // Quando instanciar um serviço para interagir com um ERC-721,
-    // já faz uma chamada ao método  `symbol()` e `tokenURI()` para
+    // já faz uma chamada ao método  `symbol()` para
     // buscar esse informação e armazenar na classe
     this._subscriptionSymbol = this.symbol().subscribe((result) => {
       this._subscriptionSymbol.unsubscribe();
     });
-    this._subscriptionTokenURI = this.tokenURI().subscribe((result) => {
-      this._subscriptionTokenURI.unsubscribe();
-    });
+  }
+
+  /**
+   * @returns Returns TRUE if the current interface is
+   * compatible with the erc number passed as parameter
+   */
+  isERC(erc: number): boolean {
+    return [721].includes(erc);
   }
 
   /**
@@ -74,10 +78,13 @@ export abstract class ERC721BaseContract
   }
 
   /**
-   * @returns Returns A distinct Uniform Resource Identifier (URI) for a given asset.
-   * The URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
+   * Fetch a distinct Uniform Resource Identifier (URI) for a given asset.
+   *
+   * @param _tokenId The identifier for an NFT
+   *
+   * @returns the URI may point to a JSON file that conforms to the "ERC721  Metadata JSON Schema".
    */
-  tokenURI(): Observable<TransactionResult<string>> {
+  tokenURI(_tokenId: number): Observable<TransactionResult<string>> {
     if (this._tokenURI) {
       return new Observable<TransactionResult<string>>((subscriber) => {
         subscriber.next({ success: true, result: this._tokenURI });
@@ -90,7 +97,7 @@ export abstract class ERC721BaseContract
       //
       // Com esse Subject, subscreve-se no Observable retornado pelo `this.call`.
       const subject = new Subject<TransactionResult<unknown>>();
-      this.call(this.getContractABI(), `tokenURI`).subscribe(subject);
+      this.call(this.getContractABI(), `tokenURI`, _tokenId).subscribe(subject);
       // subscreve uma função neste mesmo subject (já Subjects também são Observables) para
       // atualizar o valor da propriedade `_tokenURI`
       const subscription = subject.subscribe((result) => {
@@ -270,55 +277,27 @@ export abstract class ERC721BaseContract
   }
 
   /**
-   * Transfers {_value} amount of tokens to address {_to}
+   * Transfer ownership of an NFT -- THE CALLER IS RESPONSIBLE TO CONFIRM THAT `_to`
+   * IS CAPABLE OF RECEIVING NFTS OR ELSE THEY MAY BE PERMANENTLY LOST
    *
-   * @param _to destination account
-   * @param _value quantity of tokens to be transfered
-   * @param _callback  Function to be called when the transaction is confirmed
-   * @returns
-   */
-  transfer(
-    _to: string,
-    _value: BigNumber,
-    _callback?: CallbackFunction
-  ): Observable<TransactionResult<string>> {
-    const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
-      this._symbol
-    }  to ${_to} was sent successfully`;
-    const successConfirmationMessage = `Transaction to tranfer ${_value.toString()} ${
-      this._symbol
-    }  to ${_to} was confirmed`;
-    return this.send(
-      this.getContractABI(),
-      'transfer',
-      successSentMessage,
-      _callback,
-      successConfirmationMessage,
-      _to,
-      _value
-    );
-  }
-
-  /**
-   * Transfers {_value} amount of tokens  from address {_from} to address {_to}
-   *
-   * @param _to destination account
-   * @param _value quantity of tokens to be transfered
+   * @param _from The current owner of the NFT
+   * @param _to The new owner
+   * @param _tokenId The NFT to transfer
    * @param _callback  Function to be called when the transaction is confirmed
    * @returns
    */
   transferFrom(
     _from: string,
     _to: string,
-    _value: BigNumber,
+    _tokenId: BigNumber,
     _callback?: CallbackFunction
   ): Observable<TransactionResult<string>> {
-    const successSentMessage = `Transaction to tranfer ${_value.toString()} ${
+    const successSentMessage = `Transaction to tranfer ${
       this._symbol
-    } from ${_from} to ${_to} was sent successfully`;
-    const successConfirmationMessage = `Transaction to tranfer ${_value.toString()} ${
+    } NFT ${_tokenId.toString()} to ${_to} was sent successfully`;
+    const successConfirmationMessage = `Transaction to tranfer ${
       this._symbol
-    }  from ${_from} to ${_to} was confirmed`;
+    } NFT ${_tokenId.toString()} to ${_to} was confirmed`;
     return this.send(
       this.getContractABI(),
       'transferFrom',
@@ -327,7 +306,7 @@ export abstract class ERC721BaseContract
       successConfirmationMessage,
       _from,
       _to,
-      _value
+      _tokenId
     );
   }
 

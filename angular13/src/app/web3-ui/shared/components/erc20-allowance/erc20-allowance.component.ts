@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import { TransactionResult } from './../../model/transaction-result.interface';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -21,17 +22,16 @@ export class ERC20AllowanceComponent
   @Input() symbol: string = '';
   @Input() decimals: number = 1;
 
-  isLoading = false;
   showAllowance = false;
   formatedAllowance: string = '0';
   formatedAllowanceTooltip: string = '0';
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService,
-    private _numberService: NumbersService
+    private _numberService: NumbersService,
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
@@ -63,12 +63,15 @@ export class ERC20AllowanceComponent
       this.isLoading = true;
       this.showAllowance = true;
       try {
-        this.contractERC20
+        const transaction$ = this.contractERC20
           .allowance(
             (this.form.get('ownerAddress') as FormControl).value,
             (this.form.get('spenderAddress') as FormControl).value
           )
-          .subscribe((result: TransactionResult<any>) => {
+          .pipe(catchError(this.handleBackendError.bind(this)));
+
+        transaction$.subscribe({
+          next: (result: TransactionResult<any>) => {
             if (result.success == false) {
               this._messageService.show(
                 `It was not possible to get the ${this.symbol} allowance from ${this.form.controls['ownerAddress'].value} to  ${this.form.controls['spenderAddress'].value}`
@@ -86,10 +89,11 @@ export class ERC20AllowanceComponent
               this.decimals
             );
             this.isLoading = false;
-          });
+          },
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this.showAllowance = false;

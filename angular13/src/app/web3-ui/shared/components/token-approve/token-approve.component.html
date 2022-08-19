@@ -1,12 +1,16 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="approve($event)" class="form-container">
     <mat-form-field class="input_40characters" appearance="outline">
-      <mat-label>Spender Address</mat-label>
+      <mat-label
+        >{{ contract.isERC(721) ? "Approved" : "Spender" }} Address</mat-label
+      >
       <input
         type="text"
         [disableControl]="isLoading"
         matInput
-        placeholder="Spender's address"
+        [placeholder]="
+          contract.isERC(721) ? 'Approved address' : 'Spenders address'
+        "
         formControlName="spenderAddress"
         maxlength="42"
         minlength="40"
@@ -19,17 +23,24 @@
       }}</mat-error>
     </mat-form-field>
     <mat-form-field class="input_40characters" appearance="outline">
-      <mat-label>Value</mat-label>
+      <mat-label>{{ contract.isERC(721) ? "Token ID" : "Value" }}</mat-label>
       <input
         type="text"
         [disableControl]="isLoading"
         matInput
-        placeholder="Allowance value"
+        [placeholder]="contract.isERC(721) ? 'Token ID' : 'Allowance value'"
         formControlName="value"
         min="1"
         type="number"
       />
-      <mat-hint>Inform the allowance value in WEI units</mat-hint>
+      <mat-hint
+        >Inform the
+        {{
+          contract.isERC(721)
+            ? "Non Fungible Token Identifier"
+            : "allowance value in WEI units"
+        }}
+      </mat-hint>
       <mat-error *ngIf="getErrorMessage('value')">{{
         getErrorMessage("value")
       }}</mat-error>
@@ -48,10 +59,11 @@
   <mat-divider></mat-divider>
   <div>
     <h2>Latest Approval Events</h2>
-    <dapp-erc20-approval-event
+    <dapp-token-approval-event
+      [contract]="contract"
       [eventList]="eventList"
       ngClass="events-container"
     >
-    </dapp-erc20-approval-event>
+    </dapp-token-approval-event>
   </div>
 </div>

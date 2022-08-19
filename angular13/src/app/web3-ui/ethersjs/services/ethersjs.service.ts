@@ -235,7 +235,7 @@ export class EthersjsService {
     try {
       this._loggingService.debug(`ethersjsService.getContract`, _address);
       if ((await this._web3Provider.getCode(_address)) === '0x') {
-        console.error(
+        console.warn(
           `Address ${_address} is not a contract at the connected chain`
         );
         return null;

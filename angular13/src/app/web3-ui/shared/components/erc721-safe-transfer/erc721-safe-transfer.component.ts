@@ -1,3 +1,4 @@
+import { catchError } from 'rxjs';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Bytes, Result } from 'ethers/lib/utils';
@@ -22,19 +23,26 @@ export class ERC721SafeTransferComponent
   @Input() symbol: string = '';
   @Input() currentAccount!: string | null;
 
-  isLoading = false;
   eventList: ITransferEvent[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _messageService: MessageService
+    _messageService: MessageService
   ) {
-    super();
+    super(_messageService);
   }
 
   ngOnInit(): void {
     //o minLength é para prevenir o "Short address/parameter Attack"
     this.form = this._formBuilder.group({
+      fromAddress: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(42),
+          ethereumAddressValidator,
+        ],
+      ],
       toAddress: [
         '',
         [
@@ -47,39 +55,6 @@ export class ERC721SafeTransferComponent
     });
   }
 
-  async ngOnChanges(changes: SimpleChanges): Promise<void> {
-    // EVENTOS
-    //Se a conta não for nula, cria uma nova subscrição filtrando por eventos `Approval`
-    // que tenha a conta `from` igual à conta conectada na Wallet
-    if (
-      this.currentAccount &&
-      changes['currentAccount'] &&
-      changes['currentAccount'].currentValue !=
-        changes['currentAccount'].previousValue
-    ) {
-      this.eventList = [];
-      // EVENTOS
-      // subscrição eventos últimos 1000 blocos
-      this.fetchPastTransferEvents(this.currentAccount);
-      // subscrição eventos futuros
-      await this.contract.subscribeContractEvent({
-        eventName: 'Transfer',
-        args: [this.currentAccount],
-        listenerFunction: (from, to, value, event) => {
-          this.eventList = [
-            ...this.eventList,
-            {
-              blockNumber: event.blockNumber,
-              from,
-              to,
-              value,
-            },
-          ];
-        },
-      });
-    }
-  }
-
   transfer(event: Event) {
     this.submitted = true;
     event.preventDefault();
@@ -87,9 +62,9 @@ export class ERC721SafeTransferComponent
       this.isLoading = true;
 
       try {
-        this.contract
+        const transaction$ = this.contract
           .safeTransferFrom(
-            this.currentAccount as string,
+            (this.form.get('fromAddress') as FormControl).value,
             (this.form.get('toAddress') as FormControl).value,
             (this.form.get('value') as FormControl).value,
             [],
@@ -98,55 +73,19 @@ export class ERC721SafeTransferComponent
               this._messageService.show(result.result);
             }
           )
-          .subscribe((result) => {
-            if (result.success == false) {
-              this._messageService.show(
-                `It was not possible to send the transaction: ${result.result}`
-              );
-              return;
-            } else {
-              this._messageService.show(result.result);
-            }
+          .pipe(catchError(this.handleBackendError.bind(this)));
 
-            this.isLoading = false;
-          });
+        transaction$.subscribe({
+          next: this.handleTransactionResult.bind(this),
+          error: this.handleUnexpectedError.bind(this),
+        });
       } catch (e: unknown) {
-        this.isLoading = false;
-        this._messageService.show((<Error>e).message);
+        this.handleUnexpectedError(e);
       }
     } else {
       this._messageService.show(
         `The data filled in the form is not valid. Please, fill the form correctly before submit it`
       );
     }
-  }
-
-  /**
-   * Fetches the past events on the blockchain since current block less 1000 and feed the {pastEvents} array
-   *
-   * @param @param _accountAddress Account address used to filter the events where 'from' part equals it
-   */
-  private async fetchPastTransferEvents(
-    _accountAddress: string
-  ): Promise<void> {
-    const currentBlockNumber = await this.contract.getCurrentBlockNumber();
-    // subscrição eventos passados
-    const pastEvents = await this.contract.getContractsPastEvent({
-      eventName: 'Transfer',
-      filter: { from: _accountAddress },
-      fromBlock: currentBlockNumber - 1000,
-      toBlock: 'latest',
-    });
-
-    const tempArray = [];
-    for (const e of pastEvents) {
-      tempArray.push({
-        blockNumber: e.blockNumber,
-        from: (<Result>e.args)['from'],
-        to: (<Result>e.args)['to'],
-        value: (<Result>e.args)['value'],
-      });
-    }
-    this.eventList = [...this.eventList, ...tempArray];
   }
 }

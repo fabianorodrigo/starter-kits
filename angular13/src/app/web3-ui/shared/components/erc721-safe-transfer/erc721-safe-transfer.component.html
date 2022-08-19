@@ -1,6 +1,22 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="transfer($event)" class="form-container">
     <mat-form-field class="input_40characters" appearance="outline">
+      <mat-label>From Address</mat-label>
+      <input
+        type="text"
+        [disableControl]="isLoading"
+        matInput
+        placeholder="From address"
+        formControlName="fromAddress"
+        maxlength="42"
+        minlength="40"
+      />
+      <mat-hint>Inform the 42 characters long owner's account address</mat-hint>
+      <mat-error *ngIf="getErrorMessage('fromAddress')">{{
+        getErrorMessage("fromAddress")
+      }}</mat-error>
+    </mat-form-field>
+    <mat-form-field class="input_40characters" appearance="outline">
       <mat-label>Recipient Address</mat-label>
       <input
         type="text"
@@ -19,7 +35,7 @@
       }}</mat-error>
     </mat-form-field>
     <mat-form-field class="input_40characters" appearance="outline">
-      <mat-label>Value</mat-label>
+      <mat-label>Token ID</mat-label>
       <input
         type="text"
         [disableControl]="isLoading"
@@ -29,7 +45,7 @@
         min="1"
         type="number"
       />
-      <mat-hint>Inform the transfer value in WEI units</mat-hint>
+      <mat-hint>Inform the Non Fungible Token Identifier</mat-hint>
       <mat-error *ngIf="getErrorMessage('value')">{{
         getErrorMessage("value")
       }}</mat-error>
@@ -45,13 +61,4 @@
       Submit
     </button>
   </form>
-  <mat-divider></mat-divider>
-  <div>
-    <h2>Latest Transfer Events</h2>
-    <dapp-erc20-transfer-event
-      [eventList]="eventList"
-      ngClass="events-container"
-    >
-    </dapp-erc20-transfer-event>
-  </div>
 </div>

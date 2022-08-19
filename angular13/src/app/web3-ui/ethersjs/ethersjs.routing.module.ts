@@ -1,4 +1,4 @@
-import { ChainBattlesERC721Component } from './pages/chain-battles-erc721/chain-battles.component';
+import { TweetokenERC721Component } from './pages/tweetoken-erc721/tweetoken.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MarkdownComponent } from 'src/app/shared/pages/markdown/markdown.component';
@@ -24,7 +24,7 @@ const routes: Routes = [
       },
       { path: 'link', component: LinkComponent },
       { path: 'aave', component: AaveComponent },
-      { path: 'chainbattlesNFT', component: ChainBattlesERC721Component },
+      { path: 'tweettokenNFT', component: TweetokenERC721Component },
     ],
   },
 ];

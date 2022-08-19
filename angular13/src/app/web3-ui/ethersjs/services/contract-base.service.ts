@@ -22,6 +22,8 @@ export abstract class ContractBaseService implements IContractEventMonitor {
   private _signer!: Signer | null;
   public address: string;
 
+  private CONTRACT_NOT_FOUND_MESSAGE!: string;
+
   constructor(
     private _loggingService: LoggingService,
     protected _ethersjsService: EthersjsService,
@@ -31,6 +33,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     this._ethersjsService.getSignerSubject().subscribe((_account) => {
       this._signer = _account;
     });
+    this.CONTRACT_NOT_FOUND_MESSAGE = `Contract ${this.address} not found. Confirm that your wallet is connected on the right chain`;
   }
 
   protected async getContract(_abis: ContractInterface): Promise<Contract> {
@@ -42,12 +45,11 @@ export abstract class ContractBaseService implements IContractEventMonitor {
         this.address
       );
       if (_contract == null) {
-        throw new Error(
-          `Contract ${this.address} not found. Confirm that your wallet is connected on the right chain`
-        );
+        console.warn(this.CONTRACT_NOT_FOUND_MESSAGE);
       } else {
-        return _contract;
+        this.contract = _contract;
       }
+      return this.contract;
     }
     throw new Error(`Web3 not instanciated`);
   }
@@ -105,10 +107,15 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     _monitorParameter: EventMonitoringParameters
   ): Promise<void> {
     const _contract = await this.getContract(this.getContractABI());
-    const filter = _contract.filters[_monitorParameter.eventName](
-      _monitorParameter.args
-    );
-    _contract.on(filter, _monitorParameter.listenerFunction);
+    // If contract not found, there is no how to monitor events
+    if (_contract) {
+      const filter = _contract.filters[_monitorParameter.eventName](
+        _monitorParameter.args
+      );
+      _contract.on(filter, _monitorParameter.listenerFunction);
+    } else {
+      console.warn(this.CONTRACT_NOT_FOUND_MESSAGE);
+    }
   }
 
   /**
@@ -123,15 +130,21 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     _monitorParameter: EventPastParameters
   ): Promise<Event[]> {
     const _contract = await this.getContract(this.getContractABI());
-    const filter = _contract.filters[_monitorParameter.eventName](
-      Object.values(_monitorParameter.filter as EventFilter)
-    );
+    // If contract not found, there is no how to monitor events
+    if (_contract) {
+      const filter = _contract.filters[_monitorParameter.eventName](
+        Object.values(_monitorParameter.filter as EventFilter)
+      );
 
-    return _contract.queryFilter(
-      filter,
-      _monitorParameter.fromBlock as string,
-      _monitorParameter.toBlock as string
-    );
+      return _contract.queryFilter(
+        filter,
+        _monitorParameter.fromBlock as string,
+        _monitorParameter.toBlock as string
+      );
+    } else {
+      console.warn(this.CONTRACT_NOT_FOUND_MESSAGE);
+      return [];
+    }
   }
 
   /**
@@ -172,9 +185,30 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     return new Observable<TransactionResult<string>>((subscriber) => {
       this.getContract(_abi)
         .then(async (_contract) => {
+          // If contract not found, fails
+          if (_contract == null) {
+            subscriber.next({
+              success: false,
+              result: this.CONTRACT_NOT_FOUND_MESSAGE,
+            });
+            return;
+          }
           const fromSigner = this._ethersjsService.getSigner();
-          if (fromSigner == null)
-            throw new Error(`Not possible to determine the origin account`);
+          // If there is no signer, fails
+          if (fromSigner == null) {
+            subscriber.next({
+              success: false,
+              result: `Not possible to determine the origin account`,
+            });
+            return;
+          }
+          if (!_contract[_functionName]) {
+            subscriber.next({
+              success: false,
+              result: `Function ${_functionName} not found on contract ${this.address}`,
+            });
+            return;
+          }
           try {
             _contract
               .connect(fromSigner)
@@ -192,7 +226,7 @@ export abstract class ContractBaseService implements IContractEventMonitor {
                     }
                   })
                   .catch((e) => {
-                    console.error(e);
+                    console.warn('catch wait()', e);
                     if (_callback) {
                       let msg = `Transaction has been reverted by the blockchain network`;
                       if (e.code && ProviderErrors[e.code]) {
@@ -208,6 +242,12 @@ export abstract class ContractBaseService implements IContractEventMonitor {
                     subscriber.next({ success: true, result: _successMessage });
                   });
                 subscriber.next({ success: true, result: _successMessage });
+              })
+              .catch((e: any) => {
+                subscriber.next({
+                  success: false,
+                  result: e.reason || e.message,
+                });
               });
           } catch (e: any) {
             const providerError = ProviderErrors[e.code];
@@ -345,6 +385,22 @@ export abstract class ContractBaseService implements IContractEventMonitor {
     return new Observable<TransactionResult<T>>((subscriber) => {
       this.getContract(_abi)
         .then(async (_contract) => {
+          // If contract not found, fails
+          if (_contract == null) {
+            subscriber.next({
+              success: false,
+              result: this.CONTRACT_NOT_FOUND_MESSAGE,
+            });
+            return;
+          }
+          // If contract does not implement the function, fails
+          if (!_contract[_functionName]) {
+            subscriber.next({
+              success: false,
+              result: `Function ${_functionName} not found on contract ${this.address}`,
+            });
+            return;
+          }
           let result;
           try {
             result = await _contract[_functionName](..._args);
