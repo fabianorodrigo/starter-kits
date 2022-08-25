@@ -13,12 +13,12 @@ Setup básico de um projeto node.js com Typescript (usando npm)
 # Seleção da versão do Node.js via NVM
 nvm use
 # instalação de dependências,
-npm install
+pnpm install
 ```
 
 ## Execução
 
-### Execuando o JS gerado de forma direta (Sem ts-node)
+### Executando o JS gerado de forma direta (Sem ts-node)
 
 ```shell
 # transpilação e execução
@@ -38,21 +38,21 @@ npx ts-node src/main.ts
 
 ```shell
 node -v > .nvmrc
-npm init -y
-npm install typescript --save-dev
+pnpm init -y
+pnpm install typescript --save-dev
 
 # Once the above command succeeds, you can check the current version
 npx tsc --version
 
 npx tsc --init
-npm install --save-dev @types/node
-npm install @tsconfig/node16 --save-dev
-npm install --save-dev ts-node ts-node-dev
-npm install eslint --save-dev
-npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
-npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
-npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai  
-npm install redis
+pnpm install --save-dev @types/node
+pnpm install @tsconfig/node16 --save-dev
+pnpm install --save-dev ts-node ts-node-dev
+pnpm install eslint --save-dev
+pnpm install @typescript-eslint/parser @typescript-eslint/eslint-plugin --save-dev
+pnpm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised
+pnpm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai  
+pnpm install redis
 ```
 
 - criação pasta `src`
