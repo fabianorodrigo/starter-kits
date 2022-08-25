@@ -14,7 +14,7 @@ Aplicação Angular para bootstrap de projetos com diferentes páginas para dife
 # Seleção da versão do Node.js via NVM
 nvm use
 # instalação de dependências,
-npm install
+pnpm install
 # transpilação e execução
 ng serve --open
 ```
@@ -31,11 +31,11 @@ ng new angular13 --skip-git
 cd angular13
 ng add @angular/material
 # responddidos aos questionamentos
-npm install bn.js
-npm install --save-dev @types/bn.js
-npm install @metamask/detect-provider web3 web3-eth-contract web3-utils
+pnpm install bn.js
+pnpm install --save-dev @types/bn.js
+pnpm install @metamask/detect-provider web3 web3-eth-contract web3-utils
 # para lidar com erro: BREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default. This is no longer the case. Verify if you need this module and configure a polyfill for it
-npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify
+pnpm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify
 ```
 
 ### Tratamento do erro de build: `BREAKING CHANGE: webpack < 5 used to include polyfills for node.js core modules by default. This is no longer the case. Verify if you need this module and configure a polyfill for it`
