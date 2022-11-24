@@ -31,7 +31,7 @@
     "web3": "^1.7.5",
     "web3-eth-contract": "^1.7.4",
     "web3-utils": "^1.7.4",
-    "zone.js": "~0.11.4"
+    "zone.js": "~0.11.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.3",
