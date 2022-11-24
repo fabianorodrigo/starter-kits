@@ -1,0 +1,29 @@
+<div>
+  <form class="form" [formGroup]="form">
+    <div>
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label>Products searching</mat-label>
+        <input
+          type="text"
+          matInput
+          placeholder="Product name or code"
+          formControlName="filter"
+        />
+      </mat-form-field>
+    </div>
+  </form>
+  <div class="table-container" *ngIf="showResults">
+    <dapp-table
+      [data]="searchResult"
+      [columns]="displayedResultColumns"
+      #result
+      (edit)="this.onEdit($event)"
+      (delete)="this.onDelete($event)"
+    >
+    </dapp-table>
+    <p></p>
+    <div *ngIf="showResults">
+      Selected itens: {{ result.selectedRows.size }}
+    </div>
+  </div>
+</div>

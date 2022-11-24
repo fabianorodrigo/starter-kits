@@ -1,4 +1,19 @@
-<section fxLayout="column" fxFlexAlign="stretch">
-  <h1>Welcome</h1>
-  <p>This is a template ...</p>
-</section>
+<div class="flexDirectionRow">
+  <div class="sideMenu">
+    <dapp-menu
+      [items]="[
+        { label: 'Shared Module', link: '/home/home_shared', icon: 'share' },
+        { label: 'UI Module', link: '/home/home_ui', icon: 'web_asset' },
+        {
+          label: 'Web3js Module',
+          link: '/home/home_web3js',
+          icon: 'monetization_on'
+        }
+      ]"
+    ></dapp-menu>
+  </div>
+  <div class="flexItemGrow4">
+    <!-- Aqui serão rendereizados as rotas 'children' definidas no web3js.routing.module -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
