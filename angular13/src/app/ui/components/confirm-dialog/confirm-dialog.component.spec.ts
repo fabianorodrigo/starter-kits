@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MaterialModule } from 'src/app/material.module';
+import { MaterialModule } from 'src/app/material/material.module';
 import { ComponentsModule } from '../components.module';
 
 import { ConfirmDialogComponent } from './confirm-dialog.component';
