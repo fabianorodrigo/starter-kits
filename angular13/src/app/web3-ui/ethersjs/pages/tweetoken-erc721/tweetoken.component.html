@@ -1,0 +1,109 @@
+<mat-tab-group>
+  <mat-tab label="Metadata">
+    <div class="container">
+      Presents the metadata of NFT contract TWEETTOKEN.IO
+      <dapp-erc721-metadata
+        [contractERC721]="NFTService"
+        (metadataRead)="onMetadataRead($event)"
+      ></dapp-erc721-metadata>
+    </div>
+  </mat-tab>
+  <mat-tab label="Balance, Owner & URI">
+    <div class="container">
+      Request the TTT balance of a specific address
+      <dapp-token-balance
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [decimals]="0"
+      ></dapp-token-balance>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="container">
+      Request the owner of a specic TTT NFT
+      <dapp-erc721-ownerOf
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      >
+      </dapp-erc721-ownerOf>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="container">
+      Request the URI of a specic TTT NFT
+      <dapp-erc721-tokenURI
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      >
+      </dapp-erc721-tokenURI></div
+  ></mat-tab>
+  <mat-tab label="Transfer From"
+    ><div class="container">
+      Transfers a NFT {{ metadata["symbol"] }} from one account to another. The
+      caller is responsible to confirm that the recipient is capable of
+      receiving the NFT or it may be permanently lost
+      <dapp-token-transfer-from
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-token-transfer-from>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Safe Transfer From"
+    ><div class="container">
+      Makes a Safe Tranfer of a NFT {{ metadata["symbol"] }} from one account to
+      another. By "Safe" it means that the recipient is a smart contract that is
+      capable of receiving NFTs. This is confirmed by calling the
+      `onERC721Received` function on the recipient and the returned value has to
+      be `bytes4(keccak256("onERC721Received(address,address,uint256,bytes)"))`.
+      <dapp-erc721-safe-transfer
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      ></dapp-erc721-safe-transfer>
+    </div>
+  </mat-tab>
+  <mat-tab label="Approve">
+    <div class="container">
+      Execute a transaction which the current account connected at the wallet
+      (owner) allow another address to operate an specific NFT in
+      {{ metadata["symbol"] }}
+      on its behalf.
+      <dapp-token-approve
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-token-approve>
+    </div>
+  </mat-tab>
+  <mat-tab label="Get Approved">
+    <div class="container">
+      Request the approved address foa a specic TTT NFT
+      <dapp-erc721-getApproved
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+      >
+      </dapp-erc721-getApproved>
+    </div>
+  </mat-tab>
+  <mat-tab label="Set Approval for All">
+    <div class="container">
+      Enable or disable approval for a third party ("operator") to manage all of
+      current account {{ metadata["symbol"] }} assets on its behalf.
+      <dapp-erc721-setApprovalForAll
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-erc721-setApprovalForAll>
+    </div>
+  </mat-tab>
+  <mat-tab label="Is Approved for All">
+    <div class="container">
+      Query if an address is an authorized operator all
+      {{ metadata["symbol"] }} assets for another address.
+      <dapp-erc721-isApprovedForAll
+        [contract]="NFTService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-erc721-isApprovedForAll>
+    </div>
+  </mat-tab>
+</mat-tab-group>

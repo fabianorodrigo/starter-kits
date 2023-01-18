@@ -29,7 +29,7 @@ export default function () {
     }
   });
 
-  it.only(`# should set key/composed value on Redis`, async function () {
+  it(`# should set key/composed value on Redis`, async function () {
     const TESLA = {
       name: "Nicola",
       surname: "Tesla",

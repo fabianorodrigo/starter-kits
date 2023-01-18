@@ -42,7 +42,7 @@ Uma aplicação Express pode usar os seguintes tipos de middleware:
 # Seleção da versão do Node.js via NVM
 nvm use
 # instalação de dependências,
-npm install
+pnpm install
 # transpilação e execução
 npx tsc && node dist/index.js
 ```
@@ -63,40 +63,40 @@ O [artigo e vídeo da Okta](https://developer.okta.com/blog/2019/10/21/illustrat
 
 ```shell
 node -v > .nvmrc
-npm init -y
-npm install typescript --save-dev
+pnpm init -y
+pnpm install typescript --save-dev
 
 # Once the above command succeeds, you can check the current version
 npx tsc --version
 
 npx tsc --init
-npm install --save-dev @types/node @tsconfig/node16
-npm install --save-dev ts-node ts-node-dev
-npm install --save-dev eslint 
-npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
-npm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
-npm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai
-npm install --save-dev @types/supertest
+pnpm install --save-dev @types/node @tsconfig/node16
+pnpm install --save-dev ts-node ts-node-dev
+pnpm install --save-dev eslint 
+pnpm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
+pnpm install --save-dev @types/chai @types/mocha chai mocha chai-as-promised @types/chai-as-promised supertest
+pnpm install --save-dev sinon @types/sinon sinon-chai @types/sinon-chai
+pnpm install --save-dev @types/supertest
 
-npm install express cors axios
+pnpm install express cors axios
 
-npm install dotenv
-npm install passport passport-local 
-npm install passport-http-bearer
-npm install --save-dev @types/passport
-npm install jsonwebtoken
-npm install --save-dev @types/jsonwebtoken
-npm install redis
-npm install --save-dev @types/redis
+pnpm install dotenv
+pnpm install passport passport-local 
+pnpm install passport-http-bearer
+pnpm install --save-dev @types/passport
+pnpm install jsonwebtoken
+pnpm install --save-dev @types/jsonwebtoken
+pnpm install redis
+pnpm install --save-dev @types/redis
 
-npm install passport-twitter
-npm install --save @types/passport-twitter
-npm install express-session
-npm install --save-dev @types/express-session
+pnpm install passport-twitter
+pnpm install --save @types/passport-twitter
+pnpm install express-session
+pnpm install --save-dev @types/express-session
 
 # sequelize
-npm install sequelize sequelize-cli  
-npm install pg pg-hstore # Postgres
+pnpm install sequelize sequelize-cli  
+pnpm install pg pg-hstore # Postgres
 ```
 
 - criação pasta `src`

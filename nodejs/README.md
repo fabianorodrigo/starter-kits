@@ -13,7 +13,7 @@ Setup básico de um projeto node.js com Javascript com código básico de concei
 # Seleção da versão do Node.js via NVM
 nvm use
 # instalação de dependências,
-npm install
+pnpm install
 ```
 
 ## Execução
@@ -28,10 +28,10 @@ node .
 
 ```shell
 node -v > .nvmrc
-npm init -y
-npm install readline-sync
-npm install colors
-npm install --save-dev nodemon
+pnpm init -y
+pnpm install readline-sync
+pnpm install colors
+pnpm install --save-dev nodemon
 ```
 
 # Fontes

@@ -11,11 +11,11 @@
   <mat-tab label="Balance">
     <div class="container">
       Request the LINK balance of a specific address
-      <dapp-erc20-balance
-        [contractERC20]="linkTokenService"
+      <dapp-token-balance
+        [contract]="linkTokenService"
         [symbol]="metadata['symbol']"
         [decimals]="metadata['decimals']"
-      ></dapp-erc20-balance></div
+      ></dapp-token-balance></div
   ></mat-tab>
   <mat-tab label="Allowance">
     <div class="container">
@@ -45,11 +45,10 @@
       Tranfer an amount of {{ metadata["symbol"] }} an informed account to
       another account. The account connect at the wallet must be the owner of
       the contract in order to run successfully
-      <dapp-erc20-transfer-from
-        [contractERC20]="linkTokenService"
+      <dapp-token-transfer-from
+        [contract]="linkTokenService"
         [symbol]="metadata['symbol']"
-        [decimals]="metadata['decimals']"
-      ></dapp-erc20-transfer-from>
+      ></dapp-token-transfer-from>
     </div>
   </mat-tab>
   <mat-tab label="Approve">
@@ -58,11 +57,11 @@
       (owner) allow a spender address to spend {{ metadata["symbol"] }} on its
       behalf. If a previous transactions was sent before, the allowance to be
       considered is the latest confirmed by the blockchain network
-      <dapp-erc20-approve
-        [contractERC20]="linkTokenService"
+      <dapp-token-approve
+        [contract]="linkTokenService"
         [symbol]="metadata['symbol']"
-        [decimals]="metadata['decimals']"
-      ></dapp-erc20-approve>
+        [currentAccount]="userAccountAddress"
+      ></dapp-token-approve>
     </div>
   </mat-tab>
 </mat-tab-group>

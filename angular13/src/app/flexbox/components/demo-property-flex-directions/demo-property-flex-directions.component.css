@@ -1,0 +1,41 @@
+.container-row{
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+
+.container-column{
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.item{
+  font-weight: normal;
+  color:black;
+  width: 250px
+}
+
+.labelColumn{
+  font-size: 16px;
+  font-weight: 500;
+  width: 100px;
+  color: #3f51b5;
+  /*todos as colunas ficarão alnhadas no tipo (container-row.flex-start)
+  mas queremos que a coluna do label fique centralizada. Assim, setamos
+  individualmente no item*/
+  align-self: center;
+}
+.labelRow{
+  font-size: 16px;
+  font-weight: 500;
+  color: #3f51b5;
+}
+
+.spCSSProperty{
+  font-size: 12px;
+  font-family: 'Courier New', Courier, monospace;
+  color:black;
+}

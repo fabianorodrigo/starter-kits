@@ -6,7 +6,7 @@ import { MarkdownComponent } from 'src/app/shared/pages/markdown/markdown.compon
 import { LinkComponent } from './pages/link/link.component';
 import { Web3jsHomeComponent } from './pages/web3js-home/web3js-home.component';
 
-export const routes: Routes = [
+const routes: Routes = [
   {
     // Use empty path routes to group routes together without adding any
     // additional path segments to the URL. Users will still visit /web3js
@@ -26,6 +26,8 @@ export const routes: Routes = [
 ];
 
 @NgModule({
+  //Only call RouterModule.forRoot() in the root AppRoutingModule.
+  // In any other module, you must call the RouterModule.forChild() method to register additional routes.
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })

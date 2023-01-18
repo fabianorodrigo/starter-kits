@@ -1,0 +1,15 @@
+<div class="container-column">
+  <div>
+    <div>
+      <h3>{{ demo.title }}</h3>
+      <p>{{ demo.text }}</p>
+      <ng-container *ngFor="let file of demo.code">
+        <div
+          class="div-css"
+          [innerHTML]="file.code | language: 'javascript' | markdown"
+        ></div>
+        <span>{{ file.filename }}</span>
+      </ng-container>
+    </div>
+  </div>
+</div>

@@ -33,6 +33,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@typescript-eslint/parser": "^5.0.0",
     "redis": "^4.1.0"
   }
 }

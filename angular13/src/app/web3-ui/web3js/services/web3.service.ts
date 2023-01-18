@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 import detectEthereumProvider from '@metamask/detect-provider';
 import * as BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import {
   ProviderMessage,
   ProviderRpcError,
   TransactionResult,
-} from '../model';
+} from '../../shared/model';
 
 declare let window: any;
 
@@ -25,7 +25,10 @@ export class Web3Service {
   private _userAccountAddressSubject = new BehaviorSubject<string | null>(null);
   private _userAccountAddress!: string | null;
 
-  constructor(private _loggingService: LoggingService) {
+  constructor(@Optional() private _loggingService: LoggingService) {
+    // givenProvider: When using web3.js in an Ethereum compatible browser,
+    // it will set with the current native provider by that browser.
+    // Will return the given provider by the (browser) environment, otherwise null.
     this._web3 = new Web3(Web3.givenProvider);
     this.hasEthereumProvider();
   }

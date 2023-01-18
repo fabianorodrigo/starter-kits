@@ -1,0 +1,53 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="container-column">
+    <mat-form-field>
+      <mat-label>order</mat-label>
+      <input type="number" matInput [(ngModel)]="order" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>flex-grow</mat-label>
+      <input type="number" matInput [(ngModel)]="flexGrow" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>flex-shrink</mat-label>
+      <input type="number" matInput [(ngModel)]="flexShrink" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>flex-basis</mat-label>
+      <input matInput [(ngModel)]="flexBasis" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>align-self</mat-label>
+      <mat-select [(ngModel)]="alignSelf">
+        <mat-option
+          *ngFor="
+            let ai of [
+              '',
+              'auto',
+              'flex-start',
+              'flex-end',
+              'center',
+              'stretch',
+              'baseline'
+            ]
+          "
+          [value]="ai"
+        >
+          {{ ai }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button
+    mat-button
+    color="primary"
+    [mat-dialog-close]="createItemStyle()"
+    cdkFocusInitial
+  >
+    Confirm
+  </button>
+</mat-dialog-actions>

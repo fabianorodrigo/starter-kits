@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="getOwner($event)" class="container">
+  <mat-form-field class="input_40characters" appearance="outline">
+    <mat-label>Token ID</mat-label>
+    <input
+      type="text"
+      [disableControl]="isLoading"
+      matInput
+      placeholder="Token ID to query for its owner"
+      formControlName="tokenId"
+      maxlength="42"
+      minlength="1"
+    />
+    <mat-hint>Inform the Non Fungible Token Identifier and ENTER.</mat-hint>
+    <mat-error *ngIf="getErrorMessage('tokenId')">{{
+      getErrorMessage("tokenId")
+    }}</mat-error>
+  </mat-form-field>
+</form>
+
+<div class="value-container" *ngIf="showURI">
+  <label class="value-label">URI:</label>
+  <mat-spinner diameter="50" *ngIf="isLoading; else uriDiv"></mat-spinner>
+</div>
+
+<ng-template #uriDiv>
+  <div class="address">{{ uri }}</div>
+</ng-template>

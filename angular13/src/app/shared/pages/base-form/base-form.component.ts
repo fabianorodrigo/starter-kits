@@ -1,14 +1,79 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { of, Observable } from 'rxjs';
+import { TransactionResult } from 'src/app/web3-ui/shared/model';
+import { MessageService } from '../../services/message.service';
 import * as errorMessagesJSON from './common-errors-messages.json';
 
 export abstract class BaseFormComponent {
   protected errorMessages: { [errorId: string]: string } = {};
   public form!: FormGroup;
+  public isLoading = false;
   protected submitted = false;
 
-  constructor() {
+  constructor(protected _messageService: MessageService) {
     this.errorMessages = errorMessagesJSON;
+  }
+
+  /**
+   * Handle fails throw by the backend setting this.isLoading to false,
+   * showing the error message in the UI and returning a Observable<TransactionResult>
+   * with the success property set to false and the result with the err.message
+   *
+   * @param err Error object
+   * @returns Observable<TransactionResult> with the success property set to false
+   *  and the result with the err.message
+   */
+  handleBackendError(err: any): Observable<TransactionResult<string>> {
+    this.handleUnexpectedError(err);
+    return of({ success: false, result: err.message });
+  }
+
+  /**
+   * Handle fails throw by the backend setting this.isLoading to false,
+   * showing the error message in the UI and returning a Observable<TransactionResult>
+   * with the success property set to false and the result with the err.message
+   *
+   * @param err Error object
+   * @returns Observable<TransactionResult> with the success property set to false
+   *  and the result with the err.message
+   */
+  handleTypedBackendError<T>(err: any): Observable<TransactionResult<T>> {
+    this.handleUnexpectedError(err);
+    return of({ success: false, result: err.message });
+  }
+
+  /**
+   * Handle fails throw by Observable setting this.isLoading to false,
+   * showing the error message in the UI
+   *
+   * @param err Error object
+   */
+  handleUnexpectedError(err: any): void {
+    this._messageService.show(err.message);
+    this.isLoading = false;
+  }
+
+  /**
+   * Handle successful transaction (send or call) setting this.isLoading to false,
+   * showing the error message in the UI
+   *
+   * @param result The result of the request done to the backend. The result.success can be false
+   * @param errorMessage Message to be shown in case of {result.success} is false (optional)
+   */
+  handleTransactionResult(
+    result: TransactionResult<string>,
+    errorMessage?: string
+  ): void {
+    if (result.success == false) {
+      this._messageService.show(
+        errorMessage
+          ? errorMessage
+          : `It was not possible to send the transaction: ${result.result}`
+      );
+    } else {
+      this._messageService.show(result.result);
+    }
+    this.isLoading = false;
   }
 
   /**

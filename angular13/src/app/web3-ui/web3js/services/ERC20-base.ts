@@ -1,14 +1,15 @@
 import BN from 'bn.js';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import { CallbackFunction, TransactionResult } from '../model';
+import { IERC20 } from '../../shared/services/erc20.interface';
+import { CallbackFunction, TransactionResult } from '../../shared/model';
 import { BaseContract } from './contract-base';
 import { Web3Service } from './web3.service';
 
 /**
  * Base contract to interact with ERC-20 smart contracts
  */
-export abstract class ERC20BaseContract extends BaseContract {
+export abstract class ERC20BaseContract extends BaseContract implements IERC20 {
   protected _symbol!: string;
   private _subscriptionSymbol: Subscription;
 
@@ -24,6 +25,14 @@ export abstract class ERC20BaseContract extends BaseContract {
     this._subscriptionSymbol = this.symbol().subscribe((result) => {
       this._subscriptionSymbol.unsubscribe();
     });
+  }
+
+  /**
+   * @returns Returns TRUE if the current interface is
+   * compatible with the erc number passed as parameter
+   */
+  isERC(erc: number): boolean {
+    return [20].includes(erc);
   }
 
   /**

@@ -1,0 +1,7 @@
+<div class="container">
+  <mat-spinner diameter="50" *ngIf="isLoading > 0; else table"></mat-spinner>
+</div>
+
+<ng-template #table>
+  <dapp-table [data]="metadata" [columns]="displayedResultColumns"></dapp-table>
+</ng-template>

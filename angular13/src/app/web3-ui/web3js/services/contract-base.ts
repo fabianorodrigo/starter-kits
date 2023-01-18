@@ -1,19 +1,21 @@
 import BN from 'bn.js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { LoggingService } from 'src/app/shared/services/logging.service';
-import { Contract, EventData } from 'web3-eth-contract';
+import { Contract, EventData, PastEventOptions } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
+import { IContractEventMonitor } from '../../shared/services/contract-event-monitor.interface';
 import {
   CallbackFunction,
   EventMonitoringParameters,
   EventPastParameters,
   ProviderErrors,
   TransactionResult,
-} from '../model';
-import { Web3Subscription } from '../model/events/Subscription';
+  EventFilter,
+} from '../../shared/model';
+import { BlockNumber } from './../../shared/model/events/EventPastParameters';
 import { Web3Service } from './web3.service';
 
-export abstract class BaseContract {
+export abstract class BaseContract implements IContractEventMonitor {
   protected contract!: Contract;
   protected _eventListeners: { [event: string]: BehaviorSubject<any> } = {};
   private _owner!: string;
@@ -28,6 +30,66 @@ export abstract class BaseContract {
     this.address = _address;
     this._web3Service.getUserAccountAddressSubject().subscribe((_account) => {
       this._fromAccount = _account;
+    });
+  }
+
+  /**
+   * @returns Lastest block in the current connected chain
+   */
+  getCurrentBlockNumber(): Promise<number> {
+    return this._web3Service.getCurrentBlockNumber();
+  }
+
+  /**
+   * Gets list of past events with the parameters requested
+   *
+   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event;
+   * an optional filter and the initial and final block of search
+   *
+   * @returns Events array
+   */
+  async getContractsPastEvent(
+    _monitorParameter: EventPastParameters
+  ): Promise<any[]> {
+    const _contract = await this.getContract(this.getContractABI());
+    return _contract.getPastEvents(_monitorParameter.eventName, {
+      filter: _monitorParameter.filter as EventFilter,
+      fromBlock: _monitorParameter.fromBlock as BlockNumber,
+      toBlock: _monitorParameter.toBlock as BlockNumber,
+    } as PastEventOptions);
+  }
+
+  /**
+   * Subscribe to a contract's event  with optional filter parameters registering a listener function
+   *
+   * @param _monitorParameter  Object with the parameteres of event monitoring including Name of the event,
+   * the listener function and optional filter arguments
+   *
+   */
+  async subscribeContractEvent(
+    _monitorParameter: EventMonitoringParameters
+  ): Promise<void> {
+    const _contract = await this.getContract(this.getContractABI());
+    const eventSubscription = _contract.events[_monitorParameter.eventName]({
+      filter: _monitorParameter.args,
+    });
+    eventSubscription.on('data', (event: EventData) => {
+      _monitorParameter.listenerFunction(
+        ...Object.values(event.returnValues),
+        event
+      );
+      // this.eventList = [
+      //   ...this.eventList,
+      //   {
+      //     blockNumber: event.blockNumber,
+      //     owner: event.returnValues['owner'],
+      //     spender: event.returnValues['spender'],
+      //     value: event.returnValues['value'],
+      //   },
+      // ];
+    });
+    eventSubscription.on('error', (error: any) => {
+      alert(error);
     });
   }
 
@@ -93,14 +155,14 @@ export abstract class BaseContract {
    *
    * @returns WEB3.JS Subscription
    */
-  async getWeb3EventSubscription(
-    _monitorParameter: EventMonitoringParameters
-  ): Promise<Web3Subscription> {
-    const _contract = await this.getContract(this.getContractABI());
-    return _contract.events[_monitorParameter.eventName](
-      _monitorParameter.web3jsParameters
-    );
-  }
+  // async getWeb3EventSubscription(
+  //   _monitorParameter: EventMonitoringParameters
+  // ): Promise<Web3Subscription> {
+  //   const _contract = await this.getContract(this.getContractABI());
+  //   return _contract.events[_monitorParameter.eventName](
+  //     _monitorParameter.web3jsParameters
+  //   );
+  // }
 
   /**
    * Gets a instance of WEB3.JS Subscription of past events with the parameters requested
@@ -109,16 +171,16 @@ export abstract class BaseContract {
    *
    * @returns WEB3.JS Subscription
    */
-  async getWeb3PastEventSubscription(
-    _monitorParameter: EventPastParameters
-  ): Promise<EventData[]> {
-    const _contract = await this.getContract(this.getContractABI());
+  // async getWeb3PastEventSubscription(
+  //   _monitorParameter: EventPastParameters
+  // ): Promise<EventData[]> {
+  //   const _contract = await this.getContract(this.getContractABI());
 
-    return _contract.getPastEvents(
-      _monitorParameter.eventName,
-      _monitorParameter.web3jsParameters
-    );
-  }
+  //   return _contract.getPastEvents(
+  //     _monitorParameter.eventName,
+  //     _monitorParameter.web3jsParameters
+  //   );
+  // }
 
   /**
    * Execute a CALL (DOEST NOT change state) to a function  from the currentAccount selected on the wallet provider

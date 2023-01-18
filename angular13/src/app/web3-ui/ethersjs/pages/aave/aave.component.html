@@ -1,0 +1,67 @@
+<mat-tab-group>
+  <mat-tab label="Metadata">
+    <div class="container">
+      Presents the metadata of token AAVE
+      <dapp-erc20-metadata
+        [contractERC20]="aaveTokenService"
+        (metadataRead)="onMetadataRead($event)"
+      ></dapp-erc20-metadata>
+    </div>
+  </mat-tab>
+  <mat-tab label="Balance">
+    <div class="container">
+      Request the AAVE balance of a specific address
+      <dapp-token-balance
+        [contract]="aaveTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-token-balance></div
+  ></mat-tab>
+  <mat-tab label="Allowance">
+    <div class="container">
+      Request the allowance that an owner address gave to another spender
+      address to spend {{ metadata["symbol"] }}
+      on its behalf
+      <dapp-erc20-allowance
+        [contractERC20]="aaveTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-allowance>
+    </div>
+  </mat-tab>
+  <mat-tab label="Transfer"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} from the current account
+      connected at the wallet to another account
+      <dapp-erc20-transfer
+        [contractERC20]="aaveTokenService"
+        [symbol]="metadata['symbol']"
+        [decimals]="metadata['decimals']"
+      ></dapp-erc20-transfer>
+    </div>
+  </mat-tab>
+  <mat-tab label="Transfer From"
+    ><div class="container">
+      Tranfer an amount of {{ metadata["symbol"] }} an informed account to
+      another account. The account connect at the wallet must be the owner of
+      the contract in order to run successfully
+      <dapp-token-transfer-from
+        [contract]="aaveTokenService"
+        [symbol]="metadata['symbol']"
+      ></dapp-token-transfer-from>
+    </div>
+  </mat-tab>
+  <mat-tab label="Approve">
+    <div class="container">
+      Execute a transaction which the current account connected at the wallet
+      (owner) allow a spender address to spend {{ metadata["symbol"] }} on its
+      behalf. If a previous transactions was sent before, the allowance to be
+      considered is the latest confirmed by the blockchain network
+      <dapp-token-approve
+        [contract]="aaveTokenService"
+        [symbol]="metadata['symbol']"
+        [currentAccount]="currentAccount"
+      ></dapp-token-approve>
+    </div>
+  </mat-tab>
+</mat-tab-group>

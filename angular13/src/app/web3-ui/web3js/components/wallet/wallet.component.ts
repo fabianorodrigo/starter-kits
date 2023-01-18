@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProviderErrors } from '../../model';
+import { ProviderErrors } from '../../../shared/model';
 import { MessageService } from '../../../../shared/services/message.service';
 import { Web3Service } from '../../services/web3.service';
 import { NumbersService } from 'src/app/shared/services/numbers.service';

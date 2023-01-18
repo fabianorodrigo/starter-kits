@@ -1,22 +1,42 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/guards/auth.guard';
 import { ErrorComponent } from './shared/components/error/error.component';
 
 const routes: Routes = [
+  // Módulos Lazy Loading são atrelados às rotas que indicam quando devem ser carregados
   {
     path: 'web3js',
     loadChildren: () =>
       import('./web3-ui/web3js/web3js.module').then((m) => m.Web3jsModule),
   },
   {
-    path: 'rest',
-    loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
+    path: 'ethersjs',
+    loadChildren: () =>
+      import('./web3-ui/ethersjs/ethersjs.module').then(
+        (m) => m.EthersjsModule
+      ),
   },
   {
-    path: 'home',
-    loadChildren: () => import('./ui/ui.module').then((m) => m.UiModule),
+    path: 'product',
+    loadChildren: () =>
+      import('./product/product.module').then((m) => m.ProductModule),
+    // caso o usuário não esteja logado, o ProductModule nem é carregado
+    canLoad: [AuthGuard],
   },
-  //definindo a rota default como o '/home'
+  {
+    path: 'flexbox',
+    loadChildren: () =>
+      import('./flexbox/flexbox.module').then((m) => m.FlexboxModule),
+  },
+  {
+    path: 'di',
+    loadChildren: () =>
+      import('./dependency-injection/dependency-injection.module').then(
+        (m) => m.DependencyInjectionModule
+      ),
+  },
+  //definindo a rota default como o '/home'. Essa rota está definida no UiModule (que é carregado eagerly)
   {
     path: '',
     redirectTo: '/home',
