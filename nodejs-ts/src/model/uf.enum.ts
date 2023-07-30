@@ -1,0 +1,15 @@
+export enum UF {
+  AM,
+  AP,
+  BA,
+  CE,
+  DF,
+  ES,
+  GO,
+  MA,
+  MG,
+  MS,
+  MT,
+  PA,
+  PR,
+}

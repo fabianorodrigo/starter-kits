@@ -9,7 +9,9 @@
     "dev": "npx ts-node src/main.ts",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint . --fix",
-    "test": "mocha -r ts-node/register ./src/test/mocha.spec.ts"
+    "test": "mocha -r ts-node/register ./src/test/mocha.spec.ts",
+    "testenum": "mocha -r ts-node/register ./src/services/enum/enum.spec.ts",
+    "testarrays": "mocha -r ts-node/register ./src/services/arrays/arrays.spec.ts"
   },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
